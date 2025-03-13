@@ -10,9 +10,9 @@ export default function BottomNav() {
   const isActive = (path: string) => pathname === path
 
   return (
-    <nav className="bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-around">
+    <nav className="bg-white border-t shadow-lg fixed bottom-0 left-0 right-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 bg-white">
+        <div className="flex justify-around bg-white">
           <Link
             href="/"
             className={`flex flex-col items-center py-2 ${isActive("/") ? "text-green-600" : "text-green-700"}`}
@@ -46,4 +46,3 @@ export default function BottomNav() {
     </nav>
   )
 }
-

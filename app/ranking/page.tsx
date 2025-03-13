@@ -32,12 +32,12 @@ const currentUser = {
 };
 
 const getCategory = (user: { utr: number }) => {
-  if (!user || typeof user.utr !== 'number') {
-    return 'D';
+  if (!user || typeof user.utr !== "number") {
+    return "D";
   }
-  
+
   const utr = user.utr;
-  
+
   if (utr >= 11) {
     return "MAYOR";
   } else if (utr >= 9) {
@@ -59,7 +59,7 @@ export default function RankingPage() {
     fetchUsers,
     users,
   } = useUsersStore((state) => state);
-  const [activeCategory, setActiveCategory] = useState("A");
+  const [activeCategory, setActiveCategory] = useState("MAYOR");
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -85,24 +85,28 @@ export default function RankingPage() {
     router.push(`/profile?id=${playerId}`);
   };
 
-  const filteredUsers = users.filter(user => getCategory(user) === activeCategory);
-  console.log('Active Category:', activeCategory);
-  console.log('Users:', users);
-  console.log('Filtered Users:', filteredUsers);
+  const filteredUsers = users.filter(
+    (user) => getCategory(user) === activeCategory
+  );
+  console.log("Active Category:", activeCategory);
+  console.log("Users:", users);
+  console.log("Filtered Users:", filteredUsers);
 
-  const categories = ["A", "B", "C", "D"];
+  const categories = ["MAYOR", "A", "B", "C", "D"];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header
-        title="Ranking GTL"
-        showSearch={true}
-        onSearchToggle={handleSearchToggle}
-        isSearching={isSearching}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        className="bg-[#245A4C]"
-      />
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <Header
+          title="Ranking GTL"
+          showSearch={true}
+          onSearchToggle={handleSearchToggle}
+          isSearching={isSearching}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          className="bg-[#245A4C] shadow-md"
+        />
+      </div>
 
       <main className="flex-grow pt-16 px-4">
         <div className="max-w-4xl mx-auto">
@@ -232,7 +236,9 @@ export default function RankingPage() {
                   {categories.map((category) => (
                     <Button
                       key={category}
-                      variant={activeCategory === category ? "default" : "outline"}
+                      variant={
+                        activeCategory === category ? "default" : "outline"
+                      }
                       onClick={() => setActiveCategory(category)}
                       className={`flex-shrink-0 font-semibold min-w-[100px] ${
                         activeCategory === category
@@ -240,7 +246,7 @@ export default function RankingPage() {
                           : "border-green-600 text-green-600 hover:bg-green-50"
                       }`}
                     >
-                      Categoría {category}
+                      {category === "MAYOR" ? "Mayor" : `Categoría ${category}`}
                     </Button>
                   ))}
                 </div>
@@ -261,69 +267,64 @@ export default function RankingPage() {
                         No hay jugadores en esta categoría
                       </div>
                     ) : (
-                      <ScrollArea className="w-full overflow-x-auto" type="always">
-                        <div className="min-w-[450px] px-4">
-                          <Table>
-                            <TableHeader className="bg-white">
-                              <TableRow>
-                                <TableCell className="sticky left-4 z-20 bg-white w-10 px-3">#</TableCell>
-                                <TableCell className="sticky left-[3.5rem] z-20 bg-white w-[120px] px-3">Jugador</TableCell>
-                                <TableCell className="text-right w-20 px-3">UTR</TableCell>
-                                <TableCell className="text-right w-24 px-3">Puntos</TableCell>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {filteredUsers
-                                .sort((a, b) => (b.points || 0) - (a.points || 0))
-                                .map((user, index) => (
-                                  <TableRow
-                                    key={user.id}
-                                    className={`${
-                                      user.id === currentUser.id ? "bg-green-100" : ""
-                                    } cursor-pointer hover:bg-gray-50`}
-                                    onClick={() => handlePlayerClick(user.id)}
-                                  >
-                                    <TableCell className="sticky left-4 z-20 bg-inherit w-10 px-3">
-                                      {index + 1}
-                                    </TableCell>
-                                    <TableCell className="sticky left-[3.5rem] z-20 bg-inherit w-[120px] px-3">
-                                      <div className="flex items-center gap-2">
-                                        <div className="relative flex-shrink-0">
-                                          <Image
-                                            src={user.photo || "/placeholder.svg"}
-                                            alt={user.name}
-                                            width={28}
-                                            height={28}
-                                            className="rounded-full w-7 h-7 object-cover"
-                                          />
-                                          {user.id === currentUser.id && (
-                                            <div className="absolute -top-1 -right-1 bg-green-500 rounded-full w-2.5 h-2.5 border-2 border-white"></div>
-                                          )}
-                                        </div>
-                                        <span
-                                          className={`${
-                                            user.id === currentUser.id
-                                              ? "font-semibold"
-                                              : ""
-                                          } truncate text-sm`}
-                                        >
-                                          {user.name}
-                                        </span>
+                      <div>
+                        <Table>
+                          <TableHeader className="bg-white">
+                            <TableRow>
+                              <TableCell className="w-12 px-3 text-center">#</TableCell>
+                              <TableCell className="min-w-[200px] px-3">Jugador</TableCell>
+                              <TableCell className="w-20 px-6 text-right">UTR</TableCell>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {filteredUsers
+                              .sort((a, b) => (b.utr || 0) - (a.utr || 0))
+                              .map((user, index) => (
+                                <TableRow
+                                  key={user.id}
+                                  className={`${
+                                    user.id === currentUser.id
+                                      ? "bg-green-100"
+                                      : ""
+                                  } cursor-pointer hover:bg-gray-50`}
+                                  onClick={() => handlePlayerClick(user.id)}
+                                >
+                                  <TableCell className="w-12 px-3 text-center">
+                                    {index + 1}
+                                  </TableCell>
+                                  <TableCell className="min-w-[200px] px-3">
+                                    <div className="flex items-center gap-2">
+                                      <div className="relative flex-shrink-0">
+                                        <Image
+                                          src={user.photo || "/placeholder.svg"}
+                                          alt={user.name}
+                                          width={28}
+                                          height={28}
+                                          className="rounded-full w-7 h-7 object-cover"
+                                        />
+                                        {user.id === currentUser.id && (
+                                          <div className="absolute -top-1 -right-1 bg-green-500 rounded-full w-2.5 h-2.5 border-2 border-white"></div>
+                                        )}
                                       </div>
-                                    </TableCell>
-                                    <TableCell className="text-right w-20 px-3 text-sm">
-                                      {user.utr}
-                                    </TableCell>
-                                    <TableCell className="text-right w-24 px-3 text-sm">
-                                      {user.points || 0}
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                            </TableBody>
-                          </Table>
-                        </div>
-                        <ScrollBar orientation="horizontal" />
-                      </ScrollArea>
+                                      <span
+                                        className={`${
+                                          user.id === currentUser.id
+                                            ? "font-semibold"
+                                            : ""
+                                        } truncate text-sm`}
+                                      >
+                                        {user.name}
+                                      </span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="w-20 px-6 text-right text-sm">
+                                    {user.utr}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                          </TableBody>
+                        </Table>
+                      </div>
                     )}
                   </CardContent>
                 </Card>
