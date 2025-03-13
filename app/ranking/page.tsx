@@ -1,101 +1,96 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { motion, AnimatePresence } from "framer-motion"
-import { useRouter } from "next/navigation"
-import Header from "../components/Header"
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Header from "../components/Header";
+import { useUsersStore } from "@/store/useUsers";
 
 // Datos de ejemplo para el ranking (mantenemos los mismos)
-const rankingData = {
-  A: Array.from({ length: 25 }, (_, i) => ({
-    id: i + 1,
-    name: i === 7 ? "Juan Pérez" : `Jugador A${i + 1}`,
-    photo:
-      i === 7
-        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp"
-        : [
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.34%20-%20A%20tenth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-xq7jwBypIZm1U78YD4UdHZoWNIfLgP.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.30%20-%20A%20seventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20Th-AWZujTU92XzOdTha9t8pZuwNBEwwtO.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.16.19%20-%20A%20sixth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-74G1MZLpQAn7Bm6va0bL8t3tnQUR26.webp",
-          ][i % 3],
-    utr: (10 - i * 0.1).toFixed(1),
-    isCurrentUser: i === 7,
-  })),
-  B: Array.from({ length: 25 }, (_, i) => ({
-    id: i + 1,
-    name: i === 7 ? "Juan Pérez" : `Jugador B${i + 1}`,
-    photo:
-      i === 7
-        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp"
-        : [
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.34%20-%20A%20tenth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-xq7jwBypIZm1U78YD4UdHZoWNIfLgP.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.30%20-%20A%20seventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20Th-AWZujTU92XzOdTha9t8pZuwNBEwwtO.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.16.19%20-%20A%20sixth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-74G1MZLpQAn7Bm6va0bL8t3tnQUR26.webp",
-          ][i % 3],
-    utr: (8 - i * 0.1).toFixed(1),
-    isCurrentUser: i === 7,
-  })),
-  C: Array.from({ length: 25 }, (_, i) => ({
-    id: i + 1,
-    name: i === 7 ? "Juan Pérez" : `Jugador C${i + 1}`,
-    photo:
-      i === 7
-        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp"
-        : [
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.34%20-%20A%20tenth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-xq7jwBypIZm1U78YD4UdHZoWNIfLgP.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.30%20-%20A%20seventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20Th-AWZujTU92XzOdTha9t8pZuwNBEwwtO.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.16.19%20-%20A%20sixth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-74G1MZLpQAn7Bm6va0bL8t3tnQUR26.webp",
-          ][i % 3],
-    utr: (6 - i * 0.1).toFixed(1),
-    isCurrentUser: i === 7,
-  })),
-  D: Array.from({ length: 25 }, (_, i) => ({
-    id: i + 1,
-    name: i === 7 ? "Juan Pérez" : `Jugador D${i + 1}`,
-    photo:
-      i === 7
-        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp"
-        : [
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.34%20-%20A%20tenth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-xq7jwBypIZm1U78YD4UdHZoWNIfLgP.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.30%20-%20A%20seventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20Th-AWZujTU92XzOdTha9t8pZuwNBEwwtO.webp",
-            "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.16.19%20-%20A%20sixth%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20The%20-74G1MZLpQAn7Bm6va0bL8t3tnQUR26.webp",
-          ][i % 3],
-    utr: (4 - i * 0.1).toFixed(1),
-    isCurrentUser: i === 7,
-  })),
-}
 
 // Datos de ejemplo para el usuario actual
 const currentUser = {
+  id: "1",
   name: "Juan Pérez",
   photo:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp",
   category: "A",
   categoryRank: 8,
   overallRank: 8,
-}
+};
+
+const getCategory = (user: { utr: number }) => {
+  if (!user || typeof user.utr !== 'number') {
+    return 'D';
+  }
+  
+  const utr = user.utr;
+  
+  if (utr >= 11) {
+    return "MAYOR";
+  } else if (utr >= 9) {
+    return "A";
+  } else if (utr >= 6) {
+    return "B";
+  } else if (utr >= 3) {
+    return "C";
+  } else {
+    return "D";
+  }
+};
 
 export default function RankingPage() {
-  const router = useRouter()
-  const [activeCategory, setActiveCategory] = useState("A")
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter();
+  const {
+    loading: loadingUsers,
+    error,
+    fetchUsers,
+    users,
+  } = useUsersStore((state) => state);
+  const [activeCategory, setActiveCategory] = useState("A");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    fetchUsers();
+  }, [fetchUsers]);
+
+  // Evitar renderizado en el servidor
+  if (!mounted) {
+    return null;
+  }
 
   const handleSearchToggle = () => {
-    setIsSearching(!isSearching)
+    setIsSearching(!isSearching);
     if (isSearching) {
-      setSearchQuery("")
+      setSearchQuery("");
     }
-  }
+  };
 
-  const handlePlayerClick = (playerId: number) => {
-    router.push(`/profile?id=${playerId}`)
-  }
+  const handlePlayerClick = (playerId: string) => {
+    router.push(`/profile?id=${playerId}`);
+  };
+
+  const filteredUsers = users.filter(user => getCategory(user) === activeCategory);
+  console.log('Active Category:', activeCategory);
+  console.log('Users:', users);
+  console.log('Filtered Users:', filteredUsers);
+
+  const categories = ["A", "B", "C", "D"];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -131,37 +126,54 @@ export default function RankingPage() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {Object.entries(rankingData).flatMap(([category, players]) =>
-                          players
-                            .filter((player) => player.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                            .map((player) => (
+                        {users
+                          .filter((player) =>
+                            player.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase())
+                          )
+                          .map((player) => {
+                            const category = getCategory(player);
+                            return (
                               <TableRow
                                 key={`${category}-${player.id}`}
                                 className="cursor-pointer hover:bg-gray-50"
                                 onClick={() => handlePlayerClick(player.id)}
                               >
-                                <TableCell className="font-medium">Categoría {category}</TableCell>
+                                <TableCell className="font-medium">
+                                  Categoría {category}
+                                </TableCell>
                                 <TableCell>
-                                  <div className="flex items-center space-x-3">
-                                    <div className="relative">
+                                  <div className="flex items-center gap-3">
+                                    <div className="relative flex-shrink-0">
                                       <Image
                                         src={player.photo || "/placeholder.svg"}
                                         alt={player.name}
                                         width={40}
                                         height={40}
-                                        className="rounded-full"
+                                        className="rounded-full w-10 h-10 object-cover"
                                       />
                                       {player.isCurrentUser && (
                                         <div className="absolute -top-1 -right-1 bg-green-500 rounded-full w-4 h-4 border-2 border-white"></div>
                                       )}
                                     </div>
-                                    <span className={player.isCurrentUser ? "font-semibold" : ""}>{player.name}</span>
+                                    <span
+                                      className={`${
+                                        player.isCurrentUser
+                                          ? "font-semibold"
+                                          : ""
+                                      } truncate`}
+                                    >
+                                      {player.name}
+                                    </span>
                                   </div>
                                 </TableCell>
-                                <TableCell className="text-right">{player.utr}</TableCell>
+                                <TableCell className="text-right">
+                                  {player.utr}
+                                </TableCell>
                               </TableRow>
-                            )),
-                        )}
+                            );
+                          })}
                       </TableBody>
                     </Table>
                   </CardContent>
@@ -186,83 +198,133 @@ export default function RankingPage() {
                         className="rounded-full"
                       />
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900">{currentUser.name}</h2>
-                        <p className="text-lg text-gray-600">Categoría {currentUser.category}</p>
+                        <h2 className="text-2xl font-bold text-gray-900">
+                          {currentUser.name}
+                        </h2>
+                        <p className="text-lg text-gray-600">
+                          Categoría {currentUser.category}
+                        </p>
                       </div>
                     </div>
                     <div className="mt-3 flex justify-between">
                       <div className="text-center">
-                        <p className="text-sm text-gray-500">Posición en categoría</p>
-                        <p className="text-2xl font-bold text-green-600">#{currentUser.categoryRank}</p>
+                        <p className="text-sm text-gray-500">
+                          Posición en categoría
+                        </p>
+                        <p className="text-2xl font-bold text-green-600">
+                          #{currentUser.categoryRank}
+                        </p>
                       </div>
                       <div className="text-center">
-                        <p className="text-sm text-gray-500">Posición general</p>
-                        <p className="text-2xl font-bold text-green-600">#{currentUser.overallRank}</p>
+                        <p className="text-sm text-gray-500">
+                          Posición general
+                        </p>
+                        <p className="text-2xl font-bold text-green-600">
+                          #{currentUser.overallRank}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                {/* Selector de categorías */}
-                <ScrollArea className="w-full whitespace-nowrap rounded-md border mb-8">
-                  <div className="flex p-4">
-                    {["A", "B", "C", "D"].map((category) => (
-                      <Button
-                        key={category}
-                        onClick={() => setActiveCategory(category)}
-                        variant={activeCategory === category ? "default" : "outline"}
-                        className={`${
-                          activeCategory === category ? "bg-green-600 text-white" : "text-green-600"
-                        } mx-2 flex-shrink-0`}
-                      >
-                        Categoría {category}
-                      </Button>
-                    ))}
-                  </div>
-                  <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                {/* Selector de categoría */}
+                <div className="flex gap-2 overflow-x-auto pb-4">
+                  {categories.map((category) => (
+                    <Button
+                      key={category}
+                      variant={activeCategory === category ? "default" : "outline"}
+                      onClick={() => setActiveCategory(category)}
+                      className={`flex-shrink-0 font-semibold min-w-[100px] ${
+                        activeCategory === category
+                          ? "bg-green-600 hover:bg-green-700 text-white shadow-md"
+                          : "border-green-600 text-green-600 hover:bg-green-50"
+                      }`}
+                    >
+                      Categoría {category}
+                    </Button>
+                  ))}
+                </div>
 
                 {/* Tabla de ranking */}
                 <Card className="bg-white shadow-md rounded-xl overflow-hidden">
-                  <CardContent className="p-6">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-[100px]">Posición</TableHead>
-                          <TableHead>Jugador</TableHead>
-                          <TableHead className="text-right">UTR</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {rankingData[activeCategory].map((player, index) => (
-                          <TableRow
-                            key={player.id}
-                            className={`${player.isCurrentUser ? "bg-green-100" : ""} cursor-pointer hover:bg-gray-50`}
-                            onClick={() => handlePlayerClick(player.id)}
-                          >
-                            <TableCell className="font-medium">{index + 1}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center space-x-3">
-                                <div className="relative">
-                                  <Image
-                                    src={player.photo || "/placeholder.svg"}
-                                    alt={player.name}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full"
-                                  />
-                                  {player.isCurrentUser && (
-                                    <div className="absolute -top-1 -right-1 bg-green-500 rounded-full w-4 h-4 border-2 border-white"></div>
-                                  )}
-                                </div>
-                                <span className={player.isCurrentUser ? "font-semibold" : ""}>{player.name}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">{player.utr}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                  <CardContent className="p-0">
+                    {loadingUsers ? (
+                      <div className="flex justify-center items-center py-4">
+                        Loading...
+                      </div>
+                    ) : error ? (
+                      <div className="flex justify-center items-center py-4 text-red-500">
+                        {error}
+                      </div>
+                    ) : filteredUsers.length === 0 ? (
+                      <div className="flex justify-center items-center py-4">
+                        No hay jugadores en esta categoría
+                      </div>
+                    ) : (
+                      <ScrollArea className="w-full overflow-x-auto" type="always">
+                        <div className="min-w-[450px] px-4">
+                          <Table>
+                            <TableHeader className="bg-white">
+                              <TableRow>
+                                <TableCell className="sticky left-4 z-20 bg-white w-10 px-3">#</TableCell>
+                                <TableCell className="sticky left-[3.5rem] z-20 bg-white w-[120px] px-3">Jugador</TableCell>
+                                <TableCell className="text-right w-20 px-3">UTR</TableCell>
+                                <TableCell className="text-right w-24 px-3">Puntos</TableCell>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {filteredUsers
+                                .sort((a, b) => (b.points || 0) - (a.points || 0))
+                                .map((user, index) => (
+                                  <TableRow
+                                    key={user.id}
+                                    className={`${
+                                      user.id === currentUser.id ? "bg-green-100" : ""
+                                    } cursor-pointer hover:bg-gray-50`}
+                                    onClick={() => handlePlayerClick(user.id)}
+                                  >
+                                    <TableCell className="sticky left-4 z-20 bg-inherit w-10 px-3">
+                                      {index + 1}
+                                    </TableCell>
+                                    <TableCell className="sticky left-[3.5rem] z-20 bg-inherit w-[120px] px-3">
+                                      <div className="flex items-center gap-2">
+                                        <div className="relative flex-shrink-0">
+                                          <Image
+                                            src={user.photo || "/placeholder.svg"}
+                                            alt={user.name}
+                                            width={28}
+                                            height={28}
+                                            className="rounded-full w-7 h-7 object-cover"
+                                          />
+                                          {user.id === currentUser.id && (
+                                            <div className="absolute -top-1 -right-1 bg-green-500 rounded-full w-2.5 h-2.5 border-2 border-white"></div>
+                                          )}
+                                        </div>
+                                        <span
+                                          className={`${
+                                            user.id === currentUser.id
+                                              ? "font-semibold"
+                                              : ""
+                                          } truncate text-sm`}
+                                        >
+                                          {user.name}
+                                        </span>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell className="text-right w-20 px-3 text-sm">
+                                      {user.utr}
+                                    </TableCell>
+                                    <TableCell className="text-right w-24 px-3 text-sm">
+                                      {user.points || 0}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                        <ScrollBar orientation="horizontal" />
+                      </ScrollArea>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -271,6 +333,5 @@ export default function RankingPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-
