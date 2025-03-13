@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, Bell } from "lucide-react"
+import { Search, X, Bell } from "lucide-react"
 
 interface HeaderProps {
   title?: string
@@ -48,15 +48,21 @@ export default function Header({
                 placeholder="Buscar jugador..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery?.(e.target.value)}
-                className={`transition-all duration-300 ${isSearching ? "w-full md:w-96" : "w-0 p-0 border-0"}`}
+                className={`transition-all duration-300 bg-[#1e4a3f]/50 border-[#1e4a3f] text-white placeholder:text-gray-300 focus:border-[#1e4a3f] focus:ring-1 focus:ring-[#1e4a3f] ${
+                  isSearching ? "w-full md:w-96" : "w-0 p-0 border-0"
+                }`}
               />
               <Button
                 onClick={onSearchToggle}
                 variant="outline"
                 size="icon"
-                className="bg-[#245A4C] text-white hover:bg-[#1e4a3f] hover:text-white"
+                className="bg-[#1e4a3f] border-[#1e4a3f] text-white hover:bg-[#183b32] hover:text-white hover:border-[#183b32] transition-colors"
               >
-                <Search className="h-4 w-4" />
+                {isSearching ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
               </Button>
             </>
           )}
@@ -70,4 +76,3 @@ export default function Header({
     </header>
   )
 }
-

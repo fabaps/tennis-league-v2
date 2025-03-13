@@ -8,8 +8,6 @@ export interface User {
   photo: string;
   utr: number;
   phone: string;
-  role: string;
-  points: number;
 }
 
 interface UserStoreType {
