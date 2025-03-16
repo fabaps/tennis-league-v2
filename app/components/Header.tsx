@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, X, Bell } from "lucide-react"
+import { useAuthStore } from "@/store/useAuth"
 
 interface HeaderProps {
   title?: string
@@ -25,6 +26,9 @@ export default function Header({
   className = "bg-[#245A4C]",
   isHomePage = false,
 }: HeaderProps) {
+  const { getCurrentUser, logout } = useAuthStore()
+  const user = getCurrentUser()
+
   return (
     <header className={`shadow-sm fixed top-0 left-0 right-0 z-10 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -65,6 +69,21 @@ export default function Header({
                 )}
               </Button>
             </>
+          )}
+          {user ? (
+            <Button
+              variant="outline"
+              onClick={() => logout()}
+              className="text-red-600 hover:text-red-700"
+            >
+              Cerrar sesión
+            </Button>
+          ) : (
+            <Link href="/registro">
+              <Button variant="outline" className="text-green-600 hover:text-green-700">
+                Registrarse
+              </Button>
+            </Link>
           )}
           {isHomePage && (
             <Button variant="ghost" size="icon" className="text-white hover:bg-[#1e4a3f] hover:text-white">

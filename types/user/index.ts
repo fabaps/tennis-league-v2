@@ -1,19 +1,20 @@
 // Tipo base para usuarios autenticados
 export interface User {
-  uid: string;
+  id: string;
   name: string;
+  photo?: string;
+  utr: number;
+  phone: string;
+  role: string;
+  points: number;
+  firstName?: string;
   lastName?: string;
-  email: string;
-  provider: string;
-  phone: string | null;
-  picture: string | null;
+  email?: string;
   gender?: string;
   ranking?: string;
   category?: string;
-  location?: {
-    department: string;
-    address: string;
-  };
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // Tipo para usuarios en el ranking

@@ -20,14 +20,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import VerificationStep from "./verification-step";
 import PersonalInfoStep from "./personal-info-step";
 import RankingQuestions from "./ranking-questions";
-import { TennisRacketIcon, TennisBallIcon } from "../components/icons";
-import { saveNewUser } from "@/services/user";
+import { useAuthStore } from "@/store/useAuth";
+import { createOrUpdateUser, getUserById } from "@/firebase/users";
 
 type Step = "phone" | "verification" | "personal-info" | "questions" | "result";
 
 export default function AuthPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { sendOTP, verifyOTP, loading, error, setPhoneNumber, getCurrentUser } = useAuthStore();
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<Step>("phone");
   const [ranking, setRanking] = useState(0);
@@ -39,19 +39,52 @@ export default function AuthPage() {
     gender: "",
   });
 
+  const formatPhoneNumber = (phone: string) => {
+    const cleaned = phone.replace(/\D/g, '');
+    if (cleaned.startsWith('502')) {
+      return `+${cleaned}`;
+    }
+    return `+502${cleaned}`;
+  };
+
   const handlePhoneSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
-    setStep("verification");
+    try {
+      const formattedPhone = formatPhoneNumber(phone);
+      console.log('Enviando OTP a:', formattedPhone);
+      setPhoneNumber(formattedPhone);
+      await sendOTP(formattedPhone);
+      setStep("verification");
+    } catch (error) {
+      console.error("Error al enviar OTP:", error);
+    }
   };
 
   const handleVerificationSubmit = async (code: string) => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
-    setStep("personal-info");
+    try {
+      await verifyOTP(code);
+      const user = getCurrentUser();
+      if (!user) {
+        throw new Error("No se pudo obtener el usuario actual");
+      }
+
+      const userData = await getUserById(user.uid);
+      if (userData && userData.firstName && userData.lastName) {
+        setPersonalInfo({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email || "",
+          gender: userData.gender || "",
+        });
+        setRanking(Number(userData.ranking) || 0);
+        setCategory(userData.category || "");
+        setStep("result");
+      } else {
+        setStep("personal-info");
+      }
+    } catch (error) {
+      console.error("Error al verificar OTP:", error);
+    }
   };
 
   const handlePersonalInfoSubmit = (data: {
@@ -64,18 +97,27 @@ export default function AuthPage() {
     setStep("questions");
   };
 
-  const handleRankingSubmit = (
+  const handleRankingSubmit = async (
     calculatedRanking: number,
     calculatedCategory: string
   ) => {
     setRanking(calculatedRanking);
     setCategory(calculatedCategory);
-    saveNewUser({
+
+    const user = getCurrentUser();
+    if (!user) {
+      console.error("No se pudo obtener el usuario actual");
+      return;
+    }
+
+    await createOrUpdateUser(user.uid, {
       ...personalInfo,
-      phone,
+      phone: formatPhoneNumber(phone),
       ranking: calculatedRanking.toString(),
       category: calculatedCategory,
+      name: `${personalInfo.firstName} ${personalInfo.lastName}`,
     });
+
     setStep("result");
   };
 
@@ -176,22 +218,32 @@ export default function AuthPage() {
                           inputClass="!w-full !h-[42px] !text-base !pl-[52px] border border-gray-200 rounded-md focus:border-green-500 focus:ring-1 focus:ring-green-500"
                           buttonClass="!w-[42px] !h-[42px] !border-r-0 !border-gray-200 hover:!bg-gray-50"
                           dropdownClass="!bg-white"
+                          disableDropdown
+                          enableSearch={false}
+                          countryCodeEditable={false}
                         />
+                        <p className="text-sm text-gray-500 mt-1">
+                          Ingresa tu número sin guiones ni espacios
+                        </p>
                       </div>
+                      {error && (
+                        <p className="text-red-500 text-sm mt-2">{error}</p>
+                      )}
+                      <div id="sign-in-button" />
                       <Button
                         type="submit"
                         className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        disabled={isLoading}
+                        disabled={loading}
                       >
-                        {isLoading ? "Enviando..." : "Continuar"}
+                        {loading ? "Enviando..." : "Continuar"}
                       </Button>
                     </form>
                   )}
                   {step === "verification" && (
                     <VerificationStep
                       onSubmit={handleVerificationSubmit}
-                      onResend={() => console.log("Reenviando código...")}
-                      isLoading={isLoading}
+                      onResend={() => sendOTP(formatPhoneNumber(phone))}
+                      isLoading={loading}
                     />
                   )}
                   {step === "personal-info" && (
@@ -201,44 +253,16 @@ export default function AuthPage() {
                     <RankingQuestions onSubmit={handleRankingSubmit} />
                   )}
                   {step === "result" && (
-                    <div className="text-center space-y-8">
-                      <div className="bg-green-50 rounded-xl p-6 shadow-inner">
-                        <p className="text-5xl font-bold text-green-600 mb-2">
-                          {ranking.toFixed(2)}
-                        </p>
-                        <p className="text-lg text-green-700 font-medium">
-                          puntos
-                        </p>
+                    <div className="text-center py-8">
+                      <div className="mb-4">
+                        <div className="text-4xl font-bold text-green-600">
+                          {ranking}
+                        </div>
+                        <div className="text-xl text-gray-600">{category}</div>
                       </div>
-                      <div className="bg-green-50 rounded-xl p-6 shadow-inner">
-                        <p className="text-3xl font-bold text-green-700 mb-2">
-                          Categoría
-                        </p>
-                        <p className="text-4xl font-extrabold text-green-600">
-                          {category}
-                        </p>
-                      </div>
-                      <div className="flex justify-center items-center space-x-6 pt-4">
-                        {[0, 1, 2].map((i) => (
-                          <motion.div
-                            key={i}
-                            animate={{
-                              y: [0, -12, 0],
-                            }}
-                            transition={{
-                              duration: 1.2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              delay: i * 0.2,
-                            }}
-                          >
-                            {i % 2 === 0 ? (
-                              <TennisRacketIcon className="w-16 h-16 text-green-600" />
-                            ) : (
-                              <TennisBallIcon className="w-12 h-12 text-green-600" />
-                            )}
-                          </motion.div>
-                        ))}
-                      </div>
+                      <p className="text-gray-500">
+                        Redirigiendo al ranking en unos segundos...
+                      </p>
                     </div>
                   )}
                 </motion.div>
