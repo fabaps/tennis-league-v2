@@ -29,13 +29,13 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           <div className="text-center">
             <p className="text-sm text-gray-500">Posición en categoría</p>
             <p className="text-2xl font-bold text-green-600">
-              #{user.categoryRank}
+              #0
             </p>
           </div>
           <div className="text-center">
             <p className="text-sm text-gray-500">Posición general</p>
             <p className="text-2xl font-bold text-green-600">
-              #{user.overallRank}
+              #0
             </p>
           </div>
         </div>

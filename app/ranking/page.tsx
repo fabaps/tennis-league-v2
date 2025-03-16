@@ -4,27 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import { RankingTable } from "./components/RankingTable";
 import { CategorySelector } from "./components/CategorySelector";
 import { UserProfileCard } from "./components/UserProfileCard";
 import { CATEGORIES, getCategoriesArray, getCategory } from "./utils/categories";
-import Image from "next/image";
 import { useUsersStore } from "@/store/useUsers";
 import Header from "../components/Header";
 import { RankingData } from "./utils/types";
-
-// Mock del usuario actual mientras se implementa la funcionalidad real
-const currentUser: RankingData = {
-  id: "1",
-  name: "Juan Pérez",
-  photo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp",
-  category: "A",
-  // categoryRank: 8,
-  // overallRank: 8,
-  utr: 9.5,
-  // isCurrentUser: true
-};
+import { useAuthStore } from "@/store/useAuth";
 
 export default function RankingPage() {
   const router = useRouter();
@@ -34,6 +21,7 @@ export default function RankingPage() {
     fetchUsers,
     users,
   } = useUsersStore((state) => state);
+  const { currentUser, fetchCurrentUserData } = useAuthStore((state) => state);
   const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,8 +34,9 @@ export default function RankingPage() {
   useEffect(() => {
     if (mounted) {
       fetchUsers();
+      fetchCurrentUserData();
     }
-  }, [fetchUsers, mounted]);
+  }, [fetchUsers, fetchCurrentUserData, mounted]);
 
   const handleSearchToggle = () => {
     setIsSearching(!isSearching);
@@ -60,16 +49,12 @@ export default function RankingPage() {
     router.push(`/profile?id=${playerId}`);
   };
 
-  // Mock data temporal mientras se implementa la funcionalidad real
   const rankingUsers: RankingData[] = users.map(user => ({
     id: user.id,
     name: user.name,
     photo: user.photo,
     category: getCategory(user),
-    // categoryRank: 0,
-    // overallRank: 0,
     utr: user.utr,
-    // isCurrentUser: false
   }));
 
   const filteredUsers = rankingUsers.filter(
@@ -116,7 +101,7 @@ export default function RankingPage() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-1"
             >
-              <UserProfileCard user={currentUser} />
+              {currentUser && <UserProfileCard user={currentUser} />}
               <CategorySelector
                 categories={getCategoriesArray()}
                 activeCategory={activeCategory}
