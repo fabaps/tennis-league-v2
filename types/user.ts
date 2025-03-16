@@ -8,6 +8,7 @@ export interface AuthUser {
   gender: string;
   lastName: string;
   firstName: string;
+  role: string;
 }
 
 // Tipo para usuarios en el ranking
@@ -15,10 +16,10 @@ export interface RankingUser {
   id: string;
   name: string;
   photo?: string;
-  ranking: string;
+  // ranking: string;
   category: string;
-  categoryRank: number;
-  overallRank: number;
+  // categoryRank: number;
+  // overallRank: number;
   utr: number;
   isCurrentUser?: boolean;
 }

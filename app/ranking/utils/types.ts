@@ -4,8 +4,8 @@ export interface RankingData {
   name: string;
   photo?: string;
   category: string;
-  categoryRank: number;
-  overallRank: number;
+  // categoryRank: number;
+  // overallRank: number;
   utr: number;
-  isCurrentUser?: boolean;
+  // isCurrentUser?: boolean;
 }

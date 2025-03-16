@@ -29,7 +29,7 @@ export async function getAllUsers(): Promise<User[]> {
         utr: Number(userData.utr) || 0,
         phone: userData.phone || '',
         role: userData.role || 'user',
-        points: Number(userData.points) || 0
+        category: userData.category || 'A'
       });
     });
 
@@ -54,12 +54,12 @@ export async function getUserById(userId: string): Promise<User | null> {
       utr: Number(userData.utr) || 0,
       phone: userData.phone || '',
       role: userData.role || 'user',
-      points: Number(userData.points) || 0,
+      // points: Number(userData.points) || 0,
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
       gender: userData.gender,
-      ranking: userData.ranking,
+      // ranking: userData.ranking,
       category: userData.category
     };
   } catch (error) {

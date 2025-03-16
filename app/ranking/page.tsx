@@ -20,10 +20,10 @@ const currentUser: RankingData = {
   name: "Juan Pérez",
   photo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp",
   category: "A",
-  categoryRank: 8,
-  overallRank: 8,
+  // categoryRank: 8,
+  // overallRank: 8,
   utr: 9.5,
-  isCurrentUser: true
+  // isCurrentUser: true
 };
 
 export default function RankingPage() {
@@ -66,10 +66,10 @@ export default function RankingPage() {
     name: user.name,
     photo: user.photo,
     category: getCategory(user),
-    categoryRank: 0,
-    overallRank: 0,
+    // categoryRank: 0,
+    // overallRank: 0,
     utr: user.utr,
-    isCurrentUser: false
+    // isCurrentUser: false
   }));
 
   const filteredUsers = rankingUsers.filter(
