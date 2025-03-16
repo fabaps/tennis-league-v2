@@ -125,7 +125,7 @@ export default function AuthPage() {
     if (step === "result") {
       const timer = setTimeout(() => {
         router.push(`/ranking?ranking=${ranking}&category=${category}`);
-      }, 5000);
+      }, 0);
       return () => clearTimeout(timer);
     }
   }, [step, ranking, category, router]);
@@ -184,7 +184,7 @@ export default function AuthPage() {
                 {step === "personal-info" && "Completa tus datos personales"}
                 {step === "questions" &&
                   "Cuéntanos sobre tu experiencia en tenis"}
-                {step === "result" && "¡Tu ranking está listo!"}
+                {/* {step === "result" && "¡Tu ranking está listo!"} */}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -197,7 +197,7 @@ export default function AuthPage() {
                   transition={{ duration: 0.3 }}
                 >
                   {step === "phone" && (
-                    <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                    <form onSubmit={handlePhoneSubmit} className="space-y-4 px-4">
                       <div>
                         <Label
                           htmlFor="phone"
@@ -240,11 +240,13 @@ export default function AuthPage() {
                     </form>
                   )}
                   {step === "verification" && (
-                    <VerificationStep
-                      onSubmit={handleVerificationSubmit}
-                      onResend={() => sendOTP(formatPhoneNumber(phone))}
-                      isLoading={loading}
-                    />
+                    <div className="p-4">
+                      <VerificationStep
+                        onSubmit={handleVerificationSubmit}
+                        onResend={() => sendOTP(formatPhoneNumber(phone))}
+                        isLoading={loading}
+                      />
+                    </div>
                   )}
                   {step === "personal-info" && (
                     <PersonalInfoStep onSubmit={handlePersonalInfoSubmit} />

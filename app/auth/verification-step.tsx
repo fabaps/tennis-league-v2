@@ -84,7 +84,7 @@ export default function VerificationStep({ onSubmit, onResend, isLoading }: Veri
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={handlePaste}
             ref={(el) => (inputRefs.current[index] = el)}
-            className="w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none bg-white/50"
+            className="w-8 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none bg-white/50"
             disabled={isLoading}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
