@@ -7,7 +7,7 @@ import { UserAvatar } from "@/components/ui/user-avatar";
 
 export default function PerfilPage() {
   const router = useRouter();
-  const { currentUser, isAuthenticated, loading } = useAuthStore(
+  const { currentUser, isAuthenticated, loading, logout } = useAuthStore(
     (state) => state
   );
 
@@ -83,6 +83,15 @@ export default function PerfilPage() {
               className="mt-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
             >
               Editar Perfil
+            </Button>
+          </div>
+          <div className="flex justify-center  items-center">
+            <Button
+              variant="outline"
+              onClick={() => logout()}
+              className="mt-2 bg-red-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              Cerrar sesión
             </Button>
           </div>
         </div>

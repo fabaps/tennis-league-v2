@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import Header from "../../components/Header"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Camera } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Header from "../../components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Camera } from "lucide-react";
+import { useAuthStore } from "@/store/useAuth";
 
 // Datos de ejemplo (en una aplicación real, estos datos vendrían de una API o base de datos)
 const userData = {
@@ -21,33 +22,36 @@ const userData = {
   gender: "Masculino",
   profilePic:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp",
-}
+};
 
 export default function EditProfilePage() {
-  const router = useRouter()
-  const [formData, setFormData] = useState(userData)
+  const router = useRouter();
+
+  const { currentUser } = useAuthStore((state) => state);
+
+  const [formData, setFormData] = useState(currentUser);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Aquí iría la lógica para guardar los cambios
-    console.log("Datos actualizados:", formData)
+    console.log("Datos actualizados:", formData);
     // Redirigir al perfil después de guardar
-    router.push("/perfil")
-  }
+    router.push("/perfil");
+  };
 
   const handlePhotoChange = () => {
     // Aquí iría la lógica para cambiar la foto
     // Por ahora, solo mostraremos un mensaje en la consola
-    console.log("Cambiar foto")
-  }
+    console.log("Cambiar foto");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -56,7 +60,9 @@ export default function EditProfilePage() {
         <div className="max-w-md mx-auto">
           <Card className="bg-white shadow-md rounded-xl overflow-hidden">
             <CardHeader className="bg-green-500 text-white py-4">
-              <CardTitle className="text-2xl font-bold text-center">Editar Perfil</CardTitle>
+              <CardTitle className="text-2xl font-bold text-center">
+                Editar Perfil
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -82,7 +88,13 @@ export default function EditProfilePage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="name">Nombre</Label>
-                  <Input id="name" name="name" value={formData.name} onChange={handleInputChange} required />
+                  <Input
+                    id="name"
+                    name="name"
+                    value={formData?.firstName}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -110,12 +122,24 @@ export default function EditProfilePage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="phone">Número de Teléfono</Label>
-                  <Input id="phone" name="phone" value={formData.phone} disabled className="bg-gray-100" />
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    disabled
+                    className="bg-gray-100"
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="gender">Género</Label>
-                  <Input id="gender" name="gender" value={formData.gender} disabled className="bg-gray-100" />
+                  <Input
+                    id="gender"
+                    name="gender"
+                    value={formData.gender}
+                    disabled
+                    className="bg-gray-100"
+                  />
                 </div>
 
                 <Button
@@ -130,6 +154,5 @@ export default function EditProfilePage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-
