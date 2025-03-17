@@ -175,16 +175,13 @@ export default function AuthPage() {
           <Card className="backdrop-blur-sm bg-white/95 shadow-xl overflow-hidden">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                {step === "questions"
-                  ? "Experiencia en Tenis"
-                  : "Bienvenido a la GTL"}
+                {step !== "questions" && "Bienvenido a la GTL"}
               </CardTitle>
               <CardDescription>
                 {step === "phone" && "Ingresa tu número para comenzar"}
                 {step === "verification" && "Ingresa el código de verificación"}
                 {step === "personal-info" && "Completa tus datos personales"}
-                {step === "questions" &&
-                  "Cuéntanos sobre tu experiencia en tenis"}
+                {/* {step === "questions" && "Cuéntanos sobre tu experiencia en tenis"} */}
                 {/* {step === "result" && "¡Tu ranking está listo!"} */}
               </CardDescription>
             </CardHeader>
