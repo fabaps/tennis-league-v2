@@ -16,6 +16,7 @@ import { useUsersStore } from "@/store/useUsers";
 import Header from "../components/Header";
 import { RankingData } from "./utils/types";
 import { useAuthStore } from "@/store/useAuth";
+import { calculateRankingByUTR } from "@/utils/ranking";
 
 export default function RankingPage() {
   const router = useRouter();
@@ -64,6 +65,9 @@ export default function RankingPage() {
   const filteredUsers = rankingUsers.filter(
     (user) => user.category === activeCategory
   );
+  const usersInCategory = rankingUsers.filter(
+    (user) => user.category === getCategory({ utr: currentUser?.utr || 0 })
+  );
 
   return (
     <div className="bg-gray-50">
@@ -107,7 +111,15 @@ export default function RankingPage() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-1"
             >
-              {currentUser && <UserProfileCard user={currentUser} />}
+              {currentUser && (
+                <UserProfileCard
+                  user={currentUser}
+                  userCategoryRank={calculateRankingByUTR(
+                    currentUser.utr,
+                    usersInCategory
+                  )}
+                />
+              )}
               <CategorySelector
                 categories={getCategoriesArray()}
                 activeCategory={activeCategory}

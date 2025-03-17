@@ -1,14 +1,21 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { RankingData } from "../utils/types";
+import { calculateRankingByUTR } from "@/utils/ranking";
+import { useUsersStore } from "@/store/useUsers";
 
 interface UserProfileCardProps {
   user: RankingData;
+  userCategoryRank: string;
 }
 
-export function UserProfileCard({ user }: UserProfileCardProps) {
+export function UserProfileCard({
+  user,
+  userCategoryRank = "0",
+}: UserProfileCardProps) {
+  const { users } = useUsersStore((state) => state);
   return (
     <Card className="mb-6 bg-white shadow-md rounded-xl overflow-hidden">
       <CardContent className="p-4">
@@ -29,13 +36,13 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           <div className="text-center">
             <p className="text-sm text-gray-500">Posición en categoría</p>
             <p className="text-2xl font-bold text-green-600">
-              #0
+              #{userCategoryRank}
             </p>
           </div>
           <div className="text-center">
             <p className="text-sm text-gray-500">Posición general</p>
             <p className="text-2xl font-bold text-green-600">
-              #0
+              #{calculateRankingByUTR(user?.utr || "0", users)}
             </p>
           </div>
         </div>
