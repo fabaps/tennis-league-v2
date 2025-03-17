@@ -16,7 +16,7 @@ interface RankingTableProps {
   onPlayerClick: (id: string) => void;
 }
 
-const truncateName = (name: string, maxLength: number = 20) => {
+const truncateName = (name: string, maxLength: number = 15) => {
   if (name.length <= maxLength) return name;
   return `${name.substring(0, maxLength)}...`;
 };

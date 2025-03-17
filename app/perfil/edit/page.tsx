@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Camera } from "lucide-react";
 import { useAuthStore } from "@/store/useAuth";
 import { createOrUpdateUser, uploadUserPhoto } from "@/firebase/users";
 import { useToast } from "@/components/ui/use-toast";
@@ -25,6 +24,14 @@ export default function EditProfilePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
   const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData(currentUser);
+    } else {
+      fetchCurrentUserData();
+    }
+  }, [currentUser, fetchCurrentUserData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -98,23 +105,37 @@ export default function EditProfilePage() {
       <main className="flex-grow py-16 px-4">
         <div className="max-w-md mx-auto">
           <Card className="bg-white shadow-md rounded-xl overflow-hidden">
-            <CardHeader className="bg-green-500 text-white py-4">
-              <CardTitle className="text-2xl font-bold text-center">
-                Editar Perfil
-              </CardTitle>
-            </CardHeader>
             <CardContent className="p-6">
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="text-center">
-                  <div className="relative w-32 h-32 mx-auto mb-4">
-                    <Image
-                      src={photoPreviewUrl || formData?.photo || "/placeholder.svg"}
-                      alt={formData?.name || ""}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-full"
-                    />
-                  </div>
+                <div className="relative flex items-center justify-center">
+                  <Image
+                    src={photoPreviewUrl || formData?.photo || "/placeholder.svg"}
+                    alt={formData?.name || ""}
+                    width={128}
+                    height={128}
+                    className="w-32 h-32 rounded-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    className="absolute -bottom-4 right-10 mb-2 mr-2 h-10 w-10 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center transition duration-300 ease-in-out"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-camera"
+                    >
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                      <circle cx="12" cy="13" r="3" />
+                    </svg>
+                  </button>
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -122,14 +143,6 @@ export default function EditProfilePage() {
                     onChange={handlePhotoSelect}
                     className="hidden"
                   />
-                  <Button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
-                  >
-                    <Camera className="mr-2 h-4 w-4" />
-                    Seleccionar Foto
-                  </Button>
                 </div>
 
                 <div className="space-y-2">
