@@ -7,7 +7,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RankingTable } from "./components/RankingTable";
 import { CategorySelector } from "./components/CategorySelector";
 import { UserProfileCard } from "./components/UserProfileCard";
-import { CATEGORIES, getCategoriesArray, getCategory } from "./utils/categories";
+import {
+  CATEGORIES,
+  getCategoriesArray,
+  getCategory,
+} from "./utils/categories";
 import { useUsersStore } from "@/store/useUsers";
 import Header from "../components/Header";
 import { RankingData } from "./utils/types";
@@ -49,7 +53,7 @@ export default function RankingPage() {
     router.push(`/profile?id=${playerId}`);
   };
 
-  const rankingUsers: RankingData[] = users.map(user => ({
+  const rankingUsers: RankingData[] = users.map((user) => ({
     id: user.id,
     name: user.name,
     photo: user.photo,
@@ -63,7 +67,7 @@ export default function RankingPage() {
 
   return (
     <div className="bg-gray-50">
-      <Header 
+      <Header
         title="Ranking"
         showSearch={true}
         onSearchToggle={handleSearchToggle}
@@ -84,8 +88,10 @@ export default function RankingPage() {
               <Card>
                 <CardContent className="p-2">
                   <RankingTable
-                    users={rankingUsers.filter(player =>
-                      player.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    users={rankingUsers.filter((player) =>
+                      player.name
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
                     )}
                     currentUser={currentUser}
                     onPlayerClick={handlePlayerClick}
@@ -115,7 +121,9 @@ export default function RankingPage() {
                     </div>
                   ) : error ? (
                     <div className="py-1">
-                      <p className="text-red-500 text-center">Error al cargar jugadores</p>
+                      <p className="text-red-500 text-center">
+                        Error al cargar jugadores
+                      </p>
                     </div>
                   ) : (
                     <RankingTable

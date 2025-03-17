@@ -21,13 +21,14 @@ import VerificationStep from "./verification-step";
 import PersonalInfoStep from "./personal-info-step";
 import RankingQuestions from "./ranking-questions";
 import { useAuthStore } from "@/store/useAuth";
-import { createOrUpdateUser, getUserById } from "@/firebase/users";
+import { createOrUpdateUser, getUserById, User } from "@/firebase/users";
 
 type Step = "phone" | "verification" | "personal-info" | "questions" | "result";
 
 export default function AuthPage() {
   const router = useRouter();
-  const { sendOTP, verifyOTP, loading, error, setPhoneNumber, getCurrentUser } = useAuthStore();
+  const { sendOTP, verifyOTP, loading, error, setPhoneNumber, getCurrentUser } =
+    useAuthStore();
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<Step>("phone");
   const [ranking, setRanking] = useState(0);
@@ -40,8 +41,8 @@ export default function AuthPage() {
   });
 
   const formatPhoneNumber = (phone: string) => {
-    const cleaned = phone.replace(/\D/g, '');
-    if (cleaned.startsWith('502')) {
+    const cleaned = phone.replace(/\D/g, "");
+    if (cleaned.startsWith("502")) {
       return `+${cleaned}`;
     }
     return `+502${cleaned}`;
@@ -51,7 +52,7 @@ export default function AuthPage() {
     event.preventDefault();
     try {
       const formattedPhone = formatPhoneNumber(phone);
-      console.log('Enviando OTP a:', formattedPhone);
+      console.log("Enviando OTP a:", formattedPhone);
       setPhoneNumber(formattedPhone);
       await sendOTP(formattedPhone);
       setStep("verification");
@@ -76,7 +77,7 @@ export default function AuthPage() {
           email: userData.email || "",
           gender: userData.gender || "",
         });
-        setRanking(Number(userData.ranking) || 0);
+        setRanking(Number(userData.utr) || 0);
         setCategory(userData.category || "");
         setStep("result");
       } else {
@@ -113,7 +114,7 @@ export default function AuthPage() {
     await createOrUpdateUser(user.uid, {
       ...personalInfo,
       phone: formatPhoneNumber(phone),
-      ranking: calculatedRanking.toString(),
+      utr: calculatedRanking.toString(),
       category: calculatedCategory,
       name: `${personalInfo.firstName} ${personalInfo.lastName}`,
     });
@@ -132,7 +133,7 @@ export default function AuthPage() {
 
   const getBackgroundClass = () => {
     if (step === "phone") {
-      return "bg-black bg-opacity-50";
+      return "bg-black bg-opacity-70";
     }
     return "bg-gradient-to-br from-green-400 via-green-500 to-green-600";
   };
@@ -197,7 +198,10 @@ export default function AuthPage() {
                   transition={{ duration: 0.3 }}
                 >
                   {step === "phone" && (
-                    <form onSubmit={handlePhoneSubmit} className="space-y-4 px-4">
+                    <form
+                      onSubmit={handlePhoneSubmit}
+                      className="space-y-4 px-4"
+                    >
                       <div>
                         <Label
                           htmlFor="phone"

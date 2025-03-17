@@ -79,7 +79,7 @@ export async function createOrUpdateUser(userId: string, userData: Partial<User>
         ...userData,
         role: 'user',
         points: 0,
-        utr: 0,
+        ranking: 0,
         createdAt: new Date().toISOString()
       });
     } else {

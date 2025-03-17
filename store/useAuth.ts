@@ -14,7 +14,11 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   phoneNumber: string | null;
-  currentUser: RankingData | null;
+  currentUser: (RankingData & { 
+    firstName: string;
+    lastName: string;
+  }) | null;
+  isAuthenticated: boolean;
   getCurrentUser: () => any;
   getPersonalInfo: (id: string) => Promise<User | null>;
   fetchCurrentUserData: () => Promise<void>;
@@ -30,6 +34,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   error: null,
   phoneNumber: null,
   currentUser: null,
+  isAuthenticated: false,
   getCurrentUser: getCurrentUserFirebase,
   setPhoneNumber: (phone) => set({ phoneNumber: phone }),
   getPersonalInfo: async (id: string) => {
@@ -42,24 +47,45 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
   fetchCurrentUserData: async () => {
     const firebaseUser = getCurrentUserFirebase();
-    if (firebaseUser?.uid) {
-      try {
-        const userData = await getUserById(firebaseUser.uid);
-        if (userData) {
-          set({
-            currentUser: {
-              id: userData.id,
-              name: userData.name,
-              photo: userData.photo || "",
-              category: getCategory(userData),
-              utr: userData.utr,
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching current user data:", error);
-        set({ error: "Error al obtener datos del usuario" });
+    if (!firebaseUser?.uid) {
+      set({ isAuthenticated: false, currentUser: null });
+      return;
+    }
+
+    set({ loading: true, error: null });
+    try {
+      const userData = await getUserById(firebaseUser.uid);
+      if (userData) {
+        set({
+          currentUser: {
+            id: userData.id,
+            name: userData.name,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            photo: userData.photo || "",
+            category: getCategory(userData),
+            utr: userData.utr,
+          },
+          isAuthenticated: true,
+          loading: false,
+          error: null
+        });
+      } else {
+        set({ 
+          loading: false, 
+          error: "No se encontraron datos del usuario",
+          isAuthenticated: true,
+          currentUser: null
+        });
       }
+    } catch (error) {
+      console.error("Error fetching current user data:", error);
+      set({ 
+        loading: false, 
+        error: "Error al obtener datos del usuario",
+        currentUser: null,
+        isAuthenticated: true
+      });
     }
   },
   sendOTP: async (phone) => {
@@ -80,6 +106,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const result = await verifyOTPFirebase(code);
+      if (result) {
+        await get().fetchCurrentUserData();
+      }
       set({ loading: false });
       return result;
     } catch (error: any) {
@@ -94,7 +123,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const result = await logoutUserFirebase();
-      set({ loading: false, phoneNumber: null, currentUser: null });
+      set({ 
+        loading: false, 
+        phoneNumber: null, 
+        currentUser: null,
+        isAuthenticated: false,
+        error: null
+      });
       return result;
     } catch (error: any) {
       set({ 
