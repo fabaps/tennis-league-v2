@@ -12,6 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Camera } from "lucide-react";
 import { useAuthStore } from "@/store/useAuth";
+import { createOrUpdateUser } from "@/firebase/users";
+import { useToast } from "@/components/ui/use-toast";
+import { User } from "@/types/user";
 
 // Datos de ejemplo (en una aplicación real, estos datos vendrían de una API o base de datos)
 const userData = {
@@ -20,31 +23,64 @@ const userData = {
   email: "juan.perez@example.com",
   phone: "+50212345678",
   gender: "Masculino",
-  profilePic:
+  photo:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp",
 };
 
 export default function EditProfilePage() {
   const router = useRouter();
+  const { toast } = useToast();
+  const { currentUser, fetchCurrentUserData } = useAuthStore((state) => state);
 
-  const { currentUser } = useAuthStore((state) => state);
-
-  const [formData, setFormData] = useState(currentUser);
+  const [formData, setFormData] = useState<User | null>(currentUser);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData((prevState) => {
+      if (!prevState) return null;
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la lógica para guardar los cambios
-    console.log("Datos actualizados:", formData);
-    // Redirigir al perfil después de guardar
-    router.push("/perfil");
+    if (!currentUser?.id || !formData) return;
+
+    setIsLoading(true);
+    try {
+      const success = await createOrUpdateUser(currentUser.id, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        name: `${formData.firstName} ${formData.lastName}`,
+      });
+
+      if (success) {
+        // Actualizar el store con los nuevos datos
+        await fetchCurrentUserData();
+        
+        toast({
+          title: "Perfil actualizado",
+          description: "Los cambios se han guardado correctamente",
+        });
+        router.push("/perfil");
+      } else {
+        throw new Error("No se pudo actualizar el perfil");
+      }
+    } catch (error) {
+      console.error("Error al actualizar perfil:", error);
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar el perfil. Por favor intenta de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePhotoChange = () => {
@@ -69,8 +105,8 @@ export default function EditProfilePage() {
                 <div className="text-center">
                   <div className="relative w-32 h-32 mx-auto mb-4">
                     <Image
-                      src={formData.profilePic || "/placeholder.svg"}
-                      alt={formData.name}
+                      src={formData?.photo || "/placeholder.svg"}
+                      alt={formData?.name || ""}
                       layout="fill"
                       objectFit="cover"
                       className="rounded-full"
@@ -87,11 +123,11 @@ export default function EditProfilePage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="name">Nombre</Label>
+                  <Label htmlFor="firstName">Nombre</Label>
                   <Input
-                    id="name"
-                    name="name"
-                    value={formData?.firstName}
+                    id="firstName"
+                    name="firstName"
+                    value={formData?.firstName || ""}
                     onChange={handleInputChange}
                     required
                   />
@@ -102,7 +138,7 @@ export default function EditProfilePage() {
                   <Input
                     id="lastName"
                     name="lastName"
-                    value={formData.lastName}
+                    value={formData?.lastName || ""}
                     onChange={handleInputChange}
                     required
                   />
@@ -114,7 +150,7 @@ export default function EditProfilePage() {
                     id="email"
                     name="email"
                     type="email"
-                    value={formData.email}
+                    value={formData?.email || ""}
                     onChange={handleInputChange}
                     required
                   />
@@ -125,7 +161,7 @@ export default function EditProfilePage() {
                   <Input
                     id="phone"
                     name="phone"
-                    value={formData.phone}
+                    value={formData?.phone || ""}
                     disabled
                     className="bg-gray-100"
                   />
@@ -136,7 +172,7 @@ export default function EditProfilePage() {
                   <Input
                     id="gender"
                     name="gender"
-                    value={formData.gender}
+                    value={formData?.gender || ""}
                     disabled
                     className="bg-gray-100"
                   />
@@ -145,8 +181,9 @@ export default function EditProfilePage() {
                 <Button
                   type="submit"
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+                  disabled={isLoading}
                 >
-                  Guardar Cambios
+                  {isLoading ? "Guardando..." : "Guardar Cambios"}
                 </Button>
               </form>
             </CardContent>
