@@ -4,12 +4,19 @@ import Header from "../components/Header";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuth";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { useEffect } from "react";
 
 export default function PerfilPage() {
   const router = useRouter();
   const { currentUser, isAuthenticated, loading, logout } = useAuthStore(
     (state) => state
   );
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push("/auth");
+    }
+  }, [loading, isAuthenticated, router]);
 
   if (loading) {
     return (
@@ -24,38 +31,8 @@ export default function PerfilPage() {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header title="Perfil" className="bg-[#245A4C]" />
-        <main className="flex-grow py-16 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-lg mb-4">
-              Debes iniciar sesión para ver tu perfil
-            </p>
-            <Button
-              onClick={() => router.push("/auth")}
-              className="bg-green-500 hover:bg-green-600 text-white"
-            >
-              Iniciar Sesión
-            </Button>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (!currentUser) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header title="Perfil" className="bg-[#245A4C]" />
-        <main className="flex-grow py-16 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <p>No se encontraron datos del usuario</p>
-          </div>
-        </main>
-      </div>
-    );
+  if (!isAuthenticated || !currentUser) {
+    return null;
   }
 
   return (

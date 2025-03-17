@@ -20,21 +20,13 @@ export default function ProfileContent({ router }: ProfileContentProps) {
     const firebaseUser = getCurrentUser()
     if (firebaseUser?.uid) {
       fetchCurrentUserData()
+    } else {
+      router.push("/auth")
     }
-  }, [fetchCurrentUserData, getCurrentUser])
+  }, [fetchCurrentUserData, getCurrentUser, router])
 
   if (!getCurrentUser()) {
-    return (
-      <div className="text-center">
-        <p className="text-lg mb-4">Debes iniciar sesión para ver tu perfil</p>
-        <Button 
-          onClick={() => router.push("/auth")}
-          className="bg-green-500 hover:bg-green-600 text-white"
-        >
-          Iniciar Sesión
-        </Button>
-      </div>
-    )
+    return null
   }
 
   if (!currentUser) {
