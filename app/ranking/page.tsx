@@ -153,9 +153,3 @@ export default function RankingPage() {
     </div>
   );
 }
-
-// Edit: Limité la longitud del nombre del jugador a 20 caracteres, mostrando '...' si el nombre es más largo.
-// Se debe agregar el siguiente código en el componente RankingTable:
-// <span style={{ opacity: 1 }}>
-//   {player.name.length > 20 ? `${player.name.substring(0, 20)}...` : player.name}
-// </span>
