@@ -1,8 +1,7 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Header from "../../components/Header";
@@ -12,28 +11,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Camera } from "lucide-react";
 import { useAuthStore } from "@/store/useAuth";
-import { createOrUpdateUser } from "@/firebase/users";
+import { createOrUpdateUser, uploadUserPhoto } from "@/firebase/users";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/user";
-
-// Datos de ejemplo (en una aplicación real, estos datos vendrían de una API o base de datos)
-const userData = {
-  name: "Juan",
-  lastName: "Pérez",
-  email: "juan.perez@example.com",
-  phone: "+50212345678",
-  gender: "Masculino",
-  photo:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-02-11%2020.14.39%20-%20An%20eleventh%20retro-style%20minimalist%20avatar%20of%20a%20male%20tennis%20player%20on%20a%20white%20background,%20designed%20in%20the%20style%20of%20an%20old-school%20video%20game%20character.%20-oJWiw24SazV4nI40VBn9FGsHL4XYPr.webp",
-};
 
 export default function EditProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { currentUser, fetchCurrentUserData } = useAuthStore((state) => state);
 
   const [formData, setFormData] = useState<User | null>(currentUser);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,23 +37,41 @@ export default function EditProfilePage() {
     });
   };
 
+  const handlePhotoSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Crear URL temporal para la vista previa
+    const previewUrl = URL.createObjectURL(file);
+    setPhotoPreviewUrl(previewUrl);
+    setSelectedPhoto(file);
+
+    // Limpiar la URL temporal cuando el componente se desmonte
+    return () => URL.revokeObjectURL(previewUrl);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser?.id || !formData) return;
 
     setIsLoading(true);
     try {
+      // Si hay una foto seleccionada, subirla primero
+      let photoUrl = formData.photo;
+      if (selectedPhoto) {
+        photoUrl = await uploadUserPhoto(currentUser.id, selectedPhoto);
+      }
+
       const success = await createOrUpdateUser(currentUser.id, {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         name: `${formData.firstName} ${formData.lastName}`,
+        photo: photoUrl, // Incluir la URL de la foto (nueva o existente)
       });
 
       if (success) {
-        // Actualizar el store con los nuevos datos
         await fetchCurrentUserData();
-        
         toast({
           title: "Perfil actualizado",
           description: "Los cambios se han guardado correctamente",
@@ -83,12 +92,6 @@ export default function EditProfilePage() {
     }
   };
 
-  const handlePhotoChange = () => {
-    // Aquí iría la lógica para cambiar la foto
-    // Por ahora, solo mostraremos un mensaje en la consola
-    console.log("Cambiar foto");
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header title="Editar Perfil" />
@@ -105,20 +108,27 @@ export default function EditProfilePage() {
                 <div className="text-center">
                   <div className="relative w-32 h-32 mx-auto mb-4">
                     <Image
-                      src={formData?.photo || "/placeholder.svg"}
+                      src={photoPreviewUrl || formData?.photo || "/placeholder.svg"}
                       alt={formData?.name || ""}
                       layout="fill"
                       objectFit="cover"
                       className="rounded-full"
                     />
                   </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoSelect}
+                    className="hidden"
+                  />
                   <Button
                     type="button"
-                    onClick={handlePhotoChange}
+                    onClick={() => fileInputRef.current?.click()}
                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
                   >
                     <Camera className="mr-2 h-4 w-4" />
-                    Cambiar Foto
+                    Seleccionar Foto
                   </Button>
                 </div>
 

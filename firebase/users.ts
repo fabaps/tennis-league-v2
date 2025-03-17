@@ -10,6 +10,8 @@ import {
   updateDoc
 } from "firebase/firestore";
 import { User } from "@/types/user";
+import { storage } from "@/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const USERS_COLLECTION = "users";
 
@@ -95,3 +97,27 @@ export async function createOrUpdateUser(userId: string, userData: Partial<User>
     return false;
   }
 }
+
+export const uploadUserPhoto = async (userId: string, file: File): Promise<string> => {
+  try {
+    // Crear una referencia al archivo en Storage
+    const storageRef = ref(storage, `users/${userId}/profile-photo`);
+    
+    // Subir el archivo
+    const snapshot = await uploadBytes(storageRef, file);
+    
+    // Obtener la URL de descarga
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    
+    // Actualizar el documento del usuario con la nueva URL
+    await updateDoc(doc(db, "users", userId), {
+      photo: downloadURL,
+      updatedAt: new Date().toISOString()
+    });
+
+    return downloadURL;
+  } catch (error) {
+    console.error("Error al subir la foto:", error);
+    throw error;
+  }
+};
