@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RankingData } from "../utils/types";
 import { calculateRankingByUTR } from "@/utils/ranking";
 import { useUsersStore } from "@/store/useUsers";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 interface UserProfileCardProps {
   user: RankingData;
@@ -20,13 +21,19 @@ export function UserProfileCard({
     <Card className="mb-6 bg-white shadow-md rounded-xl overflow-hidden">
       <CardContent className="p-4">
         <div className="flex items-center space-x-4">
-          <Image
+        <UserAvatar
+                    name={user.name}
+                    photo={user.photo}
+                    size={60}
+                    className="ring-4 ring-white"
+                  />
+          {/* <Image
             src={user.photo || "/placeholder.svg"}
             alt={user.name}
             width={70}
             height={70}
             className="rounded-full"
-          />
+          /> */}
           <div>
             <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
             <p className="text-lg text-gray-600">Categoría {user.category}</p>

@@ -9,6 +9,7 @@ import { RankingData } from "../utils/types";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { calculateRankingByUTR } from "@/utils/ranking";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 interface RankingTableProps {
   users: RankingData[];
@@ -63,13 +64,13 @@ export function RankingTable({
                   ease: "easeOut",
                 }}
                 className={`cursor-pointer hover:bg-gray-50 whitespace-nowrap ${
-                  player.id === currentUser.id ? "bg-green-50" : ""
+                  player.id === (currentUser?.id || null) ? "bg-green-50" : ""
                 }`}
-                onClick={() => onPlayerClick(player.id)}
+                // onClick={() => onPlayerClick(player.id)}
               >
                 <TableCell>{index + 1}</TableCell>
                 <TableCell className="flex items-center gap-2">
-                  {player.photo && (
+                 
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
@@ -80,15 +81,14 @@ export function RankingTable({
                         damping: 20,
                       }}
                     >
-                      <Image
-                        src={player.photo}
-                        alt={player.name}
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                      />
+                      <UserAvatar
+                    name={player.name}
+                    photo={player.photo}
+                    size={32}
+                    className="ring-4 ring-white"
+                  />
                     </motion.div>
-                  )}
+              
                   <motion.span
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

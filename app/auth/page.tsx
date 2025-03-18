@@ -108,18 +108,25 @@ export default function AuthPage() {
     const user = getCurrentUser();
     if (!user) {
       console.error("No se pudo obtener el usuario actual");
+      alert("Error: No se pudo obtener el usuario actual. Por favor, intenta iniciar sesión nuevamente.");
+      router.push("/auth");
       return;
     }
 
-    await createOrUpdateUser(user.uid, {
-      ...personalInfo,
-      phone: formatPhoneNumber(phone),
-      utr: calculatedRanking.toString(),
-      category: calculatedCategory,
-      name: `${personalInfo.firstName} ${personalInfo.lastName}`,
-    });
+    try {
+      await createOrUpdateUser(user.uid, {
+        ...personalInfo,
+        phone: formatPhoneNumber(phone),
+        utr: calculatedRanking.toString(),
+        category: calculatedCategory,
+        name: `${personalInfo.firstName} ${personalInfo.lastName}`,
+      });
 
-    setStep("result");
+      setStep("result");
+    } catch (error) {
+      console.error("Error al guardar los datos del usuario:", error);
+      alert("Error: No se pudieron guardar los datos del usuario. Por favor, intenta nuevamente.");
+    }
   };
 
   useEffect(() => {

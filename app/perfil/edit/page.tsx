@@ -13,6 +13,7 @@ import { useAuthStore } from "@/store/useAuth";
 import { createOrUpdateUser, uploadUserPhoto } from "@/firebase/users";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/user";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -108,13 +109,19 @@ export default function EditProfilePage() {
             <CardContent className="p-6">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="relative flex items-center justify-center">
-                  <Image
-                    src={photoPreviewUrl || formData?.photo || "/placeholder.svg"}
-                    alt={formData?.name || ""}
-                    width={128}
-                    height={128}
-                    className="w-32 h-32 rounded-full object-cover"
-                  />
+                  {photoPreviewUrl || formData?.photo ? ( <Image
+                      src={photoPreviewUrl || formData?.photo || "/placeholder.svg"}
+                      alt={formData?.name || ""}
+                      width={128}
+                      height={128}
+                      className="w-32 h-32 rounded-full object-cover"
+                  />) : (<UserAvatar
+                    name={formData?.name || ""}
+                    photo={""}
+                    size={120}
+                    className="ring-4 ring-white"
+                  />)}
+                   
                   <button
                     type="button"
                     className="absolute -bottom-4 right-10 mb-2 mr-2 h-10 w-10 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center transition duration-300 ease-in-out"
