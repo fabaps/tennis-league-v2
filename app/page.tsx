@@ -1,23 +1,37 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Search, TurtleIcon as Tennis, GraduationCap, Trophy } from "lucide-react"
 import React from "react"
 import Header from "./components/Header"
 
-export default function Home() {
-  const [selectedDay, setSelectedDay] = useState("18")
 
-  const days = [
-    { name: "Lunes", number: "17" },
-    { name: "Martes", number: "18" },
-    { name: "Miércoles", number: "19" },
-    { name: "Jueves", number: "20" },
-    { name: "Viernes", number: "21" },
-    { name: "Sábado", number: "22" },
-  ]
+export default function Home() {
+  // Se inicializa con el día actual para que se muestre el día en curso
+  const [selectedDay, setSelectedDay] = useState(new Date().getDate())
+
+  const [weekDays, setWeekDays] = useState([]);
+
+  useEffect(() => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    // Calcula el lunes de la semana actual
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
+
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + i);
+      return {
+        dayName: date.toLocaleDateString("es-ES", { weekday: "long" }),
+        dayNumber: date.getDate(),
+      };
+    });
+
+    setWeekDays(days);
+  }, []);
 
   const allEvents = {
     "17": [
@@ -167,12 +181,13 @@ export default function Home() {
     ],
   }
 
+
   const events = allEvents[selectedDay] || []
 
   return (
     <div className="min-h-screen bg-white">
       <Header isHomePage={true} />
-      <div className="px-4 py-4 pt-16">
+      <div className="px-4 py-4 pt-8">
         {/* Primera sección - Tarjetas */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           {[
@@ -235,29 +250,31 @@ export default function Home() {
         <div>
           {/* Header */}
           <h2 className="text-2xl font-bold mb-4">
-            {days.find((day) => day.number === selectedDay)?.name} {selectedDay} Feb.
+            {weekDays.find((day) => day.dayNumber === selectedDay)?.dayName} {selectedDay} Feb.
           </h2>
 
           {/* Calendar Strip */}
           <div className="flex space-x-2 mb-4 overflow-x-auto scrollbar-hide">
-            {days.map((day) => (
+            {weekDays.map((day) => (
               <button
-                key={day.name}
-                onClick={() => setSelectedDay(day.number)}
+                key={day.dayName}
+                onClick={() => setSelectedDay(day.dayNumber)}
                 className={`flex-shrink-0 w-[60px] h-[60px] rounded-xl border ${
-                  day.number === selectedDay
+                  day.dayNumber === selectedDay
                     ? "border-green-500 bg-green-500 text-white"
                     : "border-gray-200 text-gray-400"
                 } flex flex-col items-center justify-center`}
               >
-                <span className="text-xs">{day.name}</span>
-                <span className="text-xl font-bold">{day.number}</span>
+                <span className="text-xs">{day.dayName}</span>
+                <span className="text-xl font-bold">{day.dayNumber}</span>
               </button>
             ))}
           </div>
 
           {/* Events List */}
-          <div className="space-y-2">
+          <div className="relative ">
+            <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-md h-full w-full px-4 pt-8 text-center">Próximamente: El Calendario Semanal de la Guatemala Tennis League (GTL)</p>
+            <div className="space-y-2 blur-md pointer-events-none p-4 bg-gray-300">
             {events.map((event, index) => (
               <Link href={event.completed ? "/partido-finalizado" : "/partido"} key={index}>
                 <div className="border border-gray-200 rounded-lg p-3">
@@ -336,6 +353,8 @@ export default function Home() {
               </Link>
             ))}
           </div>
+          </div>
+          
         </div>
       </div>
     </div>
