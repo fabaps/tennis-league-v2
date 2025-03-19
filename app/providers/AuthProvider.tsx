@@ -1,22 +1,41 @@
-"use client"
-
-import { useEffect } from "react"
-import { auth } from "@/config"
-import { onAuthStateChanged } from "firebase/auth"
-import { useAuthStore } from "@/store/useAuth"
+import { useEffect, useState } from "react";
+import { auth } from "@/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { useAuthStore } from "@/store/useAuth";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { fetchCurrentUserData } = useAuthStore()
+  const { fetchCurrentUserData } = useAuthStore();
+  const { currentUser } = useAuthStore();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true); // Estado de carga
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        fetchCurrentUserData()
+        fetchCurrentUserData();
       }
-    })
+      setLoading(false); // Cambiar el estado de carga después de la verificación
+    });
 
-    return () => unsubscribe()
-  }, [fetchCurrentUserData])
+    return () => unsubscribe();
+  }, [fetchCurrentUserData]);
 
-  return <>{children}</>
+
+  const pathname = usePathname()
+
+  if(pathname === "/auth") {
+    return <>{children}</>;
+  }
+
+  if (loading) {
+    return <div>Cargando...</div>; // Mostrar cargando mientras se verifica
+  }
+
+  if (!currentUser) {
+    router.replace("/auth");
+    return null; // No retornar nada para evitar que se quede en la página
+  }
+ 
+  return <>{children}</>;
 }

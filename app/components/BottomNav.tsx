@@ -20,13 +20,13 @@ export default function BottomNav() {
             <Home className={`h-6 w-6 ${isActive("/") ? "fill-current" : ""}`} />
             <span className="text-xs mt-1">Inicio</span>
           </Link>
-          <Link
+          {/* <Link
             href="/torneos"
             className={`flex flex-col items-center py-2 ${isActive("/torneos") ? "text-green-600" : "text-green-700"}`}
           >
             <Trophy className={`h-6 w-6 ${isActive("/torneos") ? "fill-current" : ""}`} />
             <span className="text-xs mt-1">Torneos</span>
-          </Link>
+          </Link> */}
           <Link
             href="/ranking"
             className={`flex flex-col items-center py-2 ${isActive("/ranking") ? "text-green-600" : "text-green-700"}`}
