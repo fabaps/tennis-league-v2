@@ -90,7 +90,7 @@ export default function PerfilPage() {
               <div className="text-[#245A4C] text-2xl font-bold mb-1">
                 {currentUser.utr || 0}
               </div>
-              <div className="text-gray-600 text-sm font-medium">UTR</div>
+              <div className="text-gray-600 text-sm font-medium">GTR</div>
             </div>
           </div>
 

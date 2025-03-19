@@ -81,7 +81,7 @@ export default function UTRCategoryStep({ formData, prevStep, onComplete }: UTRC
         </CardHeader>
         <CardContent className="p-6 space-y-4">
           <div className="text-center">
-            <p className="text-2xl font-bold text-green-700">Tu UTR calculado</p>
+            <p className="text-2xl font-bold text-green-700">Tu GTR calculado</p>
             <p className="text-4xl font-extrabold text-green-600">{utr.toFixed(1)}</p>
           </div>
           <div className="text-center">

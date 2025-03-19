@@ -45,7 +45,7 @@ export function RankingTable({
           <TableCell className="font-semibold max-w-[calc(100%-96px)]">
             Jugador
           </TableCell>
-          <TableCell className="font-semibold w-16 text-right">UTR</TableCell>
+          <TableCell className="font-semibold w-16 text-right">GTR</TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
