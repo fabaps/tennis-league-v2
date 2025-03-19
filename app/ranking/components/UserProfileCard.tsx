@@ -34,11 +34,22 @@ export function UserProfileCard({
             height={70}
             className="rounded-full"
           /> */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+          <div className="flex flex-row">
+            <div>
+               <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
             <p className="text-lg text-gray-600">Categoría {user.category}</p>
+            </div>
+            <div className="self-end flex justify-end items-center">
+              <div className="flex flex-row items-center gap-4">
+        <p className="text-lg text-gray-600">GTL</p>
+        <p className="text-2xl font-bold text-green-600 text-medium ">{user.utr}</p>
+          </div>
+            </div>
+            
           </div>
         </div>
+       
+        
         <div className="mt-3 flex justify-between">
           <div className="text-center">
             <p className="text-sm text-gray-500">Posición en categoría</p>
