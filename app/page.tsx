@@ -188,7 +188,7 @@ export default function Home() {
               href: "/crear",
               icon: <Tennis className="w-5 h-5 text-white" />,
               title: "Crear un partido",
-              subtitle: "Gana puntos en el ranking",
+              subtitle: "Proximamente",
               image:
                 "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/92a8bdb0-94d8-488a-a82c-c311d8a06366.jpg-TQfZLagSUReUH6XRtC2fyvm3287mxm.jpeg",
             },
@@ -203,7 +203,7 @@ export default function Home() {
               href: "/competiciones",
               icon: <Trophy className="w-5 h-5 text-white" />,
               title: "Competiciones",
-              subtitle: "Torneos por categorías",
+              subtitle: "Proximamente",
               image:
                 "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/24d70b5b-60cd-4f50-93ef-32a1835b5662.jpg-RW1YkNMJ76ivKjJS5GDaLXQd2S8R8L.jpeg",
             },
