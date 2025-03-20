@@ -46,8 +46,9 @@ export function UserAvatar({ name, photo, size = 128, className = "" }: UserAvat
         <Image
           src={photo}
           alt={name}
-          width={size}
-          height={size}
+          // width={size}
+          // height={size}
+          fill
           className="object-cover"
         />
       </div>
