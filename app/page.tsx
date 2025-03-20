@@ -460,7 +460,7 @@ export default function Home() {
       badge: "Próximamente",
       description: "Conéctate con jugadores, organiza partidos y sé parte del tenis en un solo lugar.",
       image:
-        "https://sjc.microlink.io/n8FMBWyAocTCoFw9FSG0K7fVnOr6pV0LeuYItFmA1N4JHWh-8npuascWWRbD-e--9r2GQzdcXk5RPmkHSKiN7A.jpeg",
+        "https://static.wixstatic.com/media/51662f_57da0bc4b60949da82d306e823038e46~mv2.jpg?quality=lossless",
       showArrow: true,
       index: 5,
     },
