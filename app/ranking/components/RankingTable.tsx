@@ -103,7 +103,7 @@ export function RankingTable({
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 + 0.3 }}
                   >
-                    {player.utr}
+                    {Number(player.utr || 0).toFixed(2)}
                   </motion.span>
                 </TableCell>
               </motion.tr>
