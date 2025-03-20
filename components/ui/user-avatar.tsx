@@ -21,6 +21,7 @@ const colors = [
   "bg-orange-500",
 ]
 
+
 export function UserAvatar({ name, photo, size = 128, className = "" }: UserAvatarProps) {
   const initials = useMemo(() => {
     const parts = name.split(" ")

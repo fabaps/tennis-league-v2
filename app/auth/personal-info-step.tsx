@@ -20,7 +20,7 @@ export default function PersonalInfoStep({ onSubmit }: PersonalInfoStepProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit({ firstName, lastName, email, gender })
+    onSubmit({ firstName: firstName.trim(), lastName: lastName.trim(), email: email.trim(), gender })
   }
 
   return (
