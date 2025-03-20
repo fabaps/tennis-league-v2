@@ -88,7 +88,7 @@ export default function PerfilPage() {
             </div>
             <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
               <div className="text-[#245A4C] text-2xl font-bold mb-1">
-                {currentUser.utr || 0}
+                {currentUser.utr.toFixed(2) || 0}
               </div>
               <div className="text-gray-600 text-sm font-medium">GTR</div>
             </div>
