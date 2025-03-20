@@ -10,13 +10,13 @@ export const getCategory = (user: { utr: number }): Category => {
 
   const utr = user.utr;
 
-  if (utr >= 11) {
+  if (utr >= 13) {
     return "MAYOR";
-  } else if (utr >= 9) {
+  } else if (utr > 10.5) {
     return "A";
-  } else if (utr >= 7) {
+  } else if (utr > 8.5) {
     return "B";
-  } else if (utr >= 5) {
+  } else if (utr > 6) {
     return "C";
   }
   return "D";

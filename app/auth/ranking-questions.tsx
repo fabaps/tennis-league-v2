@@ -90,9 +90,9 @@ export default function RankingQuestions({ onSubmit }: RankingQuestionsProps) {
 
       let category = "Principiante"
       if (total > 13) category = "Mayor"
-      else if (total > 10) category = "A"
-      else if (total > 8) category = "B"
-      else if (total > 5) category = "C"
+      else if (total > 10.5) category = "A"
+      else if (total > 8.5) category = "B"
+      else if (total > 6) category = "C"
       else if (total > 2) category = "D"
 
       onSubmit(total, category)
