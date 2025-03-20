@@ -22,8 +22,8 @@ const questions = [
     options: [
       { label: "No juego pero quiero empezar", value: 0, icon: "🎾" },
       { label: "Tenis Recreativo (casual, con amigos)", value: 1.5, icon: "🏸" },
-      { label: "Ligas de Club (torneos internos, sin ranking nacional)", value: 2.1, icon: "🏆" },
-      { label: "Torneos Locales (torneos ranqueados en la federación)", value: 2.8, icon: "🥇" },
+      { label: "Torneos de Club (torneos internos fuera de la federacion)", value: 2.1, icon: "🏆" },
+      { label: "Torneos Ranking Nacional en la Federacion", value: 2.8, icon: "🥇" },
       { label: "Torneos Nacionales (Circuitos federados privados)", value: 5.1, icon: "🏅" },
       { label: "Torneos Internacionales (ITF, COSAT, regionales de alto nivel)", value: 6.5, icon: "🌎" },
       { label: "Profesional (ATP/WTA/PTT/ITF)", value: 8, icon: "⭐" },

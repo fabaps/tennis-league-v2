@@ -19,6 +19,7 @@ interface AuthState {
     firstName: string;
     lastName: string;
   }) | null;
+  firebaseUserData: User | null;
   isAuthenticated: boolean;
   getCurrentUser: () => any;
   getPersonalInfo: (id: string) => Promise<User | null>;
@@ -37,6 +38,7 @@ export const useAuthStore = create<AuthState>()(
       error: null,
       phoneNumber: null,
       currentUser: null,
+      firebaseUserData: null,
       isAuthenticated: false,
       getCurrentUser: getCurrentUserFirebase,
       setPhoneNumber: (phone) => set({ phoneNumber: phone }),
@@ -50,14 +52,16 @@ export const useAuthStore = create<AuthState>()(
       },
       fetchCurrentUserData: async () => {
         const firebaseUser = getCurrentUserFirebase();
+      
         if (!firebaseUser?.uid) {
           set({ isAuthenticated: false, currentUser: null });
           return;
         }
-
+        
         set({ loading: true, error: null });
         try {
           const userData = await getUserById(firebaseUser.uid);
+          
           if (userData) {
             set({
               currentUser: {
@@ -65,7 +69,7 @@ export const useAuthStore = create<AuthState>()(
                 name: userData.name,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
-                email: userData.email,
+                email: firebaseUser.email || "",
                 phone: userData.phone,
                 photo: userData.photo || "",
                 gender: userData.gender,
@@ -154,6 +158,7 @@ export const useAuthStore = create<AuthState>()(
         phoneNumber: state.phoneNumber,
         currentUser: state.currentUser,
         isAuthenticated: state.isAuthenticated,
+        
       }) // Solo guarda estos valores
     }
   )
