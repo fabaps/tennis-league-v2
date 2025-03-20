@@ -73,7 +73,7 @@ export default function PaymentStep({ formData, handleInputChange, prevStep }: P
         </CardHeader>
         <CardContent className="space-y-4">
           <p>
-            Tu GTR calculado es: <strong>{utr}</strong>
+            Tu GTR calculado es: <strong>{utr.toFixed(2)}</strong>
           </p>
           <p>
             Categoría sugerida: <strong>{suggestedCategory}</strong>
