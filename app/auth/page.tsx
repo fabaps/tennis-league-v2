@@ -23,7 +23,14 @@ import RankingQuestions from "./ranking-questions";
 import { useAuthStore } from "@/store/useAuth";
 import { createOrUpdateUser, getUserById, User } from "@/firebase/users";
 
-type Step = "phone" | "verification" | "personal-info" | "questions" | "result";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getCurrentUser } from "@/firebase/auth";
+
+const auth = getAuth();
+
+
+
+type Step = "phone" | "personal-info" | "questions" | "result";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -55,9 +62,52 @@ export default function AuthPage() {
       console.log("Enviando OTP a:", formattedPhone);
       setPhoneNumber(formattedPhone);
       await sendOTP(formattedPhone);
-      setStep("verification");
+      // setStep("verification");
     } catch (error) {
       console.error("Error al enviar OTP:", error);
+    }
+  };
+
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account' // Obliga a mostrar el selector de cuentas
+    });
+    console.log("Iniciando sesión con Google");
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+     
+      try {
+       
+        const user = getCurrentUser();
+        if (!user) {
+          throw new Error("No se pudo obtener el usuario actual");
+        }
+  
+        const userData = await getUserById(user.uid);
+        console.log("Datos del usuario:", userData);
+        if (userData && userData.firstName && userData.lastName) {
+          setPersonalInfo({
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email || "",
+            gender: userData.gender || "",
+          });
+          setRanking(Number(userData.utr) || 0);
+          setCategory(userData.category || "");
+          setStep("result");
+        } else {
+          setStep("personal-info");
+        }
+      } catch (error) {
+        console.error("Error al verificar OTP:", error);
+      }
+  
+      console.log("Usuario logueado con Google:", user);
+    } catch (error) {
+      console.error("Error durante el inicio de sesión con Google:", error);
     }
   };
 
@@ -164,7 +214,7 @@ export default function AuthPage() {
           Your browser does not support the video tag.
         </video>
       )}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center p-4">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center p-4 -mt-10">
         <div className="w-full max-w-md">
           <div
             className={`mb-8 flex justify-center ${
@@ -185,8 +235,8 @@ export default function AuthPage() {
                 {step !== "questions" && "Bienvenido a la GTL"}
               </CardTitle>
               <CardDescription>
-                {step === "phone" && "Ingresa tu número para comenzar"}
-                {step === "verification" && "Ingresa el código de verificación"}
+                {step === "phone" && ""}
+                {/* {step === "verification" && "Ingresa el código de verificación"} */}
                 {step === "personal-info" && "Completa tus datos personales"}
                 {/* {step === "questions" && "Cuéntanos sobre tu experiencia en tenis"} */}
                 {/* {step === "result" && "¡Tu ranking está listo!"} */}
@@ -202,6 +252,31 @@ export default function AuthPage() {
                   transition={{ duration: 0.3 }}
                 >
                   {step === "phone" && (
+                    <div className="flex justify-center" ><button 
+                    onClick={handleGoogleSignIn}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      padding: '10px 16px',
+                      backgroundColor: '#fff',
+                      color: '#000',
+                      border: '1px solid #ddd',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      transition: 'background-color 0.3s ease',
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f7f7f7'}
+                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#fff'}
+                  >
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" width="18" height="18" />
+                    Iniciar sesión con Google
+                  </button></div>
+                  )}
+                  {/* {step === "phone" && (
                     <form
                       onSubmit={handlePhoneSubmit}
                       className="space-y-4 px-4"
@@ -246,8 +321,8 @@ export default function AuthPage() {
                         {loading ? "Enviando..." : "Continuar"}
                       </Button>
                     </form>
-                  )}
-                  {step === "verification" && (
+                  )} */}
+                  {/* {step === "verification" && (
                     <div className="p-4">
                       <VerificationStep
                         onSubmit={handleVerificationSubmit}
@@ -255,7 +330,7 @@ export default function AuthPage() {
                         isLoading={loading}
                       />
                     </div>
-                  )}
+                  )} */}
                   {step === "personal-info" && (
                     <PersonalInfoStep onSubmit={handlePersonalInfoSubmit} />
                   )}
