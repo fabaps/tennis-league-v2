@@ -15,8 +15,12 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         fetchCurrentUserData();
+        setLoading(false);
       }
-      setLoading(false); // Cambiar el estado de carga después de la verificación
+      else {
+        router.replace("/auth");
+      }
+       // Cambiar el estado de carga después de la verificación
     });
 
     return () => unsubscribe();
@@ -30,13 +34,13 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   }
 
   if (loading) {
-    return <GTLLoader />; // Mostrar cargando mientras se verifica
+    return <GTLLoader />; 
   }
 
-  if (!currentUser) {
-    router.replace("/auth");
-    return null; // No retornar nada para evitar que se quede en la página
-  }
+  // if (!currentUser) {
+  //   router.replace("/auth");
+  //   return null; // No retornar nada para evitar que se quede en la página
+  // }
  
   return <>{children}</>;
 }
