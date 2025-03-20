@@ -32,6 +32,15 @@ const auth = getAuth();
 
 type Step = "phone" | "personal-info" | "questions" | "result";
 
+
+const ConditionalCard = ({children, step}: {children: React.ReactNode, step: Step}) => {
+  if (step === "phone") {
+    return <>{children}</>
+  }
+  return   <Card className="backdrop-blur-sm bg-white/95 shadow-xl overflow-hidden">{children}</Card>
+};
+
+
 export default function AuthPage() {
   const router = useRouter();
   const { sendOTP, verifyOTP, loading, error, setPhoneNumber, getCurrentUser } =
@@ -74,7 +83,7 @@ export default function AuthPage() {
     provider.setCustomParameters({
       prompt: 'select_account' // Obliga a mostrar el selector de cuentas
     });
-    console.log("Iniciando sesión con Google");
+  
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
@@ -217,8 +226,8 @@ export default function AuthPage() {
       <div className="relative z-10 min-h-screen flex flex-col justify-center items-center p-4 -mt-10">
         <div className="w-full max-w-md">
           <div
-            className={`mb-8 flex justify-center ${
-              step === "questions" ? "scale-75" : ""
+            className={`flex justify-center mt-4 ${
+              step === "questions" ? "scale-75 " : ""
             }`}
           >
             <Image
@@ -229,11 +238,18 @@ export default function AuthPage() {
               className="drop-shadow-xl transition-transform duration-300"
             />
           </div>
-          <Card className="backdrop-blur-sm bg-white/95 shadow-xl overflow-hidden">
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                {step !== "questions" && "Bienvenido a la GTL"}
-              </CardTitle>
+        <ConditionalCard step={step}>
+            <CardHeader className="text-center ">
+              {step !== "phone" ?
+               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent ">
+               {step !== "questions" && "Bienvenido a la GTL"}
+             </CardTitle>
+              :
+              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent text-white">
+              Bienvenido a la GTL
+            </CardTitle>
+              }
+             
               <CardDescription>
                 {step === "phone" && ""}
                 {/* {step === "verification" && "Ingresa el código de verificación"} */}
@@ -273,7 +289,7 @@ export default function AuthPage() {
                     onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#fff'}
                   >
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" width="18" height="18" />
-                    Iniciar sesión con Google
+                    Entrar con Google
                   </button></div>
                   )}
                   {/* {step === "phone" && (
@@ -353,7 +369,7 @@ export default function AuthPage() {
                 </motion.div>
               </AnimatePresence>
             </CardContent>
-          </Card>
+          </ConditionalCard>
         </div>
       </div>
     </div>
