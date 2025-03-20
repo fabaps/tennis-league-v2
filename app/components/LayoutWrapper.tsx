@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation"
 import Header from "./Header"
 import BottomNav from "./BottomNav"
+import AuthProvider from "../providers/AuthProvider"
 import type React from "react"
 
 interface LayoutWrapperProps {
@@ -15,11 +16,12 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     pathname === "/auth" || pathname === "/partido" || pathname === "/partido-finalizado" || pathname === "/crear"
 
   return (
-    <>
-      {!isSpecialPage && <Header />}
-      <main className={isSpecialPage ? "" : "pt-14 pb-16"}>{children}</main>
-      {!isSpecialPage && <BottomNav />}
-    </>
+    <AuthProvider>
+      <div className="flex flex-col min-h-screen">
+        {!isSpecialPage && <Header />}
+        <main className={isSpecialPage ? "" : "pt-14 pb-16"}>{children}</main>
+        {!isSpecialPage && <BottomNav />}
+      </div>
+    </AuthProvider>
   )
 }
-

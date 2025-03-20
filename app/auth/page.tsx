@@ -20,14 +20,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import VerificationStep from "./verification-step";
 import PersonalInfoStep from "./personal-info-step";
 import RankingQuestions from "./ranking-questions";
-import { TennisRacketIcon, TennisBallIcon } from "../components/icons";
-import { saveNewUser } from "@/services/user";
+import { useAuthStore } from "@/store/useAuth";
+import { createOrUpdateUser, getUserById, User } from "@/firebase/users";
 
 type Step = "phone" | "verification" | "personal-info" | "questions" | "result";
 
 export default function AuthPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { sendOTP, verifyOTP, loading, error, setPhoneNumber, getCurrentUser } =
+    useAuthStore();
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<Step>("phone");
   const [ranking, setRanking] = useState(0);
@@ -39,19 +40,52 @@ export default function AuthPage() {
     gender: "",
   });
 
+  const formatPhoneNumber = (phone: string) => {
+    const cleaned = phone.replace(/\D/g, "");
+    if (cleaned.startsWith("502")) {
+      return `+${cleaned}`;
+    }
+    return `+502${cleaned}`;
+  };
+
   const handlePhoneSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
-    setStep("verification");
+    try {
+      const formattedPhone = formatPhoneNumber(phone);
+      console.log("Enviando OTP a:", formattedPhone);
+      setPhoneNumber(formattedPhone);
+      await sendOTP(formattedPhone);
+      setStep("verification");
+    } catch (error) {
+      console.error("Error al enviar OTP:", error);
+    }
   };
 
   const handleVerificationSubmit = async (code: string) => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
-    setStep("personal-info");
+    try {
+      await verifyOTP(code);
+      const user = getCurrentUser();
+      if (!user) {
+        throw new Error("No se pudo obtener el usuario actual");
+      }
+
+      const userData = await getUserById(user.uid);
+      if (userData && userData.firstName && userData.lastName) {
+        setPersonalInfo({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email || "",
+          gender: userData.gender || "",
+        });
+        setRanking(Number(userData.utr) || 0);
+        setCategory(userData.category || "");
+        setStep("result");
+      } else {
+        setStep("personal-info");
+      }
+    } catch (error) {
+      console.error("Error al verificar OTP:", error);
+    }
   };
 
   const handlePersonalInfoSubmit = (data: {
@@ -64,33 +98,49 @@ export default function AuthPage() {
     setStep("questions");
   };
 
-  const handleRankingSubmit = (
+  const handleRankingSubmit = async (
     calculatedRanking: number,
     calculatedCategory: string
   ) => {
     setRanking(calculatedRanking);
     setCategory(calculatedCategory);
-    saveNewUser({
-      ...personalInfo,
-      phone,
-      ranking: calculatedRanking.toString(),
-      category: calculatedCategory,
-    });
-    setStep("result");
+
+    const user = getCurrentUser();
+    if (!user) {
+      console.error("No se pudo obtener el usuario actual");
+      alert("Error: No se pudo obtener el usuario actual. Por favor, intenta iniciar sesión nuevamente.");
+      router.push("/auth");
+      return;
+    }
+
+    try {
+      await createOrUpdateUser(user.uid, {
+        ...personalInfo,
+        phone: formatPhoneNumber(phone),
+        utr: calculatedRanking.toString(),
+        category: calculatedCategory,
+        name: `${personalInfo.firstName} ${personalInfo.lastName}`,
+      });
+
+      setStep("result");
+    } catch (error) {
+      console.error("Error al guardar los datos del usuario:", error);
+      alert("Error: No se pudieron guardar los datos del usuario. Por favor, intenta nuevamente.");
+    }
   };
 
   useEffect(() => {
     if (step === "result") {
       const timer = setTimeout(() => {
         router.push(`/ranking?ranking=${ranking}&category=${category}`);
-      }, 5000);
+      }, 0);
       return () => clearTimeout(timer);
     }
   }, [step, ranking, category, router]);
 
   const getBackgroundClass = () => {
     if (step === "phone") {
-      return "bg-black bg-opacity-50";
+      return "bg-black bg-opacity-70";
     }
     return "bg-gradient-to-br from-green-400 via-green-500 to-green-600";
   };
@@ -108,7 +158,7 @@ export default function AuthPage() {
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         >
           <source
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Recording%202025-02-11%20212348-kqZhk5R8tu6H9qyXyU7JF21YuXbDtW.mp4"
+            src="/authvideo.mov"
             type="video/mp4"
           />
           Your browser does not support the video tag.
@@ -132,17 +182,14 @@ export default function AuthPage() {
           <Card className="backdrop-blur-sm bg-white/95 shadow-xl overflow-hidden">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                {step === "questions"
-                  ? "Experiencia en Tenis"
-                  : "Bienvenido a la GTL"}
+                {step !== "questions" && "Bienvenido a la GTL"}
               </CardTitle>
               <CardDescription>
                 {step === "phone" && "Ingresa tu número para comenzar"}
                 {step === "verification" && "Ingresa el código de verificación"}
                 {step === "personal-info" && "Completa tus datos personales"}
-                {step === "questions" &&
-                  "Cuéntanos sobre tu experiencia en tenis"}
-                {step === "result" && "¡Tu ranking está listo!"}
+                {/* {step === "questions" && "Cuéntanos sobre tu experiencia en tenis"} */}
+                {/* {step === "result" && "¡Tu ranking está listo!"} */}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -155,7 +202,10 @@ export default function AuthPage() {
                   transition={{ duration: 0.3 }}
                 >
                   {step === "phone" && (
-                    <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                    <form
+                      onSubmit={handlePhoneSubmit}
+                      className="space-y-4 px-4"
+                    >
                       <div>
                         <Label
                           htmlFor="phone"
@@ -176,23 +226,35 @@ export default function AuthPage() {
                           inputClass="!w-full !h-[42px] !text-base !pl-[52px] border border-gray-200 rounded-md focus:border-green-500 focus:ring-1 focus:ring-green-500"
                           buttonClass="!w-[42px] !h-[42px] !border-r-0 !border-gray-200 hover:!bg-gray-50"
                           dropdownClass="!bg-white"
+                          disableDropdown
+                          enableSearch={false}
+                          countryCodeEditable={false}
                         />
+                        <p className="text-sm text-gray-500 mt-1">
+                          Ingresa tu número sin guiones ni espacios
+                        </p>
                       </div>
+                      {error && (
+                        <p className="text-red-500 text-sm mt-2">{error}</p>
+                      )}
+                      <div id="sign-in-button" />
                       <Button
                         type="submit"
                         className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        disabled={isLoading}
+                        disabled={loading}
                       >
-                        {isLoading ? "Enviando..." : "Continuar"}
+                        {loading ? "Enviando..." : "Continuar"}
                       </Button>
                     </form>
                   )}
                   {step === "verification" && (
-                    <VerificationStep
-                      onSubmit={handleVerificationSubmit}
-                      onResend={() => console.log("Reenviando código...")}
-                      isLoading={isLoading}
-                    />
+                    <div className="p-4">
+                      <VerificationStep
+                        onSubmit={handleVerificationSubmit}
+                        onResend={() => sendOTP(formatPhoneNumber(phone))}
+                        isLoading={loading}
+                      />
+                    </div>
                   )}
                   {step === "personal-info" && (
                     <PersonalInfoStep onSubmit={handlePersonalInfoSubmit} />
@@ -201,44 +263,16 @@ export default function AuthPage() {
                     <RankingQuestions onSubmit={handleRankingSubmit} />
                   )}
                   {step === "result" && (
-                    <div className="text-center space-y-8">
-                      <div className="bg-green-50 rounded-xl p-6 shadow-inner">
-                        <p className="text-5xl font-bold text-green-600 mb-2">
-                          {ranking.toFixed(2)}
-                        </p>
-                        <p className="text-lg text-green-700 font-medium">
-                          puntos
-                        </p>
+                    <div className="text-center py-8">
+                      <div className="mb-4">
+                        <div className="text-4xl font-bold text-green-600">
+                          {ranking}
+                        </div>
+                        <div className="text-xl text-gray-600">{category}</div>
                       </div>
-                      <div className="bg-green-50 rounded-xl p-6 shadow-inner">
-                        <p className="text-3xl font-bold text-green-700 mb-2">
-                          Categoría
-                        </p>
-                        <p className="text-4xl font-extrabold text-green-600">
-                          {category}
-                        </p>
-                      </div>
-                      <div className="flex justify-center items-center space-x-6 pt-4">
-                        {[0, 1, 2].map((i) => (
-                          <motion.div
-                            key={i}
-                            animate={{
-                              y: [0, -12, 0],
-                            }}
-                            transition={{
-                              duration: 1.2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              delay: i * 0.2,
-                            }}
-                          >
-                            {i % 2 === 0 ? (
-                              <TennisRacketIcon className="w-16 h-16 text-green-600" />
-                            ) : (
-                              <TennisBallIcon className="w-12 h-12 text-green-600" />
-                            )}
-                          </motion.div>
-                        ))}
-                      </div>
+                      <p className="text-gray-500">
+                        Redirigiendo al ranking en unos segundos...
+                      </p>
                     </div>
                   )}
                 </motion.div>
