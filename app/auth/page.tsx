@@ -43,7 +43,7 @@ const ConditionalCard = ({children, step}: {children: React.ReactNode, step: Ste
 
 export default function AuthPage() {
   const router = useRouter();
-  const { sendOTP, verifyOTP, loading, error, setPhoneNumber, getCurrentUser } =
+  const { sendOTP, verifyOTP, firebaseUserData, loading, error, setPhoneNumber, getCurrentUser } =
     useAuthStore();
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<Step>("phone");
@@ -94,7 +94,7 @@ export default function AuthPage() {
         if (!user) {
           throw new Error("No se pudo obtener el usuario actual");
         }
-  
+
         const userData = await getUserById(user.uid);
         console.log("Datos del usuario:", userData);
         if (userData && userData.firstName && userData.lastName) {

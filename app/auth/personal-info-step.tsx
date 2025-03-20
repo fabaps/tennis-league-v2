@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { motion } from "framer-motion"
 import { User2, Mail } from "lucide-react"
-
+import { getCurrentUser } from "@/firebase/auth";
 interface PersonalInfoStepProps {
   onSubmit: (data: { firstName: string; lastName: string; email: string; gender: string }) => void
 }
@@ -22,6 +22,16 @@ export default function PersonalInfoStep({ onSubmit }: PersonalInfoStepProps) {
     e.preventDefault()
     onSubmit({ firstName: firstName.trim(), lastName: lastName.trim(), email: email.trim(), gender })
   }
+
+  useEffect(() => {
+    const user = getCurrentUser();
+    if (user) {
+      // setFirstName(user.firstName || "");
+      // setLastName(user.lastName || "");
+      setEmail(user.email || "");
+      // setGender(user.gender || "");
+    }
+  }, []);
 
   return (
     <motion.form
