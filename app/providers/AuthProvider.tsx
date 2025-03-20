@@ -3,6 +3,7 @@ import { auth } from "@/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useAuthStore } from "@/store/useAuth";
 import { usePathname, useRouter } from "next/navigation";
+import GTLLoader from "../components/GTLLoader";
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const { fetchCurrentUserData } = useAuthStore();
@@ -29,7 +30,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   }
 
   if (loading) {
-    return <div>Cargando...</div>; // Mostrar cargando mientras se verifica
+    return <GTLLoader />; // Mostrar cargando mientras se verifica
   }
 
   if (!currentUser) {

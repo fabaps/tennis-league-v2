@@ -158,7 +158,7 @@ export default function AuthPage() {
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         >
           <source
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Recording%202025-02-11%20212348-kqZhk5R8tu6H9qyXyU7JF21YuXbDtW.mp4"
+            src="/authvideo.mov"
             type="video/mp4"
           />
           Your browser does not support the video tag.
