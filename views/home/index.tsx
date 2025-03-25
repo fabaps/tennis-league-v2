@@ -7,7 +7,7 @@ import Logo from "@/components/logo";
 import Background from "@/components/ui/background";
 import { Button } from "@/components/ui/button";
 import { PRESS_ANY_KEY_TO_START, SOUNDS } from "@/config";
-import { play8BitSound } from "@/sounds";
+import { playStartSound } from "@/sounds";
 import View from "@/components/layout/view";
 import ROUTES from "@/routes";
 
@@ -15,12 +15,15 @@ const HomeView: React.FC = () => {
   const router = useRouter();
 
   const handleContinue = useCallback(() => {
-    console.log({SOUNDS})
-    if (Number(SOUNDS)) {
-      play8BitSound();
+    try {
+      if (Number(SOUNDS)) {
+        playStartSound();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      router.push(ROUTES.LEADERBOARD);
     }
-
-    router.push(ROUTES.LEADERBOARD);
   }, [router]);
 
   useEffect(() => {
