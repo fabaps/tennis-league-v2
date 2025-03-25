@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { sfxr } from "jsfxr";
+import * as jsfxr from "jsfxr";
 
 const start_sound_1 =
   "11111AcTyGgajXPUacYcaT52cE6dh7dQdFjJkq6K3WW1vSQLxTDZ7yXgaJSsrT1Nvn3FsYD72VsNgkEjnxC7cHAqoKuaNb11sov6uh9KhQx33Qg5L8UJqxW3";
@@ -22,9 +22,9 @@ export const playStartSound = () => {
       ? start_sound_2
       : start_sound_3;
 
-  sfxr.toAudio(randomSound).play();
+  jsfxr.sfxr.toAudio(randomSound).play();
 };
 
 export const playPickCoinSound = () => {
-  sfxr.toAudio(pick_coin_1).play();
+  jsfxr.sfxr.toAudio(pick_coin_1).play();
 };
