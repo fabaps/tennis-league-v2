@@ -15,6 +15,7 @@ const HomeView: React.FC = () => {
   const router = useRouter();
 
   const handleContinue = useCallback(() => {
+    console.log({SOUNDS})
     if (Number(SOUNDS)) {
       play8BitSound();
     }

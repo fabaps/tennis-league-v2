@@ -1,19 +1,29 @@
 import { formatCurrency, trimWallet } from "@/lib/utils";
+import ROUTES from "@/routes";
 import { Rank } from "@/types/rank";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface PodiumProps {
   data?: Rank[] | null;
 }
 const Podium: React.FC<PodiumProps> = ({ data }) => {
+  const navigation = useRouter();
+
+  const goToProfile = (wallet?: string) => () =>
+    navigation.push(`${ROUTES.PROFILE}/${wallet}`);
+
   const top1 = data?.[0];
   const top2 = data?.[1];
   const top3 = data?.[2];
 
   return (
     <div className="flex flex-col items-center animate-fade-up animate-delay-[200ms] bg-[url(/images/podium.png)] w-[400px] sm:w-[500px] h-[300px] bg-contain bg-center bg-no-repeat mt-25">
-      <div className="absolute bottom-30 left-6 sm:left-12 flex flex-col items-center justify-center gap-7 sm:gap-10">
+      <div
+        className="absolute bottom-30 left-6 sm:left-12 flex flex-col items-center justify-center gap-7 sm:gap-10 cursor-pointer"
+        onClick={goToProfile(top1?.wallet_address)}
+      >
         <div className="flex flex-col items-center justify-center gap-2 animate-fade-down hover:translate-y-[-10px] transition-transform animate-delay-[1300ms]">
           <div className="border-2 w-[100px] h-[100px] bg-black/40 overflow-hidden rounded-full flex flex-col items-center justify-center">
             <Image
@@ -39,7 +49,10 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
         </p>
       </div>
 
-      <div className="absolute w-[100px] sm:top-[-85px] top-[-65px] left-38 sm:left-50 flex flex-col items-center justify-center gap-12">
+      <div
+        className="absolute w-[100px] sm:top-[-85px] top-[-65px] left-38 sm:left-50 flex flex-col items-center justify-center gap-12 cursor-pointer"
+        onClick={goToProfile(top1?.wallet_address)}
+      >
         <div className="flex flex-col items-center justify-center gap-2 animate-fade-down hover:translate-y-[-10px] transition-transform animate-delay-[1600ms]">
           <div className="border-2 w-[100px] h-[100px] bg-black/40 overflow-hidden rounded-full flex flex-col items-center justify-center">
             <Image
@@ -65,7 +78,10 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
         </p>
       </div>
 
-      <div className="absolute bottom-30 right-6 sm:right-12 flex flex-col items-center justify-center gap-7 sm:gap-10">
+      <div
+        className="absolute bottom-30 right-6 sm:right-12 flex flex-col items-center justify-center gap-7 sm:gap-10 cursor-pointer"
+        onClick={goToProfile(top1?.wallet_address)}
+      >
         <div className="flex flex-col items-center justify-center gap-2 animate-fade-down hover:translate-y-[-10px] transition-transform animate-delay-[1000ms]">
           <div className="border-2 w-[100px] h-[100px] bg-black/40 overflow-hidden rounded-full flex flex-col items-center justify-center">
             <Image
