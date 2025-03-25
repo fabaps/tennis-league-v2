@@ -20,13 +20,15 @@ const Environment: React.FC = () => {
     setRandomBacks([randomBack1, randomBack2, randomBack3, randomBack4]);
   }, []);
 
+  const isMotionBackground = Number(MOTION_BACKGROUND) === 1;
+
   if (randomBacks.length === 0) return null;
 
   return (
     <div className="fixed top-0 left-0 z-1 min-h-screen w-full">
       <div
         style={{
-          animation: !MOTION_BACKGROUND
+          animation: !isMotionBackground
             ? ""
             : "scale 180s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[0]}/layer1.png)`,
@@ -35,7 +37,7 @@ const Environment: React.FC = () => {
       ></div>
       <div
         style={{
-          animation: !MOTION_BACKGROUND
+          animation: !isMotionBackground
             ? ""
             : "scale 150s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[1]}/layer2.png)`,
@@ -44,7 +46,7 @@ const Environment: React.FC = () => {
       ></div>
       <div
         style={{
-          animation: !MOTION_BACKGROUND
+          animation: !isMotionBackground
             ? ""
             : "scale 90s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[2]}/layer3.png)`,
@@ -53,7 +55,7 @@ const Environment: React.FC = () => {
       ></div>
       <div
         style={{
-          animation: !MOTION_BACKGROUND
+          animation: !isMotionBackground
             ? ""
             : "scale 50s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[3]}/layer4.png)`,

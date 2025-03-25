@@ -10,13 +10,13 @@ import ROUTES from "@/routes";
 const ProfileCard: React.FC = () => {
   const navigation = useRouter();
   const searchParams = useSearchParams();
-  const { wallet, rank } = useContext(UserContext);
+  const { rank } = useContext(UserContext);
 
   const search = searchParams.get("search");
 
   const isSearchOpen = (search?.length ?? -1) >= 0;
 
-  const goToProfile = () => navigation.push(`${ROUTES.PROFILE}/${wallet}`);
+  const goToProfile = () => navigation.push(`${ROUTES.PROFILE}/${rank?.wallet_address}`);
 
   if (isSearchOpen) return null;
 

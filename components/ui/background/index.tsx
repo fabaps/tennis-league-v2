@@ -13,7 +13,7 @@ const Background: React.FC<BackgroundProps> = ({ bDir = "b", extraShadow }) => {
   const bgGradient = bg_gradient_to_$[bDir];
   const alternateBg = bDir === "t" ? "bg-gradient-to-b" : "bg-gradient-to-t";
 
-  if (!GENERATIVE_BACKGROUND) return null;
+  if (!Number(GENERATIVE_BACKGROUND)) return null;
 
   return (
     <>

@@ -15,7 +15,7 @@ const HomeView: React.FC = () => {
   const router = useRouter();
 
   const handleContinue = useCallback(() => {
-    if (SOUNDS) {
+    if (Number(SOUNDS)) {
       play8BitSound();
     }
 
@@ -23,7 +23,7 @@ const HomeView: React.FC = () => {
   }, [router]);
 
   useEffect(() => {
-    if (PRESS_ANY_KEY_TO_START)
+    if (Number(PRESS_ANY_KEY_TO_START))
       window.addEventListener("keydown", handleContinue);
 
     return () => {

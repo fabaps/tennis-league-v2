@@ -1,12 +1,14 @@
 "use client";
 import {
+  ArrowLeftToLine,
   BadgeDollarSign,
   ChartSpline,
   CircleDollarSign,
-  ArrowLeftToLine,
+  Loader2,
   Trophy,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { TwitterShareButton } from "react-share";
 
@@ -15,20 +17,21 @@ import Background from "@/components/ui/background";
 import { Button } from "@/components/ui/button";
 import { SHARE_DOMAIN } from "@/config";
 import { useUserRank } from "@/hooks/rank";
+import { useCurrentWalletAddress } from "@/hooks/wallet";
 import { formatCurrency, trimWallet } from "@/lib/utils";
+import ROUTES from "@/routes";
 
 import StatItem from "./components/statItem";
+import { useUpdateWallet } from "./hooks";
 import getOGTitle from "./tools";
-import { useCurrentWalletAddress } from "@/hooks/wallet";
-import Link from "next/link";
-import ROUTES from "@/routes";
 
 interface ProfileViewProps {
   wallet?: string | null;
 }
 const ProfileView: React.FC<ProfileViewProps> = ({ wallet }) => {
-  const { userRank } = useUserRank({ wallet });
+  const { userRank, setUserRank } = useUserRank({ wallet });
   const { wallet: currentWallet } = useCurrentWalletAddress();
+  const { loading, handler } = useUpdateWallet({ setUserRank });
 
   const profileURL = `${SHARE_DOMAIN}${ROUTES.PROFILE}/${wallet}`;
   const isTheSameUser = currentWallet === wallet;
@@ -92,7 +95,14 @@ const ProfileView: React.FC<ProfileViewProps> = ({ wallet }) => {
                   </TwitterShareButton>
 
                   {isTheSameUser && (
-                    <Button variant="outline">Update wallet</Button>
+                    <Button
+                      onClick={handler}
+                      variant="outline"
+                      disabled={loading}
+                    >
+                      {loading && <Loader2 className="animate-spin" />}
+                      Update wallet
+                    </Button>
                   )}
                 </div>
               </div>
