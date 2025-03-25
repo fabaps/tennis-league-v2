@@ -3,7 +3,6 @@
 import { formatCurrency, trimWallet } from "@/lib/utils";
 import { Rank } from "@/types/rank";
 import { ImageResponse } from "@vercel/og";
-import { Image } from "lucide-react";
 
 export const runtime = "edge";
 
