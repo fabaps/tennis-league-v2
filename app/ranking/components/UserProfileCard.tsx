@@ -41,7 +41,7 @@ export function UserProfileCard({
             </div>
             <div className="self-end flex justify-end items-center">
               <div className="flex flex-row items-center gap-4">
-        <p className="text-lg text-gray-600">GTL</p>
+        <p className="text-lg text-gray-600">GTR</p>
         <p className="text-2xl font-bold text-green-600 text-medium ">{user.utr}</p>
           </div>
             </div>
