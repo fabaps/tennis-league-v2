@@ -3,6 +3,7 @@
 import { formatCurrency, trimWallet } from "@/lib/utils";
 import { Rank } from "@/types/rank";
 import { ImageResponse } from "@vercel/og";
+import { Image } from "lucide-react";
 
 export const runtime = "edge";
 
@@ -69,10 +70,20 @@ export async function GET(request: Request) {
               tw="flex absolute h-full w-full bg-repeat-x bg-cover bg-center"
             ></div>
 
-            <div tw="flex absolute h-full w-full bg-black/20"></div>
+            <div tw="flex absolute h-full w-full bg-black/30"></div>
           </div>
 
-          <div tw="flex flex-col p-6 w-[900px] bg-black/50 border-2 rounded-lg tracking-wide border-white shadow-[0_0_5px_white,_inset_0_0_5px_white]">
+          <div tw="flex flex-col w-[250px] h-[250px] mt-[-70px] mb-[30px]">
+            <img
+              src={`${NEXT_PUBLIC_SHARE_DOMAIN}/images/logo.png`}
+              alt="MemeRank Logo"
+              width={250}
+              height={250}
+              tw="mt-8"
+            />
+          </div>
+
+          <div tw="flex flex-col p-6 w-[1100px] bg-black/50 border-2 rounded-lg tracking-wide border-white shadow-[0_0_5px_white,_inset_0_0_5px_white]">
             <div tw="flex flex-col sm:flex-row items-center w-[300px] h-[150px]">
               <div tw="flex rounded-full overflow-hidden border-2 border-white">
                 <img
@@ -85,7 +96,7 @@ export async function GET(request: Request) {
 
               <div tw="flex flex-col h-[150px] ml-6 mt-8">
                 <div tw="flex flex-col h-[50px]">
-                  <h1 tw="text-white text-xl">{trimWallet(wallet, 3)}</h1>
+                  <h1 tw="text-white text-[28px]">{trimWallet(wallet, 3)}</h1>
                   <p tw="text-white text-xs">
                     {`Last Update: ${new Date(
                       userData?.stat_date ?? 0
@@ -96,7 +107,7 @@ export async function GET(request: Request) {
             </div>
 
             <div tw="flex mt-6 w-full justify-between">
-              <div tw="flex flex-col bg-black/50 w-[200px] h-[110px] rounded-lg border-2 items-center justify-center border-[#00f3ff]">
+              <div tw="flex flex-col bg-black/50 w-[250px] h-[110px] rounded-lg border-2 items-center justify-center border-[#00f3ff]">
                 <div tw="flex flex-col mt-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -119,12 +130,12 @@ export async function GET(request: Request) {
                 </div>
 
                 <div tw="flex flex-col items-center">
-                  <p tw="text-white text-[10px]">Rank</p>
-                  <p tw="text-white mt-[-5px]">{`#${userData?.ranking}`}</p>
+                  <p tw="text-white text-[13px]">Rank</p>
+                  <p tw="text-white mt-[-5px] text-[20px]">{`#${userData?.ranking}`}</p>
                 </div>
               </div>
 
-              <div tw="flex flex-col bg-black/50 w-[200px] h-[110px] rounded-lg border-2 items-center justify-center border-white">
+              <div tw="flex flex-col bg-black/50 w-[250px] h-[110px] rounded-lg border-2 items-center justify-center border-white">
                 <div tw="flex flex-col mt-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,14 +155,14 @@ export async function GET(request: Request) {
                 </div>
 
                 <div tw="flex flex-col items-center">
-                  <p tw="text-white text-[10px]">Realized Gains</p>
-                  <p tw="text-white mt-[-5px]">
+                  <p tw="text-white text-[13px]">Realized Gains</p>
+                  <p tw="text-white mt-[-5px] text-[20px]">
                     {formatCurrency(userData?.total_realized_gains)}
                   </p>
                 </div>
               </div>
 
-              <div tw="flex flex-col bg-black/50 w-[200px] h-[110px] rounded-lg border-2 items-center justify-center border-white">
+              <div tw="flex flex-col bg-black/50 w-[250px] h-[110px] rounded-lg border-2 items-center justify-center border-white">
                 <div tw="flex flex-col mt-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -171,14 +182,14 @@ export async function GET(request: Request) {
                 </div>
 
                 <div tw="flex flex-col items-center">
-                  <p tw="text-white text-[10px]">Unrealized Gains</p>
-                  <p tw="text-white mt-[-5px]">
+                  <p tw="text-white text-[13px]">Unrealized Gains</p>
+                  <p tw="text-white mt-[-5px] text-[20px]">
                     {formatCurrency(userData?.total_unrealized_gains)}
                   </p>
                 </div>
               </div>
 
-              <div tw="flex flex-col bg-black/50 w-[200px] h-[110px] rounded-lg border-2 items-center justify-center border-white">
+              <div tw="flex flex-col bg-black/50 w-[250px] h-[110px] rounded-lg border-2 items-center justify-center border-white">
                 <div tw="flex flex-col mt-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -197,8 +208,8 @@ export async function GET(request: Request) {
                 </div>
 
                 <div tw="flex flex-col items-center">
-                  <p tw="text-white text-[10px]">PNL</p>
-                  <p tw="text-white mt-[-5px]">
+                  <p tw="text-white text-[13px]">PNL</p>
+                  <p tw="text-white mt-[-5px] text-[20px]">
                     {formatCurrency(userData?.total_pnl)}
                   </p>
                 </div>
