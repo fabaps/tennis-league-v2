@@ -1,4 +1,4 @@
-import { sfxr } from "@/lib/jsfxr/sfxr";
+import sfxr from "@/lib/jsfxr/sfxr";
 
 const start_sound_1 =
   "11111AcTyGgajXPUacYcaT52cE6dh7dQdFjJkq6K3WW1vSQLxTDZ7yXgaJSsrT1Nvn3FsYD72VsNgkEjnxC7cHAqoKuaNb11sov6uh9KhQx33Qg5L8UJqxW3";
