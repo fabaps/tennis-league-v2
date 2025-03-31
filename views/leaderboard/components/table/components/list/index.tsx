@@ -60,7 +60,7 @@ const List: React.FC<ListProps> = ({ data, hide }) => {
               Wallet
             </TableHead>
             <TableHead className="text-white px-6 uppercase underline">
-              Gains
+              PNL
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -112,7 +112,7 @@ const List: React.FC<ListProps> = ({ data, hide }) => {
                   </TableCell>
 
                   <TableCell className="px-6 py-3 text-white text-sm">
-                    {formatCurrency(entry.total_realized_gains)}
+                    {formatCurrency(entry.total_pnl)}
                   </TableCell>
                 </TableRow>
               );

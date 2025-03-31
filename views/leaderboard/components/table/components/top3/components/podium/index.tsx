@@ -39,7 +39,7 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
               {trimWallet(top2?.wallet_address)}
             </p>
             <p className="whitespace-nowrap text-sm text-white">
-              {formatCurrency(top2?.total_realized_gains)}
+              {formatCurrency(top2?.total_pnl)}
             </p>
           </div>
         </div>
@@ -68,7 +68,7 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
               {trimWallet(top1?.wallet_address)}
             </p>
             <p className="whitespace-nowrap text-sm text-white">
-              {formatCurrency(top1?.total_realized_gains)}
+              {formatCurrency(top1?.total_pnl)}
             </p>
           </div>
         </div>
@@ -98,7 +98,7 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
             </p>
             <p className="whitespace-nowrap text-sm text-white">
               {" "}
-              {formatCurrency(top3?.total_realized_gains)}
+              {formatCurrency(top3?.total_pnl)}
             </p>
           </div>
         </div>

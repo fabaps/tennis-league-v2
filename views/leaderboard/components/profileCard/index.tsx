@@ -54,7 +54,7 @@ const ProfileCard: React.FC = () => {
 
             <div className="flex flex-row items-center gap-1">
               <span className="text-white text-xs">
-                Gains: {formatCurrency(rank?.total_realized_gains)}
+                PNL: {formatCurrency(rank?.total_pnl)}
               </span>
             </div>
           </div>

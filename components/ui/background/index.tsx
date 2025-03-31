@@ -19,7 +19,7 @@ const Background: React.FC<BackgroundProps> = ({ bDir = "b", extraShadow }) => {
     <>
       <Environment />
 
-      <div className="h-dvh w-full fixed bottom-0 left-0 pointer-events-none opacity-35 z-10000">
+      <div className="h-[110vh] w-full fixed top-0 left-0 pointer-events-none opacity-35 z-10000">
         <svg
           height="100%"
           viewBox="0 0 1000 500"
@@ -39,12 +39,12 @@ const Background: React.FC<BackgroundProps> = ({ bDir = "b", extraShadow }) => {
       </div>
 
       <div
-        className={`animate-fade ${bgGradient} from-transparent to-[rgba(0,0,0,.7)] fixed z-2 h-dvh w-dvw top-0 left-0`}
+        className={`animate-fade ${bgGradient} from-transparent to-[rgba(0,0,0,.7)] fixed z-2 h-[110vh] w-full top-0 left-0`}
       />
 
       {extraShadow && (
         <div
-          className={`animate-fade ${alternateBg} from-transparent to-[rgba(0,0,0,.7)] fixed z-2 h-dvh w-dvw top-0 left-0`}
+          className={`animate-fade ${alternateBg} from-transparent to-[rgba(0,0,0,.7)] fixed z-2 h-[110vh] w-full top-0 left-0`}
         />
       )}
     </>
