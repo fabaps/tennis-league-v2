@@ -86,12 +86,17 @@ const List: React.FC<ListProps> = ({ data, hide }) => {
                   key={entry.user_stat_id}
                   onClick={goToProfile(entry.wallet_address)}
                   title={`View profile of ${entry.wallet_address.toString()}`}
-                  className={`${row_active_style[isActive ? "active" : "inactive"]} cursor-pointer`}
+                  className={`${
+                    row_active_style[isActive ? "active" : "inactive"]
+                  } cursor-pointer`}
                 >
                   <TableCell className="px-6 py-3 flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full overflow-hidden border border-white shadow-[0_0_5px_var(--primary  )]">
                       <Image
-                        src="/images/avatar/avatar3.png"
+                        src={
+                          entry.user_profile_picture ??
+                          "/images/avatar/avatar1.png"
+                        }
                         alt={`Rank ${entry.ranking} profile`}
                         width={32}
                         height={32}

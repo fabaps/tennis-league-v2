@@ -86,7 +86,10 @@ export async function GET(request: Request) {
             <div tw="flex flex-col sm:flex-row items-center w-[300px] h-[150px]">
               <div tw="flex rounded-full overflow-hidden border-2 border-white">
                 <img
-                  src={`${NEXT_PUBLIC_SHARE_DOMAIN}/images/avatar/avatar1.png`}
+                  src={
+                    userData?.user_profile_picture ??
+                    `${NEXT_PUBLIC_SHARE_DOMAIN}/images/avatar/avatar1.png`
+                  }
                   alt="Profile"
                   width={150}
                   height={150}
