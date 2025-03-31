@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
     <div className="fixed w-full h-[65px] top-0 z-4 justify-center flex backdrop-blur-xs">
       <div className="max-w-[1000px] px-6 w-full h-full flex flex-row justify-end bg-transparent gap-2 items-center">
         {/* SEARCH */}
-        <div className="flex items-center gap-2 rounded-lg pl-2">
+        <div className="flex items-center gap-2 rounded-lg">
           <button onClick={goToSearch}>
             {isSearchOpen ? (
               <CircleX color="white" />
@@ -65,8 +65,9 @@ const Navbar: React.FC = () => {
               borderWidth: isSearchOpen ? 2 : 0,
               paddingLeft: isSearchOpen ? "0.75rem" : 0,
               paddingRight: isSearchOpen ? "0.75rem" : 0,
-              width: isSearchOpen ? "200px" : "0px",
-              transition: "width 0.3s ease-in-out",
+              width: "100%",
+              maxWidth: isSearchOpen ? "200px" : "0px",
+              transition: "max-width 0.3s ease-in-out",
             }}
           />
         </div>

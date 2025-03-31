@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Rank } from "@/types/rank";
 import { getRanks, getUserRank } from "@/services/rank";
+import { UserContext } from "@/providers/user";
 
 export const useRanks = () => {
+  const { rank } = useContext(UserContext);
   const [rankData, setRankData] = useState<Rank[] | null | undefined>();
 
   const refresh = async () => {
@@ -11,9 +13,13 @@ export const useRanks = () => {
     setRankData(ranks ?? null);
   };
 
+  const userWallet = rank?.wallet_address
+  const userRanking = rank?.ranking
+  const trigger = `${userWallet}-${userRanking}`
+
   useEffect(() => {
     refresh();
-  }, []);
+  }, [trigger]);
 
   return {
     setRankData,

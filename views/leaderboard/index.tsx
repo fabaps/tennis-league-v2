@@ -12,12 +12,14 @@ const LeaderboardView: React.FC = () => {
       <Background bDir="t" extraShadow />
 
       <View>
-        <Logo
-          disableEntryAnimation
-          classNameContainer="animate-fade-down animate-delay-[0]"
-          classNameTop="w-70 h-24"
-          classNameBottom="w-70 h-50"
-        />
+        <div className="mt-5 sm:mt-[0]">
+          <Logo
+            disableEntryAnimation
+            classNameContainer="animate-fade-down animate-delay-[0]"
+            classNameTop="w-70 h-24"
+            classNameBottom="w-70 h-50"
+          />
+        </div>
 
         <ProfileCard />
 

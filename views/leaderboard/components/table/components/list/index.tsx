@@ -126,7 +126,7 @@ const List: React.FC<ListProps> = ({ data, hide }) => {
           {
             <span className="text-white text-xs">
               {hide
-                ? "Showing search results"
+                ? "Search results"
                 : showMore
                 ? "Showing all"
                 : "Showing top 10"}
