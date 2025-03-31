@@ -130,7 +130,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ wallet }) => {
               />
               <StatItem
                 title="Unrealized Gains"
-                value={formatCurrency(userRank?.total_realized_gains)}
+                value={formatCurrency(userRank?.total_unrealized_gains)}
                 icon={<BadgeDollarSign className="text-white" />}
               />
               <StatItem
