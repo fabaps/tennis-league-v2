@@ -22,12 +22,12 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
     <div className="flex flex-col items-center animate-fade-up animate-delay-[200ms] bg-[url(/images/podium.png)] w-[400px] sm:w-[500px] h-[300px] bg-contain bg-center bg-no-repeat mt-25">
       <div
         className="absolute bottom-30 left-6 sm:left-12 flex flex-col items-center justify-center gap-7 sm:gap-10 cursor-pointer"
-        onClick={goToProfile(top1?.wallet_address)}
+        onClick={goToProfile(top2?.wallet_address)}
       >
         <div className="flex flex-col items-center justify-center gap-2 animate-fade-down hover:translate-y-[-10px] transition-transform animate-delay-[1300ms]">
           <div className="border-2 w-[100px] h-[100px] bg-black/40 overflow-hidden rounded-full flex flex-col items-center justify-center">
             <Image
-              src="/images/avatar/avatar1.png"
+              src={top2?.user_profile_picture ?? "/images/avatar/avatar1.png"}
               width={200}
               height={200}
               alt="2td"
@@ -36,10 +36,10 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
 
           <div className="w-full flex flex-col items-center justify-center">
             <p className="text-[var(--primary)] text-xs">
-              {trimWallet(top1?.wallet_address)}
+              {trimWallet(top2?.wallet_address)}
             </p>
             <p className="whitespace-nowrap text-sm text-white">
-              {formatCurrency(top1?.total_realized_gains)}
+              {formatCurrency(top2?.total_realized_gains)}
             </p>
           </div>
         </div>
@@ -56,7 +56,7 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
         <div className="flex flex-col items-center justify-center gap-2 animate-fade-down hover:translate-y-[-10px] transition-transform animate-delay-[1600ms]">
           <div className="border-2 w-[100px] h-[100px] bg-black/40 overflow-hidden rounded-full flex flex-col items-center justify-center">
             <Image
-              src="/images/avatar/avatar4.png"
+              src={top1?.user_profile_picture ?? "/images/avatar/avatar1.png"}
               width={200}
               height={200}
               alt="1st"
@@ -65,10 +65,10 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
 
           <div className="w-full flex flex-col items-center justify-center">
             <p className="text-[var(--primary)] text-xs">
-              {trimWallet(top2?.wallet_address)}
+              {trimWallet(top1?.wallet_address)}
             </p>
             <p className="whitespace-nowrap text-sm text-white">
-              {formatCurrency(top2?.total_realized_gains)}
+              {formatCurrency(top1?.total_realized_gains)}
             </p>
           </div>
         </div>
@@ -80,12 +80,12 @@ const Podium: React.FC<PodiumProps> = ({ data }) => {
 
       <div
         className="absolute bottom-30 right-6 sm:right-12 flex flex-col items-center justify-center gap-7 sm:gap-10 cursor-pointer"
-        onClick={goToProfile(top1?.wallet_address)}
+        onClick={goToProfile(top3?.wallet_address)}
       >
         <div className="flex flex-col items-center justify-center gap-2 animate-fade-down hover:translate-y-[-10px] transition-transform animate-delay-[1000ms]">
           <div className="border-2 w-[100px] h-[100px] bg-black/40 overflow-hidden rounded-full flex flex-col items-center justify-center">
             <Image
-              src="/images/avatar/avatar2.png"
+              src={top3?.user_profile_picture ?? "/images/avatar/avatar1.png"}
               width={200}
               height={200}
               alt="3td"

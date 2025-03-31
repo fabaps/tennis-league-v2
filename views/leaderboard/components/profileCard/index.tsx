@@ -16,7 +16,8 @@ const ProfileCard: React.FC = () => {
 
   const isSearchOpen = (search?.length ?? -1) >= 0;
 
-  const goToProfile = () => navigation.push(`${ROUTES.PROFILE}/${rank?.wallet_address}`);
+  const goToProfile = () =>
+    navigation.push(`${ROUTES.PROFILE}/${rank?.wallet_address}`);
 
   if (isSearchOpen) return null;
 
@@ -30,7 +31,7 @@ const ProfileCard: React.FC = () => {
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-[0_0_15px_var(--primary)] flex-shrink-0">
           <Image
-            src="/images/avatar/avatar3.png"
+            src={rank?.user_profile_picture ?? "/images/avatar/avatar1.png"}
             alt={`profile_${rank?.wallet_address}`}
             width={64}
             height={64}
@@ -48,9 +49,7 @@ const ProfileCard: React.FC = () => {
           <div className="flex items-center gap-4">
             <div className="flex flex-row items-center gap-1">
               <Trophy className="w-4 h-4 text-[yellow]" />
-              <span className="text-white text-xs">
-                Rank: #{rank?.ranking}
-              </span>
+              <span className="text-white text-xs">Rank: #{rank?.ranking}</span>
             </div>
 
             <div className="flex flex-row items-center gap-1">

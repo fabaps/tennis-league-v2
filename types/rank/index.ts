@@ -8,4 +8,5 @@ export interface Rank {
   creation_date: string;
   ranking: number;
   wallet_address: string;
+  user_profile_picture?: string;
 }

@@ -53,7 +53,10 @@ const ProfileView: React.FC<ProfileViewProps> = ({ wallet }) => {
             <div className="flex flex-col sm:flex-row gap-6 items-center">
               <div className="rounded-full overflow-hidden border-2 border-white w-[150px] h-[150px]">
                 <Image
-                  src="/images/avatar/avatar1.png"
+                  src={
+                    userRank?.user_profile_picture ??
+                    "/images/avatar/avatar1.png"
+                  }
                   alt="Profile"
                   width={150}
                   height={150}

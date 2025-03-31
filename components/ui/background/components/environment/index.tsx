@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { MOTION_BACKGROUND } from "@/config";
+import { cn } from "@/lib/utils";
 
 const BACKGROUNDS = ["bg_1", "bg_2", "bg_3", "bg_4", "bg_5", "bg_6"];
 
@@ -25,7 +26,7 @@ const Environment: React.FC = () => {
   if (randomBacks.length === 0) return null;
 
   return (
-    <div className="fixed top-0 left-0 z-1 min-h-screen w-full">
+    <div className="fixed top-0 left-0 z-1 h-dvh w-full">
       <div
         style={{
           animation: !isMotionBackground
@@ -33,7 +34,10 @@ const Environment: React.FC = () => {
             : "scale 180s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[0]}/layer1.png)`,
         }}
-        className={`fixed h-full w-full bg-repeat-x bg-cover bg-center animate-fade animate-delay-[600ms]`}
+        className={cn(
+          "fixed h-[110vh] w-full bg-repeat-x bg-cover bg-center animate-fade",
+          "animate-delay-[600ms]"
+        )}
       ></div>
       <div
         style={{
@@ -42,7 +46,10 @@ const Environment: React.FC = () => {
             : "scale 150s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[1]}/layer2.png)`,
         }}
-        className={`fixed h-full w-full bg-repeat-x bg-cover bg-center animate-fade animate-delay-[400ms]`}
+        className={cn(
+          "fixed h-[110vh] w-full bg-repeat-x bg-cover bg-center animate-fade",
+          "animate-delay-[400ms]"
+        )}
       ></div>
       <div
         style={{
@@ -51,7 +58,10 @@ const Environment: React.FC = () => {
             : "scale 90s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[2]}/layer3.png)`,
         }}
-        className={`fixed h-full w-full bg-repeat-x bg-cover bg-center animate-fade animate-delay-[200ms]`}
+        className={cn(
+          "fixed h-[110vh] w-full bg-repeat-x bg-cover bg-center animate-fade",
+          "animate-delay-[200ms]"
+        )}
       ></div>
       <div
         style={{
@@ -60,7 +70,9 @@ const Environment: React.FC = () => {
             : "scale 50s ease-out alternate infinite",
           backgroundImage: `url(/images/${randomBacks[3]}/layer4.png)`,
         }}
-        className={`fixed h-full w-full bg-repeat-x bg-cover bg-center animate-fade`}
+        className={cn(
+          "fixed h-[110vh] w-full bg-repeat-x bg-cover bg-center animate-fade"
+        )}
       ></div>
     </div>
   );

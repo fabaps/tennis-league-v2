@@ -46,13 +46,11 @@ class FastBase64 {
 FastBase64.Init();
 
 class RIFFWAVE {
-  getAudio() {
-    return new Audio(this.dataURI);
-  }
-
-  data: number[];
   wav: number[];
+  data: number[];
   dataURI: string;
+  clipping: number;
+  buffer: number[];
   header: {
     chunkId: number[];
     chunkSize: number;
@@ -68,15 +66,13 @@ class RIFFWAVE {
     subChunk2Id: number[];
     subChunk2Size: number;
   };
-  clipping: number;
-  buffer: number[];
 
   constructor(data?: number[]) {
     this.data = [];
     this.wav = [];
+    this.buffer = [];
     this.dataURI = "";
     this.clipping = 0;
-    this.buffer = [];
 
     this.header = {
       chunkId: [0x52, 0x49, 0x46, 0x46],
@@ -99,6 +95,10 @@ class RIFFWAVE {
     }
   }
 
+  getAudio() {
+    return new Audio(this.dataURI);
+  }
+
   static u32ToArray(i: number) {
     return [i & 0xff, (i >> 8) & 0xff, (i >> 16) & 0xff, (i >> 24) & 0xff];
   }
@@ -114,8 +114,10 @@ class RIFFWAVE {
         this.header.numChannels *
         this.header.bitsPerSample) >>
       3;
+
     this.header.blockAlign =
       (this.header.numChannels * this.header.bitsPerSample) >> 3;
+
     this.header.subChunk2Size = this.data.length;
     this.header.chunkSize = 36 + this.header.subChunk2Size;
 
@@ -134,6 +136,7 @@ class RIFFWAVE {
       RIFFWAVE.u32ToArray(this.header.subChunk2Size),
       this.data
     );
+
     this.dataURI = "data:audio/wav;base64," + FastBase64.Encode(this.wav);
   }
 }
