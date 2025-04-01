@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { UserContext } from "@/providers/user";
 import { getUserRank } from "@/services/rank";
+import { isValidSolanaAddress } from "@/lib/utils";
 
 interface UseSubmitProps {
   callback?: (wallet: string) => void;
@@ -19,6 +20,8 @@ export const useEnterWallet = ({ callback, closeRef }: UseSubmitProps) => {
     e.preventDefault();
 
     if (walletAddress.length === 0) return;
+
+    if (!isValidSolanaAddress(walletAddress)) return;
 
     if (closeRef.current) closeRef.current.click();
 
