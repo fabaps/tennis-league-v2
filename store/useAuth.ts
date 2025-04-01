@@ -27,7 +27,7 @@ interface AuthState {
   setPhoneNumber: (phone: string) => void;
   sendOTP: (phone: string) => Promise<boolean>;
   verifyOTP: (code: string) => Promise<boolean>;
-  logout: () => Promise<boolean>;
+  logout: (callback: () => void) => Promise<boolean>;
   setError: (error: string | null) => void;
 }
 
@@ -129,7 +129,7 @@ export const useAuthStore = create<AuthState>()(
           throw error;
         }
       },
-      logout: async () => {
+      logout: async (callback: () => void) => {
         set({ loading: true, error: null });
         try {
           const result = await logoutUserFirebase();
@@ -140,6 +140,7 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             error: null
           });
+          callback();
           return result;
         } catch (error: any) {
           set({ 
