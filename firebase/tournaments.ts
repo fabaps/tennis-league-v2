@@ -1,8 +1,16 @@
 import { Torneo } from "@/app/torneos/types";
 import { db } from "@/config";
 import { collection, DocumentData, getDocs, QuerySnapshot, Timestamp } from "firebase/firestore";
+/**
+   * Formatea una Timestamp de Firebase en una cadena de fecha en formato dd de MMMM [de] yyyy [a las hh:mm]
+   * @param timestamp Timestamp de Firebase
+   * @param showTime Mostrar hora en el formato de salida
+   * @param showYear Mostrar año en el formato de salida (opcional, por defecto true)
+   */
 
-export function formatFirebaseTimestamp(timestamp: Timestamp, showTime = false) {
+export function formatFirebaseTimestamp(timestamp: Timestamp, showTime = false, showYear = true) {
+
+  
   
   if (!timestamp || !timestamp.seconds || !timestamp.nanoseconds) {
       return "Fecha inválida";
@@ -14,7 +22,7 @@ export function formatFirebaseTimestamp(timestamp: Timestamp, showTime = false) 
     const formattedDate = date.toLocaleDateString("es-ES", {
       day: "numeric",
       month: "long",
-      year: "numeric",
+      year: showYear ? "numeric" : undefined,
     });
   
     if (showTime) {
