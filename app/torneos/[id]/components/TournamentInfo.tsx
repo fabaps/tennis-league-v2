@@ -33,7 +33,7 @@ export const TournamentInfo = ({ tournament }: { tournament: Tournament }) => (
               <div key={index} className="bg-gray-50 p-3 rounded-lg">
                 <div className="flex justify-between">
                   <span className="font-medium">{etapa.name}</span>
-                  <span className="text-green-600">{formatFirebaseTimestamp(etapa.date)}</span>
+                  <span className="text-green-600 text-sm">Hasta {formatFirebaseTimestamp(etapa.date, false, false)}</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">{etapa.note}</p>
               </div>

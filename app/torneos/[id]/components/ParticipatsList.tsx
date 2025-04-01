@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from 'react';
 import {Users } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,16 +11,19 @@ import { CATEGORIES } from "@/app/ranking/utils/categories"
 import { Tournament } from "../../types"
 
 
- export const ParticipatsList = ({ tournament }: { tournament: Tournament }) => (
+ export const ParticipatsList = ({ tournament }: { tournament: Tournament }) => {
+  const [activeTab, setActiveTab] = useState('MAYOR');
+
+  return (
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Participantes por Categoría</CardTitle>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="MAYOR" className="w-full">
-          <TabsList className="grid grid-cols-5 mb-4">
+        <Tabs defaultValue="MAYOR" onValueChange={setActiveTab} className="w-full">
+          <TabsList className="flex mb-4 gap-2">
             {CATEGORIES.map((cat) => (
-              <TabsTrigger key={cat} value={cat}>
+              <TabsTrigger key={cat} value={cat} className={`!px-6 whitespace-nowrap overflow-hidden text-ellipsis ${activeTab === cat ? '!bg-green-600 !text-white font-bold rounded ' : 'text-gray-500'} ${cat.toUpperCase() === 'MAYOR' ? '!text-xs' : ''}`}>
                 {cat}
               </TabsTrigger>
             ))}
@@ -65,3 +69,4 @@ import { Tournament } from "../../types"
       </CardContent>
     </Card>
   )
+}

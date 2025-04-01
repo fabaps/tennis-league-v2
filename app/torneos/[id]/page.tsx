@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Calendar, Clock, ChevronLeft, Share2, Info, Users } from "lucide-react"
@@ -34,7 +34,7 @@ export default function DetalleTorneoPage() {
 
   const { users } = useUsersStore()
 
-  const { tournaments } = useTournamentStore()
+  const { tournaments, fetchTournaments} = useTournamentStore()
     console.log("tournaments    ", tournaments)
     const addUserInfoToTournament = (tournament: Torneo, users: User[]): Tournament => {
         
@@ -43,6 +43,14 @@ export default function DetalleTorneoPage() {
         registeredPlayers: tournament?.registeredPlayers.map((userId) => users.find((u) => u.id === userId)).filter(Boolean) as User[],
       }
     }
+
+
+
+  
+    useEffect(() => {
+      fetchTournaments()
+    }, [])
+
 
     const tournamentData = addUserInfoToTournament(tournaments.find((t) => t.id === id) as Torneo, users)
 
@@ -68,15 +76,15 @@ export default function DetalleTorneoPage() {
         <HeaderTournament tournament={torneo} />
         <Tabs defaultValue="informacion" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="informacion">Información</TabsTrigger>
-            <TabsTrigger value="participantes">Participantes</TabsTrigger>
+          <TabsTrigger value="informacion" className={`${activeTab === 'informacion' ? '!bg-green-600 !text-white font-bold' : 'text-gray-500'}`}>Información</TabsTrigger> 
+          <TabsTrigger value="participantes" className={`${activeTab === 'participantes' ? '!bg-green-600 !text-white font-bold' : 'text-gray-500'}`}>Participantes</TabsTrigger>
           </TabsList>
           <TabsContent value="informacion" className="mt-4">
             <TournamentInfo tournament={tournamentData} />
           </TabsContent>
           <TabsContent value="participantes" className="mt-4">
             <ParticipatsList tournament={tournamentData} />
-          </TabsContent>
+          </TabsContent>  
         </Tabs>
       </main>
     </div>

@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-
 import { TournamentCard } from "./[id]/components/TournamentCard";
 import Header from "../components/Header";
 import { useTournamentStore } from "@/store/useTournamentStore";
 
 
 const TorneosPage = () => {
-  const {tournaments} = useTournamentStore()
+  const {tournaments} = useTournamentStore((state) => state)
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <Header title="Torneos" />
