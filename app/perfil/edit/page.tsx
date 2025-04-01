@@ -14,6 +14,8 @@ import { createOrUpdateUser, uploadUserPhoto } from "@/firebase/users";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/user";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import PhoneInput from 'react-phone-input-2';
+import "react-phone-input-2/lib/style.css";
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -75,6 +77,7 @@ export default function EditProfilePage() {
         lastName: formData.lastName,
         email: formData.email,
         name: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone,
         photo: photoUrl, // Incluir la URL de la foto (nueva o existente)
       });
 
@@ -186,15 +189,39 @@ export default function EditProfilePage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Número de Teléfono</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    value={formData?.phone || ""}
-                    disabled
-                    className="bg-gray-100"
+                <div>
+                  <Label
+                    htmlFor="phone"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Número de Teléfono
+                  </Label>
+                  <PhoneInput
+                    country={'gt'}
+                    value={formData?.phone || ''}
+                    onChange={(phone) => setFormData((prevState) => {
+                      if (!prevState) return null;
+                      return {
+                        ...prevState,
+                        phone: phone,
+                      };
+                    })}
+                    inputProps={{
+                      name: "phone",
+                      required: true,
+                      autoFocus: true,
+                    }}
+                    containerClass="mt-1 w-full"
+                    inputClass="!w-full !h-[42px] !text-base !pl-[52px] border border-gray-200 rounded-md focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    buttonClass="!w-[42px] !h-[42px] !border-r-0 !border-gray-200 hover:!bg-gray-50"
+                    dropdownClass="!bg-white"
+                    disableDropdown
+                    enableSearch={false}
+                    countryCodeEditable={false}
                   />
+                  {/* <p className="text-sm text-gray-500 mt-1">
+                    Ingresa tu número sin guiones ni espacios
+                  </p> */}
                 </div>
 
                 <div className="space-y-2">

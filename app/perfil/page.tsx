@@ -5,10 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuth";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { useEffect } from "react";
+import { useTournamentStore } from "@/store/useTournamentStore";
 
 export default function PerfilPage() {
   const router = useRouter();
   const { currentUser, isAuthenticated, loading, logout } = useAuthStore(
+    (state) => state
+  );
+  const {  clearTournaments } = useTournamentStore(
     (state) => state
   );
 
@@ -98,7 +102,9 @@ export default function PerfilPage() {
           <div className="text-center">
             <Button
               variant="outline"
-              onClick={() => logout()}
+              onClick={() => logout(() => {
+                clearTournaments();
+              })}
               className="text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-red-600 hover:border-red-100 font-medium transition-colors duration-200"
             >
               Cerrar sesión

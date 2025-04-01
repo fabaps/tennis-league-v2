@@ -1,14 +1,15 @@
 import { getAllUsers } from "@/firebase/users";
+import { User } from "@/types/user";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface User {
-  id: string;
-  name: string;
-  photo: string;
-  utr: number;
-  phone: string;
-}
+// export interface User {
+//   id: string;
+//   name: string;
+//   photo: string;
+//   utr: number;
+//   phone: string;
+// }
 
 interface UserStoreType {
   users: User[];

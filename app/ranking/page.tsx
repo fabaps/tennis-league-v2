@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import { RankingData } from "./utils/types";
 import { useAuthStore } from "@/store/useAuth";
 import { calculateRankingByUTR } from "@/utils/ranking";
+import { useTournamentStore } from "@/store/useTournamentStore";
 
 export default function RankingPage() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function RankingPage() {
     fetchUsers,
     users,
   } = useUsersStore((state) => state);
+  const {fetchTournaments} = useTournamentStore((state) => state)
   const { currentUser, fetchCurrentUserData } = useAuthStore((state) => state);
   const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
   const [isSearching, setIsSearching] = useState(false);
@@ -40,6 +42,7 @@ export default function RankingPage() {
     if (mounted) {
       fetchUsers();
       fetchCurrentUserData();
+      fetchTournaments();
     }
   }, [fetchUsers, fetchCurrentUserData, mounted]);
 
