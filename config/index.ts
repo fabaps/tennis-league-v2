@@ -7,4 +7,4 @@ export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://rank-meme-backend-production.up.railway.app/api";
 export const SHARE_DOMAIN =
-  process.env.NEXT_PUBLIC_SHARE_DOMAIN || "https://rank-meme-frontend.vercel.app";
+  process.env.NEXT_PUBLIC_SHARE_DOMAIN || "https://memearena.xyz";
