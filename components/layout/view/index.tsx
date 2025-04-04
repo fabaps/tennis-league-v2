@@ -6,16 +6,7 @@ interface ViewProps {
   children: React.ReactNode;
 }
 const View: React.FC<ViewProps> = ({ children, className }) => {
-  return (
-    <div
-      className={cn(
-        "flex flex-col z-3 items-center pb-20 pt-5 w-full max-w-[1000px] px-6",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn("flex", className)}>{children}</div>;
 };
 
 export default View;
