@@ -1,3 +1,4 @@
+import { User as UserFirebase } from "firebase/auth";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -8,10 +9,9 @@ import {
   verifyOTP as verifyOTPFirebase,
 } from "@/firebase/auth";
 import { getUserById } from "@/firebase/users";
-import { User as UserFirebase } from "firebase/auth";
-import { User } from "@/types/user";
-import { RankingData } from "@/types/ranking";
 import { getCategory } from "@/lib/category";
+import { RankingData } from "@/types/ranking";
+import { User } from "@/types/user";
 
 interface AuthState {
   loading: boolean;

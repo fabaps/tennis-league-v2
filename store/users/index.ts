@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { getAllUsers } from "@/firebase/users";
-import { User } from "@/types/user";
+import { getAllUsers } from '@/firebase/users';
+import { User } from '@/types/user';
 
 interface UserStoreType {
   users: User[];
