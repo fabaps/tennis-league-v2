@@ -34,7 +34,7 @@ const sfpro = localFont({
 
 export const metadata: Metadata = {
   title: "Liga de Tenis GT",
-  description: "Aplicación de la Liga de Tenis de Guatemala",
+  description: "Aplicación de la liga de tenis de Guatemala",
 };
 
 export const viewport: Viewport = {
@@ -47,6 +47,15 @@ export const viewport: Viewport = {
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <html lang="es">
+      <head>
+        <meta name="application-name" content="GTL" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+      </head>
+
       <body className={sfpro.className}>
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>

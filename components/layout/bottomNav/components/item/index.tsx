@@ -16,7 +16,7 @@ const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
       }`}
     >
       {icon}
-      <span className="text-xs">{label}</span>
+      <p className="text-sm font-regular">{label}</p>
     </Link>
   );
 };

@@ -13,7 +13,12 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
   return (
     <AuthProvider>
       <Header />
-      <main className="mt-14">{children}</main>
+      <main
+        className="mt-14"
+        style={{ height: "calc(100dvh - calc(var(--spacing) * 34))" }}
+      >
+        {children}
+      </main>
       <BottomNav />
     </AuthProvider>
   );

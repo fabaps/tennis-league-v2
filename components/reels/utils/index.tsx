@@ -63,9 +63,9 @@ const featureReels: FeatureReel[] = [
   },
   {
     icon: <Smartphone className="w-6 h-6 text-white" />,
-    title: "Próximamente en iOS y Android 🚀",
+    description: "Pronto en todas partes",
     badge: "Próximamente",
-    description: "",
+    title: "Disponible para iOS y Android 🚀",
     image: "/images/banner/app.jpg",
     showArrow: false,
     index: 6,
