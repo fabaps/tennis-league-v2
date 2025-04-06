@@ -18,8 +18,8 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
-export default app;
 export { db, auth, storage };
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const SHARE_DOMAIN = process.env.NEXT_PUBLIC_SHARE_DOMAIN;
+export default app;

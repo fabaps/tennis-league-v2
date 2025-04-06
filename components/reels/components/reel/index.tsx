@@ -1,6 +1,8 @@
 import React from "react";
 import { FeatureReel } from "../../types";
 import { ChevronDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface ReelProps {
   reel: FeatureReel;
@@ -42,12 +44,9 @@ const Reel: React.FC<ReelProps> = ({ reel, index, scrollToReel }) => {
             {reel.icon}
           </div>
 
-          <span
-            data-id={`reel-badge-${index}`}
-            className="bg-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full"
-          >
+          <Badge variant="default" className="bg-yellow-500 text-yellow-900">
             {reel.badge}
-          </span>
+          </Badge>
         </div>
 
         <div
@@ -72,13 +71,14 @@ const Reel: React.FC<ReelProps> = ({ reel, index, scrollToReel }) => {
             </div>
 
             {reel.showArrow && (
-              <button
+              <Button
+                variant="ghost"
                 aria-label="Ver más"
                 onClick={scrollToReel(reel.index)}
-                className="animate-bounce inline-block"
+                className="animate-bounce inline-block w-10 h-10"
               >
-                <ChevronDown className="w-7 h-7 text-white opacity-80" />
-              </button>
+                <ChevronDown className="text-white/80 size-5 ml-[-15px]" />
+              </Button>
             )}
           </div>
         </div>

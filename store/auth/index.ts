@@ -64,6 +64,7 @@ export const useAuthStore = create<AuthState>()(
         }
 
         set({ loading: true, error: null });
+
         try {
           const userData = await getUserById(firebaseUser.uid);
 

@@ -2,6 +2,8 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
+import { Button } from "../ui/button";
+
 interface HeroProps {
   scrollToReel: (reelIndex: number) => () => void;
 }
@@ -20,7 +22,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
       />
 
       <div
-        data-id="shadow"
+        data-id="hero-shadow"
         className="absolute inset-0 bg-gradient-to-t from-transparent via-black/70 to-transparent z-2"
       />
 
@@ -28,7 +30,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
         data-id="hero-content"
         className="h-full w-full flex items-center relative z-3"
       >
-        <div data-id="hero-body" className="flex w-full flex-col items-center justify-center space-y-8">
+        <div
+          data-id="hero-body"
+          className="flex w-full flex-col items-center justify-center space-y-8"
+        >
           <div data-id="hero-image" className="flex justify-center">
             <Image
               src="/images/logo.png"
@@ -49,13 +54,14 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
             </h1>
           </div>
 
-          <button
+          <Button
             onClick={scrollToReel(1)}
-            className="animate-bounce inline-block"
+            className="animate-bounce inline-block w-10 h-10"
             aria-label="Ver más"
+            variant="ghost"
           >
-            <ChevronDown className="w-8 h-8 text-white opacity-80" />
-          </button>
+            <ChevronDown className="text-white/80 size-5 ml-[-2px]" />
+          </Button>
         </div>
       </div>
     </div>

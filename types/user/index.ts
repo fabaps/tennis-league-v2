@@ -1,13 +1,18 @@
 export interface AuthUser {
   uid: string;
+  role: USER_ROLE;
   email: string;
-  provider: string;
   phone?: string;
-  picture?: string;
+  provider: string;
   gender: string;
+  picture?: string;
   lastName: string;
   firstName: string;
-  role: string;
+}
+
+export enum USER_ROLE {
+  ADMIN = "admin",
+  PLAYER = "player",
 }
 
 export interface RankingUser {
