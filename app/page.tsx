@@ -7,7 +7,6 @@
 // import React from "react"
 // import Header from "./components/Header"
 
-
 // export default function Home() {
 //   // Se inicializa con el día actual para que se muestre el día en curso
 //   const [selectedDay, setSelectedDay] = useState(new Date().getDate())
@@ -181,7 +180,6 @@
 //     ],
 //   }
 
-
 //   const events = allEvents[selectedDay] || []
 
 //   return (
@@ -354,63 +352,69 @@
 //             ))}
 //           </div>
 //           </div>
-          
+
 //         </div>
 //       </div>
 //     </div>
 //   )
 // }
 
+"use client";
 
+import type React from "react";
 
-"use client"
-
-import type React from "react"
-
-import { useState, useEffect, useRef } from "react"
-import { Trophy, BarChart3, ShoppingBag, Calendar, Smartphone, Users, ChevronDown } from "lucide-react"
-import Image from "next/image"
-import Header from "./components/Header"
+import { useState, useEffect, useRef } from "react";
+import {
+  Trophy,
+  BarChart3,
+  ShoppingBag,
+  Calendar,
+  Smartphone,
+  Users,
+  ChevronDown,
+} from "lucide-react";
+import Image from "next/image";
+import Header from "./components/Header";
 
 // Definición de tipos para los reels
 interface FeatureReel {
-  icon: React.ReactNode
-  title: string
-  badge: string
-  description: string
-  image: string
-  showArrow: boolean
-  index: number
-  customStyle?: boolean
+  icon: React.ReactNode;
+  title: string;
+  badge: string;
+  description: string;
+  image: string;
+  showArrow: boolean;
+  index: number;
+  customStyle?: boolean;
 }
 
 export default function Home() {
   // Estado para seguir qué reel está activo
-  const [activeReel, setActiveReel] = useState(0)
-  const reelsRef = useRef<HTMLDivElement>(null)
+  const [activeReel, setActiveReel] = useState(0);
+  const reelsRef = useRef<HTMLDivElement>(null);
 
   // Actualiza el reel activo basado en la posición de scroll
   useEffect(() => {
     const handleScroll = () => {
       if (reelsRef.current) {
-        const scrollPosition = window.scrollY
-        const reelHeight = window.innerHeight
-        const newActiveReel = Math.round(scrollPosition / reelHeight)
-        setActiveReel(newActiveReel)
+        const scrollPosition = window.scrollY;
+        const reelHeight = window.innerHeight;
+        const newActiveReel = Math.round(scrollPosition / reelHeight);
+        setActiveReel(newActiveReel);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Función para desplazarse a un reel específico
   const scrollToReel = (index: number) => {
     window.scrollTo({
       top: index * window.innerHeight,
       behavior: "smooth",
-    })
-  }
+    });
+  };
 
   // Datos de los reels de características
   const featureReels: FeatureReel[] = [
@@ -418,7 +422,8 @@ export default function Home() {
       icon: <Trophy className="w-6 h-6 text-white" />,
       title: "Torneos",
       badge: "Próximamente",
-      description: "Sigue el bracket en tiempo real, revisa resultados y conoce a tus próximos rivales.",
+      description:
+        "Sigue el bracket en tiempo real, revisa resultados y conoce a tus próximos rivales.",
       image:
         "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/24d70b5b-60cd-4f50-93ef-32a1835b5662.jpg-RW1YkNMJ76ivKjJS5GDaLXQd2S8R8L.jpeg",
       showArrow: true,
@@ -428,7 +433,8 @@ export default function Home() {
       icon: <BarChart3 className="w-6 h-6 text-white" />,
       title: "Estadísticas H2H",
       badge: "Próximamente",
-      description: "Compara tu historial contra cualquier rival y analiza tu rendimiento en la cancha.",
+      description:
+        "Compara tu historial contra cualquier rival y analiza tu rendimiento en la cancha.",
       image:
         "https://sjc.microlink.io/khEVcKgclc9W-Y-zj2AjchFt_pM3pXucOX6oP3zc-7WMUoBPd0OkfbSG1QfQZigGbPXpEizMBkWqgBooYek0jQ.jpeg",
       showArrow: true,
@@ -439,7 +445,8 @@ export default function Home() {
       icon: <ShoppingBag className="w-6 h-6 text-white" />,
       title: "Marketplace",
       badge: "Próximamente",
-      description: "Compra y vende artículos de tenis fácilmente dentro de la comunidad.",
+      description:
+        "Compra y vende artículos de tenis fácilmente dentro de la comunidad.",
       image:
         "https://sjc.microlink.io/8X-Px78mkMrVMSDk88uyKtsCUnNn2_juq4eOX1FNu5FPdJP7ZlHJlYKKWw9dXV3YH8OqXn9pQ1C_Ygae-2gp9A.jpeg",
       showArrow: true,
@@ -449,8 +456,10 @@ export default function Home() {
       icon: <Calendar className="w-6 h-6 text-white" />,
       title: "Reserva de Clases",
       badge: "Próximamente",
-      description: "Encuentra entrenadores, agenda sesiones y mejora tu juego sin complicaciones.",
-      image: "https://static.wixstatic.com/media/51662f_489bfeec364449d7b23e993a8cf5bdc1~mv2.jpg",
+      description:
+        "Encuentra entrenadores, agenda sesiones y mejora tu juego sin complicaciones.",
+      image:
+        "https://static.wixstatic.com/media/51662f_489bfeec364449d7b23e993a8cf5bdc1~mv2.jpg",
       showArrow: true,
       index: 4,
     },
@@ -458,7 +467,8 @@ export default function Home() {
       icon: <Users className="w-6 h-6 text-white" />,
       title: "Comunidad GTL",
       badge: "Próximamente",
-      description: "Conéctate con jugadores, organiza partidos y sé parte del tenis en un solo lugar.",
+      description:
+        "Conéctate con jugadores, organiza partidos y sé parte del tenis en un solo lugar.",
       image:
         "https://static.wixstatic.com/media/51662f_57da0bc4b60949da82d306e823038e46~mv2.jpg?quality=lossless",
       showArrow: true,
@@ -469,11 +479,12 @@ export default function Home() {
       title: "Próximamente en iOS y Android 📲🎾",
       badge: "Próximamente",
       description: "",
-      image: "https://static.wixstatic.com/media/51662f_beac399fa642444eadbfe295b8ece461~mv2.jpg",
+      image:
+        "https://static.wixstatic.com/media/51662f_beac399fa642444eadbfe295b8ece461~mv2.jpg",
       showArrow: false,
       index: 6,
     },
-  ]
+  ];
 
   return (
     <div className="bg-black text-white">
@@ -481,7 +492,10 @@ export default function Home() {
       <Header isHomePage={true} />
 
       {/* Contenedor principal de reels con scroll snap */}
-      <div ref={reelsRef} className="snap-y snap-mandatory h-screen overflow-y-scroll scrollbar-hide">
+      <div
+        ref={reelsRef}
+        className="snap-y snap-mandatory h-screen overflow-y-scroll scrollbar-hide"
+      >
         {/* Reel de introducción */}
         <div className="h-screen w-full snap-start relative overflow-hidden">
           {/* Imagen de fondo */}
@@ -510,13 +524,19 @@ export default function Home() {
               </div>
 
               {/* Título y subtítulo */}
-              <h1 className="text-2xl font-bold mb-2 text-white">Lo que se viene en la</h1>
+              <h1 className="text-2xl font-bold mb-2 text-white">
+                Lo que se viene en la
+              </h1>
               <h2 className="text-3xl font-extrabold mb-6 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
                 GTL
               </h2>
 
               {/* Flecha animada para indicar scroll */}
-              <button onClick={() => scrollToReel(1)} className="animate-bounce inline-block" aria-label="Ver más">
+              <button
+                onClick={() => scrollToReel(1)}
+                className="animate-bounce inline-block"
+                aria-label="Ver más"
+              >
                 <ChevronDown className="w-8 h-8 text-white opacity-80" />
               </button>
             </div>
@@ -525,7 +545,10 @@ export default function Home() {
 
         {/* Reels de características */}
         {featureReels.map((reel, index) => (
-          <div key={index} className="h-screen w-full snap-start relative overflow-hidden">
+          <div
+            key={index}
+            className="h-screen w-full snap-start relative overflow-hidden"
+          >
             {/* Imagen de fondo y overlay */}
             <div
               className="absolute inset-0 bg-cover bg-center"
@@ -552,7 +575,9 @@ export default function Home() {
                 <div className="max-w-md">
                   <h2 className="text-3xl font-bold mb-4">{reel.title}</h2>
                   {reel.description && (
-                    <p className="text-white/90 text-base leading-relaxed mb-6">{reel.description}</p>
+                    <p className="text-white/90 text-base leading-relaxed mb-6">
+                      {reel.description}
+                    </p>
                   )}
 
                   {/* Flecha para navegar al siguiente reel */}
@@ -575,7 +600,5 @@ export default function Home() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-
-
