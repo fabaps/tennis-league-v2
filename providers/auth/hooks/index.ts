@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 
 import { createUserCookie } from "@/app/actions";
 import { auth } from "@/config";
-import ROUTES from "@/routes";
 import { useAuthStore } from "@/store/auth";
 import { USER_ROLE } from "@/types/user";
 
@@ -17,21 +16,14 @@ const useAuthChange = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setLoading(false);
+
       if (!user) {
-        router.push(ROUTES["AUTH"].path);
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
         return;
       }
 
       createUserCookie(USER_ROLE.PLAYER);
       fetchCurrentUserData();
-      router.push(ROUTES["HOME"].path);
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
     });
 
     return () => unsubscribe();

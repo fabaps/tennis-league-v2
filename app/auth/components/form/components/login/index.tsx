@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 import useGoogleLogin from "./hooks";
+import { Spinner } from "@/components/ui/spinner";
 
 const Login: React.FC = () => {
-  const { handler: googleHandler } = useGoogleLogin();
+  const { handler: googleHandler, loading } = useGoogleLogin();
 
   return (
     <div data-id="login" className="h-full w-full relative">
@@ -38,15 +39,19 @@ const Login: React.FC = () => {
           <h1 className="text-2xl text-white font-bold">Bienvenido a la GTL</h1>
         </div>
 
-        <Button onClick={googleHandler} variant="white">
-          <Image
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            alt="Google"
-            width={20}
-            height={20}
-          />
-          Entrar con Google
-        </Button>
+        {loading ? (
+          <Spinner show size="medium" className="text-white" />
+        ) : (
+          <Button onClick={googleHandler} variant="white">
+            <Image
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
+              width={20}
+              height={20}
+            />
+            Entrar con Google
+          </Button>
+        )}
       </div>
     </div>
   );

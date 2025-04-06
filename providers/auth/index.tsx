@@ -1,7 +1,6 @@
 import { createContext, useState } from "react";
 
 import { LOGIN_STEP } from "@/app/auth/components/form/utils";
-import GTLLoader from "@/components/gtlLoader";
 
 import useAuthChange from "./hooks";
 
@@ -29,11 +28,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [category, setCategory] = useState<string>("");
   const [ranking, setRanking] = useState<number>(0);
   const [step, setStep] = useState<LOGIN_STEP>(LOGIN_STEP.START);
-  const { loading } = useAuthChange();
-
-  if (loading) {
-    return <GTLLoader />;
-  }
+  useAuthChange();
 
   return (
     <AuthContext.Provider
