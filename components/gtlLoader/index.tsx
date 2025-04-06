@@ -19,7 +19,7 @@ const GTLLoader: React.FC = () => {
   }, [router]);
 
   return (
-    <div className="fixed inset-0 bg-[#245A4C] flex flex-col items-center justify-center min-h-screen">
+    <div className="fixed inset-0 bg-background flex flex-col items-center justify-center min-h-screen">
       <div className="flex flex-col items-center">
         <div className="mb-8">
           <Image
