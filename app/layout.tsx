@@ -1,14 +1,12 @@
 import type { Metadata, Viewport } from "next/types";
 import "./globals.css";
 
-import dynamic from "next/dynamic";
 import localFont from "next/font/local";
 
 import LayoutWrapper from "@/components/layout/wrapper";
+import Toaster from "@/components/ui/sonner";
 
 import type React from "react";
-const Toaster = dynamic(() => import("@/components/ui/sonner"));
-
 const sfpro = localFont({
   src: [
     {

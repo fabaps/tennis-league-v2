@@ -15,7 +15,9 @@ export const useShowWelcomeToast = () => {
         return;
       }
 
-      toast.success(`Bienvenido ${currentUser.name}`);
+      setTimeout(() => {
+        toast.success(`Bienvenido ${currentUser.name}`);
+      }, 500);
     }
   }, [currentUser]);
 };
