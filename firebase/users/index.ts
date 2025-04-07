@@ -29,7 +29,7 @@ export async function getAllUsers(): Promise<User[]> {
       users.push({
         id: doc.id,
         name: userData.name || "",
-        photo: userData.photo || "",
+        picture: userData.picture || "",
         utr: Number(userData.utr) || 0,
         phone: userData.phone || "",
         role: userData.role || USER_ROLE.PLAYER,
@@ -54,7 +54,7 @@ export async function getUserById(userId: string): Promise<User | null> {
     return {
       id: userDoc.id,
       name: userData.name || "",
-      photo: userData.photo || "",
+      picture: userData.picture || "",
       utr: Number(userData.utr) || 0,
       phone: userData.phone || "",
       role: userData.role || USER_ROLE.PLAYER,
@@ -81,9 +81,9 @@ export async function createOrUpdateUser(
     if (!userDoc.exists()) {
       await setDoc(userRef, {
         ...userData,
-        role: USER_ROLE.PLAYER,
+        utr: 0,
         points: 0,
-        ranking: 0,
+        role: USER_ROLE.PLAYER,
         createdAt: new Date().toISOString(),
       });
     } else {
@@ -99,17 +99,17 @@ export async function createOrUpdateUser(
   }
 }
 
-export const uploadUserPhoto = async (
+export const uploadUserPicture = async (
   userId: string,
   file: File
 ): Promise<string> => {
   try {
-    const storageRef = ref(storage, `users/${userId}/profile-photo`);
+    const storageRef = ref(storage, `users/${userId}/profile-picture`);
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
 
     await updateDoc(doc(db, "users", userId), {
-      photo: downloadURL,
+      picture: downloadURL,
       updatedAt: new Date().toISOString(),
     });
 

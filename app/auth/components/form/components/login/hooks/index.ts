@@ -11,7 +11,7 @@ import ROUTES from "@/routes";
 import { useState } from "react";
 
 const useGoogleLogin = () => {
-  const { setRanking, setCategory, setStep } = useAuthContext();
+  const { setUtr, setCategory, setStep } = useAuthContext();
   const { getCurrentUser } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -37,7 +37,7 @@ const useGoogleLogin = () => {
         return;
       }
 
-      setRanking(Number(userData.utr) || 0);
+      setUtr(Number(userData.utr) || 0);
       setCategory(userData.category || "");
       setStep(LOGIN_STEP.RESULT);
       router.push(ROUTES["HOME"].path);

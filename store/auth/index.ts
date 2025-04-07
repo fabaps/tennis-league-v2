@@ -77,7 +77,7 @@ export const useAuthStore = create<AuthState>()(
                 phone: userData.phone,
                 gender: userData.gender,
                 lastName: userData.lastName,
-                photo: userData.photo || "",
+                picture: userData.picture || "",
                 firstName: userData.firstName,
                 category: getCategory(userData),
                 email: (firebaseUser.email as string) || "",

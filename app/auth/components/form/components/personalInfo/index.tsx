@@ -36,18 +36,19 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
 
   return (
     <View data-id="personal-info" className="bg-primary">
-      <div className="bg-white rounded-md w-full p-5">
-        <div className="animate-fade flex flex-col space-y-5 h-max"> <div className="flex flex-col items-center justify-center">
+      <div className="bg-white rounded-lg w-full p-5">
+        <div className="animate-fade flex flex-col space-y-5 h-max">
+          <div className="flex flex-col items-center justify-center">
             <h1 className="text-primary text-2xl font-bold text-center">
               Bienvenido a la GTL
             </h1>
-            <p>Completa tus datos personales</p>
+            <p className="text-md text-gray-500">Completa tus datos personales</p>
           </div>
 
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-5 w-full"
+              className="space-y-7 w-full"
             >
               <FormField
                 control={form.control}
@@ -134,7 +135,7 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
                 }}
               />
 
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" variant='green'>
                 Continuar
               </Button>
             </form>

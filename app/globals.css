@@ -204,3 +204,16 @@ a {
     padding-bottom: calc(var(--spacing) * 6);
   }
 }
+
+@theme {
+  --color-green-50: #e9f7ec;
+  --color-green-100: #c8e9cf;
+  --color-green-200: #a6dbc1;
+  --color-green-300: #84cdb3;
+  --color-green-400: #62bf99;
+  --color-green-500: #4caf50;
+  --color-green-600: #3e8e44;
+  --color-green-700: #316d38;
+  --color-green-800: #254d2c;
+  --color-green-900: #192d20;
+}

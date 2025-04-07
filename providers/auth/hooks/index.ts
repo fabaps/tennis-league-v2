@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { onAuthStateChanged, User as UserFirebase } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import { USER_ROLE } from "@/types/user";
 
 import { AuthContext } from "../";
 import { LOGIN_STEP } from "@/app/auth/components/form/utils";
+import { createOrUpdateUser } from "@/firebase/users";
 
 interface UseAuthChangeProps {
   setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;
@@ -53,6 +55,34 @@ export const useAuthContext = () => {
     throw new Error("useAuthContext must be used within an AuthProvider");
   }
   return ctx;
+};
+
+export const useSendAndRedirect = () => {
+  const { step, personalInfo, category, utr } = useAuthContext();
+  const { getCurrentUser } = useAuthStore();
+
+  useEffect(() => {
+    const validateUser = async () => {
+      const isResult = step === LOGIN_STEP.RESULT;
+
+      if (isResult) {
+        const user = getCurrentUser();
+
+        if (!user) {
+          return;
+        }
+
+        createOrUpdateUser(user.uid, {
+          ...personalInfo,
+          category,
+          utr: Number(utr) || 0,
+          name: `${personalInfo.firstName} ${personalInfo.lastName}`,
+        });
+      }
+    };
+
+    validateUser();
+  }, [step]);
 };
 
 export default useAuthChange;

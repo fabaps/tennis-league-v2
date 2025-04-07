@@ -7,22 +7,22 @@ import { User } from "@/types/user";
 
 export interface AuthContextType {
   step: LOGIN_STEP;
-  ranking: number;
+  utr: number;
   category: string;
   personalInfo: Partial<User>;
   setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;
-  setRanking: React.Dispatch<React.SetStateAction<number>>;
+  setUtr: React.Dispatch<React.SetStateAction<number>>;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
   setPersonalInfo: React.Dispatch<React.SetStateAction<Partial<User>>>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   step: LOGIN_STEP.START,
-  ranking: 0,
+  utr: 0,
   category: "",
   personalInfo: {},
   setStep: () => {},
-  setRanking: () => {},
+  setUtr: () => {},
   setPersonalInfo: () => {},
   setCategory: () => {},
 });
@@ -31,7 +31,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [category, setCategory] = useState<string>("");
-  const [ranking, setRanking] = useState<number>(0);
+  const [utr, setUtr] = useState<number>(0);
   const [step, setStep] = useState<LOGIN_STEP>(LOGIN_STEP.START);
   const [personalInfo, setPersonalInfo] = useState<Partial<User>>({});
 
@@ -41,11 +41,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider
       value={{
         step,
-        ranking,
+        utr: utr,
         personalInfo,
         category,
         setStep,
-        setRanking,
+        setUtr,
         setPersonalInfo,
         setCategory,
       }}

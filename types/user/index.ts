@@ -1,14 +1,14 @@
 export interface AuthUser {
-  [index: string]: string | number | undefined | null;
+  [index: string]: string | number | undefined | null | boolean;
   uid: string;
-  role: USER_ROLE;
-  email: string;
+  email?: string;
   phone?: string;
+  role: USER_ROLE;
   provider: string;
-  gender?: "hombre" | "mujer";
   picture?: string;
-  lastName: string;
-  firstName: string;
+  lastName?: string;
+  firstName?: string;
+  gender?: "hombre" | "mujer";
 }
 
 export enum USER_ROLE {
@@ -18,12 +18,12 @@ export enum USER_ROLE {
 
 export interface RankingUser {
   [index: string]: string | number | undefined | null | boolean;
-  id: string;
-  utr: string | number;
-  name: string;
-  photo?: string;
-  category: string;
   isCurrentUser?: boolean;
+  utr: string | number;
+  picture?: string;
+  category: string;
+  name: string;
+  id: string;
 }
 
 export type User = Partial<AuthUser> & RankingUser;
