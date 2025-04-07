@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next/types";
 import "./globals.css";
 
+import dynamic from "next/dynamic";
 import localFont from "next/font/local";
 
 import LayoutWrapper from "@/components/layout/wrapper";
 
 import type React from "react";
-import { Toaster } from "@/components/ui/sonner";
+const Toaster = dynamic(() => import("@/components/ui/sonner"));
+
 const sfpro = localFont({
   src: [
     {
@@ -54,10 +56,12 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+        <link rel="preconnect" href="https://vercel.live" />
+        <link rel="preconnect" href="https://apis.google.com" />
       </head>
 
       <body className={sfpro.className}>
-        <Toaster mobileOffset={{ bottom: 'var(--sonner-bt)' }} />
+        <Toaster mobileOffset={{ bottom: "var(--sonner-bt)" }} />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
