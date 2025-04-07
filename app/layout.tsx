@@ -6,7 +6,7 @@ import localFont from "next/font/local";
 import LayoutWrapper from "@/components/layout/wrapper";
 
 import type React from "react";
-
+import { Toaster } from "@/components/ui/sonner";
 const sfpro = localFont({
   src: [
     {
@@ -57,6 +57,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </head>
 
       <body className={sfpro.className}>
+        <Toaster mobileOffset={{ bottom: 'var(--sonner-bt)' }} />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

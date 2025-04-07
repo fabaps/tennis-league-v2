@@ -4,9 +4,11 @@ import { Calendar, Home, Trophy, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import NavItem from "./components/item";
+import { useShowWelcomeToast } from "@/hooks/toast";
 
 const BottomNav: React.FC = () => {
   const pathname = usePathname();
+  useShowWelcomeToast();
 
   const isActive = (path: string) => pathname === path;
 
@@ -49,7 +51,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/ranking"
             label="Ranking"
-              className="animate-jump-in animate-delay-300"
+            className="animate-jump-in animate-delay-300"
             isActive={isActive("/ranking")}
             icon={
               <Calendar
@@ -63,7 +65,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/perfil"
             label="Perfil"
-              className="animate-jump-in animate-delay-400"
+            className="animate-jump-in animate-delay-400"
             isActive={isActive("/perfil")}
             icon={
               <User

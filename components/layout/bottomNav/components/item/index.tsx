@@ -21,7 +21,7 @@ const NavItem: React.FC<NavItemProps> = ({
       href={href}
       className={clsx(
         "flex flex-col space-y-1 items-center h-full justify-center",
-        isActive ? "text-green-600" : "text-green-700",
+        isActive ? "text-green-500" : "text-green-600",
         className
       )}
     >

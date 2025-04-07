@@ -4,14 +4,14 @@ import { onAuthStateChanged, User as UserFirebase } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
+import { LOGIN_STEP } from "@/app/auth/components/form/utils";
 import { auth } from "@/config";
+import { createOrUpdateUser } from "@/firebase/users";
+import ROUTES from "@/routes";
 import { useAuthStore } from "@/store/auth";
 import { USER_ROLE } from "@/types/user";
 
 import { AuthContext } from "../";
-import { LOGIN_STEP } from "@/app/auth/components/form/utils";
-import { createOrUpdateUser } from "@/firebase/users";
-import ROUTES from "@/routes";
 
 interface UseAuthChangeProps {
   setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;

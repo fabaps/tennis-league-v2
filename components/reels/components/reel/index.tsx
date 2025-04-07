@@ -75,7 +75,7 @@ const Reel: React.FC<ReelProps> = ({ reel, index, scrollToReel }) => {
                 variant="ghost"
                 aria-label="Ver más"
                 onClick={scrollToReel(reel.index)}
-                className="animate-bounce inline-block w-10 h-10 hover:bg-transparent"
+                className="animate-bounce animate-duration-800 inline-block w-10 h-10 hover:bg-transparent"
               >
                 <ChevronDown className="text-white/80 size-5 ml-[-15px]" />
               </Button>

@@ -34,7 +34,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
           data-id="hero-body"
           className="flex w-full flex-col items-center justify-center space-y-8"
         >
-          <div data-id="hero-image" className="flex justify-center animate-fade-right">
+          <div
+            data-id="hero-image"
+            className="flex justify-center animate-fade-right"
+          >
             <Image
               src="/images/logo.png"
               alt="GTL Logo"
@@ -44,7 +47,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
             />
           </div>
 
-          <div data-id="hero-text" className="flex flex-col items-center animate-fade animate-delay-200">
+          <div
+            data-id="hero-text"
+            className="flex flex-col items-center animate-fade animate-delay-200"
+          >
             <p className="text-lg font-regular text-white/80">
               Descubre lo que se viene en
             </p>
@@ -56,7 +62,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
 
           <Button
             onClick={scrollToReel(1)}
-            className="animate-bounce inline-block w-10 h-10 hover:bg-transparent"
+            className="animate-bounce animate-duration-800 inline-block w-10 h-10 hover:bg-transparent"
             aria-label="Ver más"
             variant="ghost"
           >

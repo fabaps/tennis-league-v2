@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
       <div
         data-id="login-container"
-        className="relative z-2 h-full w-full flex flex-col items-center justify-center space-y-4"
+        className="relative z-2 h-full w-full flex flex-col items-center justify-center space-y-4 animate-fade-down"
       >
         <div
           data-id="login-header"

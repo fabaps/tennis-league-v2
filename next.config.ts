@@ -4,7 +4,12 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000", "trj65tjl-3000.use.devtunnels.ms"],
+      allowedOrigins: [
+        "localhost:3000", 
+        "trj65tjl-3000.use.devtunnels.ms",
+        "dev.ligatenisgt.com",
+        "ligatenisgt.com",
+      ],
     },
   },
   images: {
