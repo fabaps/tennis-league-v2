@@ -16,7 +16,7 @@ const featureReels: FeatureReel[] = [
     badge: "Próximamente",
     description:
       "Sigue el bracket en tiempo real, revisa resultados y conoce a tus próximos rivales.",
-    image: "/images/banner/tournaments.jpg",
+    image: "/images/banner/tournaments.webp",
     showArrow: true,
     index: 1,
   },
@@ -26,7 +26,7 @@ const featureReels: FeatureReel[] = [
     badge: "Próximamente",
     description:
       "Compara tu historial contra cualquier rival y analiza tu rendimiento en la cancha.",
-    image: "/images/banner/analytics.jpg",
+    image: "/images/banner/analytics.webp",
     showArrow: true,
     index: 2,
     customStyle: true,
@@ -37,7 +37,7 @@ const featureReels: FeatureReel[] = [
     badge: "Próximamente",
     description:
       "Compra y vende artículos de tenis fácilmente dentro de la comunidad.",
-    image: "/images/banner/market.jpg",
+    image: "/images/banner/market.webp",
     showArrow: true,
     index: 3,
   },
@@ -47,7 +47,7 @@ const featureReels: FeatureReel[] = [
     badge: "Próximamente",
     description:
       "Encuentra entrenadores, agenda sesiones y mejora tu juego sin complicaciones.",
-    image: "/images/banner/calendar.jpg",
+    image: "/images/banner/calendar.webp",
     showArrow: true,
     index: 4,
   },
@@ -57,7 +57,7 @@ const featureReels: FeatureReel[] = [
     badge: "Próximamente",
     description:
       "Conéctate con jugadores, organiza partidos y sé parte del tenis en un solo lugar.",
-    image: "/images/banner/community.jpg",
+    image: "/images/banner/community.webp",
     showArrow: true,
     index: 5,
   },
@@ -66,7 +66,7 @@ const featureReels: FeatureReel[] = [
     description: "Pronto en todas partes",
     badge: "Próximamente",
     title: "Disponible para iOS y Android 🚀",
-    image: "/images/banner/app.jpg",
+    image: "/images/banner/app.webp",
     showArrow: false,
     index: 6,
   },

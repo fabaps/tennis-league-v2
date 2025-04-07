@@ -17,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToReel }) => {
         data-id="hero-image"
         className="absolute inset-0 bg-cover bg-top z-1"
         style={{
-          backgroundImage: "url(/images/hero.png)",
+          backgroundImage: "url(/images/hero.webp)",
         }}
       />
 
