@@ -5,7 +5,7 @@ export interface AuthUser {
   email: string;
   phone?: string;
   provider: string;
-  gender: string;
+  gender?: "hombre" | "mujer";
   picture?: string;
   lastName: string;
   firstName: string;

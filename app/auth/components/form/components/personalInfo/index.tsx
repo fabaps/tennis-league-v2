@@ -1,159 +1,148 @@
 "use client";
+import { Mail, Mars, User as UserIcon, UserPlus, Venus } from "lucide-react";
+import { z } from "zod";
 
-import { motion } from "framer-motion";
-import { Mail, User2 } from "lucide-react";
-import { useEffect, useState } from "react";
-
+import View from "@/components/layout/view";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radioGroup";
-import { getCurrentUser } from "@/firebase/auth";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { InputWithIcon } from "@/components/ui/input";
+import { RadioGroup } from "@/components/ui/radioGroup";
+import { useAuthContext } from "@/providers/auth/hooks";
+import { User } from "@/types/user";
+
+import RadioItem from "./components/radioItem";
+import useUserDefaultData from "./hooks";
+import formSchema from "./utils";
+import { LOGIN_STEP } from "../../utils";
 
 interface PersonalInfoStepProps {
   onSubmit?: () => void;
 }
 
-export default function PersonalInfoStep({ onSubmit }: PersonalInfoStepProps) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [gender, setGender] = useState("");
+const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
+  const { form } = useUserDefaultData();
+  const { setPersonalInfo, setStep } = useAuthContext();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSubmit) onSubmit();
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setPersonalInfo(values as Partial<User>);
+    setStep(LOGIN_STEP.QUESTIONS);
   };
 
-  useEffect(() => {
-    const user = getCurrentUser();
-    if (user) {
-      // setFirstName(user.firstName || "");
-      // setLastName(user.lastName || "");
-      setEmail(user.email || "");
-      // setGender(user.gender || "");
-    }
-  }, []);
-
   return (
-    <motion.form
-      onSubmit={handleSubmit}
-      className="space-y-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="space-y-4">
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <User2 className="h-5 w-5 text-gray-400" />
+    <View data-id="personal-info" className="bg-primary">
+      <div className="bg-white rounded-md w-full p-5">
+        <div className="animate-fade flex flex-col space-y-5 h-max"> <div className="flex flex-col items-center justify-center">
+            <h1 className="text-primary text-2xl font-bold text-center">
+              Bienvenido a la GTL
+            </h1>
+            <p>Completa tus datos personales</p>
           </div>
-          <Input
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            className="pl-10 h-12 text-base"
-            placeholder="Nombre"
-          />
-        </div>
 
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <User2 className="h-5 w-5 text-gray-400" />
-          </div>
-          <Input
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            className="pl-10 h-12 text-base"
-            placeholder="Apellido"
-          />
-        </div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-5 w-full"
+            >
+              <FormField
+                control={form.control}
+                name="userName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputWithIcon
+                        icon={<UserIcon className="text-gray-400" />}
+                        placeholder="Primer nombre"
+                        {...field}
+                      />
+                    </FormControl>
 
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Mail className="h-5 w-5 text-gray-400" />
-          </div>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="pl-10 h-12 text-base"
-            placeholder="correo@ejemplo.com"
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <InputWithIcon
+                        icon={<UserPlus className="text-gray-400" />}
+                        placeholder="Primer apellido"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <InputWithIcon
+                        icon={<Mail className="text-gray-400" />}
+                        placeholder="Correo electrónico"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => {
+                  const value = field.value as string;
+
+                  return (
+                    <FormItem className="w-full">
+                      <RadioGroup
+                        value={value}
+                        onValueChange={field.onChange}
+                        className="flex flex-row space-x-2"
+                      >
+                        <RadioItem
+                          label="Hombre"
+                          isActive={value === "hombre"}
+                          icon={<Mars />}
+                        />
+                        <RadioItem
+                          label="Mujer"
+                          isActive={value === "mujer"}
+                          icon={<Venus />}
+                        />
+
+                        <FormMessage />
+                      </RadioGroup>
+                    </FormItem>
+                  );
+                }}
+              />
+
+              <Button type="submit" className="w-full">
+                Continuar
+              </Button>
+            </form>
+          </Form>
         </div>
       </div>
-
-      <div className="space-y-3">
-        <Label className="text-base font-medium text-gray-700">Género</Label>
-        <RadioGroup
-          value={gender}
-          onValueChange={setGender}
-          required
-          className="grid grid-cols-2 gap-4"
-        >
-          <div
-            className={`
-            flex flex-col items-center justify-center p-6 rounded-xl border-2 cursor-pointer transition-all duration-200
-            ${
-              gender === "hombre"
-                ? "border-green-500 bg-green-50"
-                : "border-gray-200 hover:border-gray-300"
-            }
-          `}
-          >
-            <RadioGroupItem
-              value="hombre"
-              id="gender-hombre"
-              className="hidden"
-            />
-            <Label
-              htmlFor="gender-hombre"
-              className="cursor-pointer text-center"
-            >
-              <span className="text-4xl mb-2">👨</span>
-              <span className="block text-lg font-medium mt-2">Hombre</span>
-            </Label>
-          </div>
-
-          <div
-            className={`
-            flex flex-col items-center justify-center p-6 rounded-xl border-2 cursor-pointer transition-all duration-200
-            ${
-              gender === "mujer"
-                ? "border-green-500 bg-green-50"
-                : "border-gray-200 hover:border-gray-300"
-            }
-          `}
-          >
-            <RadioGroupItem
-              value="mujer"
-              id="gender-mujer"
-              className="hidden"
-            />
-            <Label
-              htmlFor="gender-mujer"
-              className="cursor-pointer text-center"
-            >
-              <span className="text-4xl mb-2">👩</span>
-              <span className="block text-lg font-medium mt-2">Mujer</span>
-            </Label>
-          </div>
-        </RadioGroup>
-      </div>
-
-      <Button
-        type="submit"
-        disabled={!firstName || !lastName || !email || !gender}
-        className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-xl h-14 text-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-      >
-        Continuar
-      </Button>
-    </motion.form>
+    </View>
   );
-}
+};
+
+export default PersonalInfoStep;

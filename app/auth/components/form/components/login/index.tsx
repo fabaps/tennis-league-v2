@@ -14,14 +14,14 @@ const Login: React.FC = () => {
         muted
         autoPlay
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        className="fixed top-0 left-0 w-full h-full object-cover z-0"
       >
         <source src="/video/authvideo.mov" type="video/mp4" />
       </video>
 
       <div
         data-id="login-shadow"
-        className="absolute inset-0 bg-gradient-to-t from-transparent via-black/70 to-transparent z-2"
+        className="fixed inset-0 bg-gradient-to-t from-transparent via-black/70 to-transparent z-2"
       />
 
       <div
