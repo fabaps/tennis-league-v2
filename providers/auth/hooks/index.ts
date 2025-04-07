@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+"use client";
 import { onAuthStateChanged, User as UserFirebase } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-import { createUserCookie } from "@/app/actions";
 import { auth } from "@/config";
 import { useAuthStore } from "@/store/auth";
 import { USER_ROLE } from "@/types/user";
@@ -11,10 +11,29 @@ import { USER_ROLE } from "@/types/user";
 import { AuthContext } from "../";
 import { LOGIN_STEP } from "@/app/auth/components/form/utils";
 import { createOrUpdateUser } from "@/firebase/users";
+import ROUTES from "@/routes";
 
 interface UseAuthChangeProps {
   setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;
 }
+
+const createUserCookie = async (role: string) => {
+  try {
+    const response = await fetch("/api/cookies", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ role }),
+    });
+
+    const data = await response.json();
+    console.log("Cookie creada:", data);
+  } catch (error) {
+    console.error("Error al crear la cookie:", error);
+  }
+};
+
 const useAuthChange = ({ setStep }: UseAuthChangeProps) => {
   const { fetchCurrentUserData } = useAuthStore();
   const [loading, setLoading] = useState(true);
@@ -60,6 +79,7 @@ export const useAuthContext = () => {
 export const useSendAndRedirect = () => {
   const { step, personalInfo, category, utr } = useAuthContext();
   const { getCurrentUser } = useAuthStore();
+  const router = useRouter();
 
   useEffect(() => {
     const validateUser = async () => {
@@ -73,11 +93,20 @@ export const useSendAndRedirect = () => {
         }
 
         createOrUpdateUser(user.uid, {
-          ...personalInfo,
+          uid: user.uid,
+          email: personalInfo.email || "",
+          firstName: personalInfo.firstName,
+          lastName: personalInfo.lastName,
+          gender: personalInfo.gender,
           category,
+          role: USER_ROLE.PLAYER,
           utr: Number(utr) || 0,
           name: `${personalInfo.firstName} ${personalInfo.lastName}`,
         });
+
+        await createUserCookie(USER_ROLE.PLAYER);
+
+        router.push(ROUTES["HOME"].path);
       }
     };
 

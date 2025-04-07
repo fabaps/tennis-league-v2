@@ -12,7 +12,7 @@ const useUserDefaultData = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       gender: "hombre",
-      userName: "",
+      firstName: "",
       lastName: "",
       email: "",
     },
@@ -25,7 +25,7 @@ const useUserDefaultData = () => {
 
     if (user) {
       const nameParts = user.displayName?.split(" ");
-      form.setValue("userName", nameParts?.[0] || "");
+      form.setValue("firstName", nameParts?.[0] || "");
       form.setValue("lastName", nameParts?.[1] || "");
       form.setValue("email", user.email || "");
     }

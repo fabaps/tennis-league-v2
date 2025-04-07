@@ -81,10 +81,9 @@ export async function createOrUpdateUser(
     if (!userDoc.exists()) {
       await setDoc(userRef, {
         ...userData,
-        utr: 0,
-        points: 0,
         role: USER_ROLE.PLAYER,
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
     } else {
       await updateDoc(userRef, {

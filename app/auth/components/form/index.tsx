@@ -2,7 +2,7 @@
 import type React from "react";
 import Image from "next/image";
 
-import { useAuthContext } from "@/providers/auth/hooks";
+import { useAuthContext, useSendAndRedirect } from "@/providers/auth/hooks";
 
 import Login from "./components/login";
 import PersonalInfoStep from "./components/personalInfo";
@@ -11,6 +11,7 @@ import { LOGIN_STEP } from "./utils";
 
 const AuthForm = () => {
   const { step } = useAuthContext();
+  useSendAndRedirect();
 
   return (
     <div className="h-full w-full relative overflow-hidden bg-primary bg-opacity-70">

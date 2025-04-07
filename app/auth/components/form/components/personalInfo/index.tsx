@@ -52,7 +52,7 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
             >
               <FormField
                 control={form.control}
-                name="userName"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
