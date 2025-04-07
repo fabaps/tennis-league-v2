@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tailwindcss-animated";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -50,6 +49,9 @@ html {
 }
 
 :root {
+  --default-animation-duration: 300ms;
+  --default-animation-timing-function: cubic-bezier(.47,1.64,.41,.8);
+
   --radius: 0.625rem;
   --background: #245a4c;
   --foreground: oklch(0.129 0.042 264.695);

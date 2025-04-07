@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Config } from "tailwindcss";
-import tailwindcssAnimated from "tailwindcss-animated";
+import animated from "tailwindcss-animated";
 
 const config: Config = {
   content: [
@@ -8,7 +9,8 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
-  plugins: [tailwindcssAnimated],
+  // @ts-ignore
+  plugins: [animated],
 };
 
 export default config;
