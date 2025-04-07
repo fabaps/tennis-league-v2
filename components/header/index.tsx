@@ -20,7 +20,7 @@ const Header = ({ title, isSearching, className }: HeaderProps) => {
         data-id="container"
         className="px-5 h-14 flex items-center justify-between"
       >
-        <div data-id="logo-container" className="flex flex-row items-center">
+        <div data-id="logo-container" className="flex flex-row items-center  animate-jump">
           <Link href="/" className="flex items-center space-x-2">
             <Image
               src="/images/logo.png"
@@ -32,7 +32,7 @@ const Header = ({ title, isSearching, className }: HeaderProps) => {
             {!isSearching && (
               <div className="flex flex-row space-x-1 items-center">
                 <h1 className="text-xl font-semibold text-white leading-none">
-                  {title || "Bienvenido a GTL"}
+                  {title || `GTL`}
                 </h1>
               </div>
             )}

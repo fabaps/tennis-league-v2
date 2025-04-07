@@ -39,7 +39,6 @@ const useGoogleLogin = () => {
 
       setUtr(Number(userData.utr) || 0);
       setCategory(userData.category || "");
-      setStep(LOGIN_STEP.RESULT);
       router.push(ROUTES["HOME"].path);
     } catch (error) {
       console.error("Error durante el inicio de sesión con Google:", error);

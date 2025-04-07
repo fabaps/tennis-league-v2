@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
@@ -6,14 +7,23 @@ interface NavItemProps {
   label: string;
   icon: React.ReactNode;
   isActive: boolean;
+  className?: string;
 }
-const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
+const NavItem: React.FC<NavItemProps> = ({
+  href,
+  icon,
+  label,
+  isActive,
+  className,
+}) => {
   return (
     <Link
       href={href}
-      className={`flex flex-col space-y-1 items-center h-full justify-center ${
-        isActive ? "text-green-600" : "text-green-700"
-      }`}
+      className={clsx(
+        "flex flex-col space-y-1 items-center h-full justify-center",
+        isActive ? "text-green-600" : "text-green-700",
+        className
+      )}
     >
       {icon}
       <p className="text-sm font-regular">{label}</p>

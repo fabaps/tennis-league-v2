@@ -27,10 +27,9 @@ const createUserCookie = async (role: string) => {
       body: JSON.stringify({ role }),
     });
 
-    const data = await response.json();
-    console.log("Cookie creada:", data);
+    return response.json();
   } catch (error) {
-    console.error("Error al crear la cookie:", error);
+    console.error(error);
   }
 };
 

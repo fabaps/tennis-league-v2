@@ -13,7 +13,7 @@ const BottomNav: React.FC = () => {
   return (
     <nav
       data-id="nav"
-      className="bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 "
+      className="bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 nav"
     >
       <div data-id="nav-container" className="px-5 bg-white h-14">
         <div
@@ -23,6 +23,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/"
             label="Inicio"
+            className="animate-jump-in"
             isActive={isActive("/")}
             icon={
               <Home
@@ -32,6 +33,7 @@ const BottomNav: React.FC = () => {
           />
 
           <NavItem
+            className="animate-jump-in animate-delay-200"
             href="/torneos"
             label="Torneos"
             isActive={isActive("/torneos")}
@@ -47,6 +49,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/ranking"
             label="Ranking"
+              className="animate-jump-in animate-delay-300"
             isActive={isActive("/ranking")}
             icon={
               <Calendar
@@ -60,6 +63,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/perfil"
             label="Perfil"
+              className="animate-jump-in animate-delay-400"
             isActive={isActive("/perfil")}
             icon={
               <User

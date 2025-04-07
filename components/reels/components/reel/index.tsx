@@ -39,12 +39,12 @@ const Reel: React.FC<ReelProps> = ({ reel, index, scrollToReel }) => {
         >
           <div
             data-id={`reel-icon-ref-${index}`}
-            className="bg-green-600 w-[40px] h-[40px] rounded-full flex items-center justify-center shadow-lg"
+            className="bg-green-500 w-[40px] h-[40px] rounded-full flex items-center justify-center shadow-lg"
           >
             {reel.icon}
           </div>
 
-          <Badge variant="default" className="bg-yellow-500 text-yellow-900">
+          <Badge variant="default" className="bg-yellow-500 text-yellow-900 shadow-sm border border-yellow-600">
             {reel.badge}
           </Badge>
         </div>
@@ -75,7 +75,7 @@ const Reel: React.FC<ReelProps> = ({ reel, index, scrollToReel }) => {
                 variant="ghost"
                 aria-label="Ver más"
                 onClick={scrollToReel(reel.index)}
-                className="animate-bounce inline-block w-10 h-10"
+                className="animate-bounce inline-block w-10 h-10 hover:bg-transparent"
               >
                 <ChevronDown className="text-white/80 size-5 ml-[-15px]" />
               </Button>
