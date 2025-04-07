@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, User as UserFirebase } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
@@ -8,26 +8,41 @@ import { useAuthStore } from "@/store/auth";
 import { USER_ROLE } from "@/types/user";
 
 import { AuthContext } from "../";
+import { LOGIN_STEP } from "@/app/auth/components/form/utils";
 
-const useAuthChange = () => {
+interface UseAuthChangeProps {
+  setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;
+}
+const useAuthChange = ({ setStep }: UseAuthChangeProps) => {
   const { fetchCurrentUserData } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setLoading(false);
 
       if (!user) {
         return;
       }
 
-      createUserCookie(USER_ROLE.PLAYER);
-      fetchCurrentUserData();
+      const currentUser = await fetchCurrentUserData(user as UserFirebase);
+
+      if (!currentUser) {
+        return setStep(LOGIN_STEP.PERSONAL_INFO);
+      }
+
+      if (currentUser) {
+        if (!currentUser?.lastName || !currentUser?.firstName) {
+          setStep(LOGIN_STEP.PERSONAL_INFO);
+        } else {
+          createUserCookie(USER_ROLE.PLAYER);
+        }
+      }
     });
 
     return () => unsubscribe();
-  }, [fetchCurrentUserData, router]);
+  }, [fetchCurrentUserData, router, setStep]);
 
   return { loading };
 };

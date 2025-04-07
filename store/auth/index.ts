@@ -5,8 +5,6 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import {
   getCurrentUser as getCurrentUserFirebase,
   logoutUser as logoutUserFirebase,
-  sendOTP as sendOTPFirebase,
-  verifyOTP as verifyOTPFirebase,
 } from "@/firebase/auth";
 import { getUserById } from "@/firebase/users";
 import { getCategory } from "@/lib/category";
@@ -27,17 +25,17 @@ interface AuthState {
   isAuthenticated: boolean;
   getCurrentUser: () => UserFirebase | null;
   getPersonalInfo: (id: string) => Promise<User | null>;
-  fetchCurrentUserData: () => Promise<void>;
+  fetchCurrentUserData: (
+    credential: Partial<User> | Partial<UserFirebase>
+  ) => Promise<User | null>;
   setPhoneNumber: (phone: string) => void;
-  sendOTP: (phone: string) => Promise<boolean>;
-  verifyOTP: (code: string) => Promise<boolean>;
   logout: (callback: () => void) => Promise<boolean>;
   setError: (error: string | null) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       loading: false,
       error: null,
       phoneNumber: null,
@@ -55,38 +53,42 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      fetchCurrentUserData: async () => {
-        const firebaseUser = getCurrentUserFirebase();
+      fetchCurrentUserData: async (
+        credential: Partial<User> | Partial<UserFirebase> | null = null
+      ) => {
+        const firebaseUser = credential ?? getCurrentUserFirebase();
 
         if (!firebaseUser?.uid) {
           set({ isAuthenticated: false, currentUser: null });
-          return;
+          return null;
         }
 
         set({ loading: true, error: null });
 
         try {
-          const userData = await getUserById(firebaseUser.uid);
+          const userData = await getUserById(firebaseUser.uid as string);
 
           if (userData) {
             set({
               currentUser: {
                 id: userData.id,
-                name: userData.name,
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                email: firebaseUser.email || "",
-                phone: userData.phone,
-                photo: userData.photo || "",
-                gender: userData.gender,
-                category: getCategory(userData),
                 utr: userData.utr,
+                name: userData.name,
+                phone: userData.phone,
+                gender: userData.gender,
+                lastName: userData.lastName,
+                photo: userData.photo || "",
+                firstName: userData.firstName,
+                category: getCategory(userData),
+                email: (firebaseUser.email as string) || "",
               },
 
               isAuthenticated: true,
               loading: false,
               error: null,
             });
+
+            return userData;
           } else {
             set({
               loading: false,
@@ -94,6 +96,7 @@ export const useAuthStore = create<AuthState>()(
               isAuthenticated: false,
               currentUser: null,
             });
+            return null;
           }
         } catch (error) {
           console.error("Error fetching current user data:", error);
@@ -103,39 +106,7 @@ export const useAuthStore = create<AuthState>()(
             currentUser: null,
             isAuthenticated: false,
           });
-        }
-      },
-
-      sendOTP: async (phone) => {
-        set({ loading: true, error: null });
-        try {
-          const result = await sendOTPFirebase(phone);
-          set({ loading: false });
-          return result;
-        } catch (error) {
-          set({
-            loading: false,
-            error: (error as Error).message || "Error al enviar OTP",
-          });
-          throw error;
-        }
-      },
-
-      verifyOTP: async (code) => {
-        set({ loading: true, error: null });
-        try {
-          const result = await verifyOTPFirebase(code);
-          if (result) {
-            await get().fetchCurrentUserData();
-          }
-          set({ loading: false });
-          return result;
-        } catch (error) {
-          set({
-            loading: false,
-            error: (error as Error).message || "Error al verificar OTP",
-          });
-          throw error;
+          return null;
         }
       },
 

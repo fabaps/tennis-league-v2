@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss-animated";
-@import 'tw-animate-css';
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -44,16 +44,20 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+html {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
 
 :root {
   --radius: 0.625rem;
-  --background: #245A4C;
+  --background: #245a4c;
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: #245A4C;
+  --primary: #245a4c;
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -81,13 +85,13 @@
 }
 
 .dark {
-  --background: #245A4C;
+  --background: #245a4c;
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
   --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: #245A4C;
+  --primary: #245a4c;
   --primary-foreground: oklch(0.208 0.042 265.755);
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
@@ -153,5 +157,50 @@
   }
   100% {
     transform: scale(1.5);
+  }
+}
+
+.main-content {
+  height: calc(100dvh - calc(var(--spacing) * 28));
+}
+
+.nav {
+  padding-bottom: 0;
+}
+
+* {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+@media all and (display-mode: standalone) {
+  .main-content {
+    height: calc(100dvh - calc(var(--spacing) * 34));
+  }
+
+  .nav {
+    padding-bottom: calc(var(--spacing) * 6);
   }
 }

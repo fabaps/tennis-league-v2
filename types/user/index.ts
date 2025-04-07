@@ -1,4 +1,5 @@
 export interface AuthUser {
+  [index: string]: string | number | undefined | null;
   uid: string;
   role: USER_ROLE;
   email: string;
@@ -16,6 +17,7 @@ export enum USER_ROLE {
 }
 
 export interface RankingUser {
+  [index: string]: string | number | undefined | null | boolean;
   id: string;
   utr: string | number;
   name: string;

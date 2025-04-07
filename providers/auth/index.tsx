@@ -28,7 +28,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [category, setCategory] = useState<string>("");
   const [ranking, setRanking] = useState<number>(0);
   const [step, setStep] = useState<LOGIN_STEP>(LOGIN_STEP.START);
-  useAuthChange();
+
+  useAuthChange({ setStep });
 
   return (
     <AuthContext.Provider

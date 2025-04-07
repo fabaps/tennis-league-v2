@@ -1,4 +1,5 @@
 export interface RankingData {
+  [index: string]: string | number | undefined | null;
   id: string;
   name: string;
   photo?: string;

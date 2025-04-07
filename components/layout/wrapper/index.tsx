@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+
 import Header from "@/components/header";
 import BottomNav from "@/components/layout/bottomNav";
 import useIsPrivateRoute from "@/hooks/router";
@@ -18,12 +20,11 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
       {isPrivateRoute && <Header />}
 
       <main
-        className={isPrivateRoute ? "mt-14" : ""}
-        style={{
-          height: isPrivateRoute
-            ? "calc(100dvh - calc(var(--spacing) * 34))"
-            : "100dvh",
-        }}
+        className={clsx(
+          "overflow-hidde main-content",
+          isPrivateRoute ? "mt-14" : ""
+        )}
+        style={{ height: isPrivateRoute ? "" : "100dvh" }}
       >
         {children}
       </main>

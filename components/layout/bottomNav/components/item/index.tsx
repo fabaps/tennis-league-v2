@@ -11,7 +11,7 @@ const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
   return (
     <Link
       href={href}
-      className={`flex flex-col space-y-1 items-center py-2 ${
+      className={`flex flex-col space-y-1 items-center h-full justify-center ${
         isActive ? "text-green-600" : "text-green-700"
       }`}
     >

@@ -6,6 +6,7 @@ import {
   signInWithCredential,
   signInWithPhoneNumber,
   signOut,
+  UserCredential,
 } from "firebase/auth";
 
 let recaptchaVerifier: RecaptchaVerifier | null = null;
@@ -71,7 +72,7 @@ export const sendOTP = async (phoneNumber: string): Promise<boolean> => {
   }
 };
 
-export const verifyOTP = async (otp: string): Promise<boolean> => {
+export const verifyOTP = async (otp: string): Promise<UserCredential> => {
   try {
     if (!confirmationResult) {
       throw new Error("No se encontró resultado de confirmación");
@@ -80,9 +81,11 @@ export const verifyOTP = async (otp: string): Promise<boolean> => {
       confirmationResult.verificationId,
       otp
     );
-    await signInWithCredential(auth, credential);
+
+    const userCredential = await signInWithCredential(auth, credential);
     clearRecaptcha();
-    return true;
+
+    return userCredential;
   } catch (error) {
     console.error("Error al verificar OTP:", error);
     clearRecaptcha();

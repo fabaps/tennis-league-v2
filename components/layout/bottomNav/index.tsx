@@ -13,10 +13,13 @@ const BottomNav: React.FC = () => {
   return (
     <nav
       data-id="nav"
-      className="bg-white border-t shadow-lg fixed bottom-0 left-0 right-0 z-10 pb-6"
+      className="bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 "
     >
       <div data-id="nav-container" className="px-5 bg-white h-14">
-        <div data-id="nav-content" className="flex justify-around bg-white">
+        <div
+          data-id="nav-content"
+          className="flex justify-around bg-white h-full"
+        >
           <NavItem
             href="/"
             label="Inicio"

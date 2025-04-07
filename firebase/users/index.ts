@@ -11,7 +11,7 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import { db, storage } from "@/config";
-import { User } from "@/types/user";
+import { User, USER_ROLE } from "@/types/user";
 
 const USERS_COLLECTION = "users";
 
@@ -32,7 +32,7 @@ export async function getAllUsers(): Promise<User[]> {
         photo: userData.photo || "",
         utr: Number(userData.utr) || 0,
         phone: userData.phone || "",
-        role: userData.role || "user",
+        role: userData.role || USER_ROLE.PLAYER,
         category: userData.category || "A",
       });
     });
@@ -57,13 +57,13 @@ export async function getUserById(userId: string): Promise<User | null> {
       photo: userData.photo || "",
       utr: Number(userData.utr) || 0,
       phone: userData.phone || "",
-      role: userData.role || "user",
+      role: userData.role || USER_ROLE.PLAYER,
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
       gender: userData.gender,
       category: userData.category,
-    };
+    } as User;
   } catch (error) {
     console.error("Error al obtener usuario:", error);
     return null;
@@ -81,7 +81,7 @@ export async function createOrUpdateUser(
     if (!userDoc.exists()) {
       await setDoc(userRef, {
         ...userData,
-        role: "user",
+        role: USER_ROLE.PLAYER,
         points: 0,
         ranking: 0,
         createdAt: new Date().toISOString(),

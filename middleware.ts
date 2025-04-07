@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import ROUTES from "./routes";
+import { SKIP_AUTH } from "./utils";
 
 export const middleware = (request: NextRequest) => {
   const cookies = request.cookies;
@@ -13,7 +14,7 @@ export const middleware = (request: NextRequest) => {
 
   const userRole = cookies.get("USER_ROLE")?.value;
 
-  if (!userRole && !isPublicPath) {
+  if (!userRole && !isPublicPath && !Number(SKIP_AUTH)) {
     return NextResponse.redirect(new URL(ROUTES["AUTH"].path, request.url));
   }
 
