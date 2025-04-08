@@ -14,6 +14,7 @@ import { USER_ROLE } from "@/types/user";
 import { AuthContext } from "../";
 
 interface UseAuthChangeProps {
+  setUid: React.Dispatch<React.SetStateAction<string>>;
   setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;
 }
 
@@ -33,7 +34,7 @@ const createUserCookie = async (role: string) => {
   }
 };
 
-const useAuthChange = ({ setStep }: UseAuthChangeProps) => {
+const useAuthChange = ({ setStep, setUid }: UseAuthChangeProps) => {
   const { fetchCurrentUserData } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -47,6 +48,7 @@ const useAuthChange = ({ setStep }: UseAuthChangeProps) => {
       }
 
       const currentUser = await fetchCurrentUserData(user as UserFirebase);
+      setUid(user.uid);
 
       if (!currentUser) {
         return setStep(LOGIN_STEP.PERSONAL_INFO);

@@ -29,7 +29,7 @@ interface AuthState {
     credential: Partial<User> | Partial<UserFirebase>
   ) => Promise<User | null>;
   setPhoneNumber: (phone: string) => void;
-  logout: (callback: () => void) => Promise<boolean>;
+  logout: (callback?: () => void) => Promise<boolean>;
   setError: (error: string | null) => void;
 }
 
@@ -110,7 +110,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: async (callback: () => void) => {
+      logout: async (callback?: () => void) => {
         set({ loading: true, error: null });
         try {
           const result = await logoutUserFirebase();
@@ -121,7 +121,8 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             error: null,
           });
-          callback();
+
+          if (callback) callback();
           return result;
         } catch (error) {
           set({

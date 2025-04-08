@@ -1,36 +1,14 @@
 import type { Metadata, Viewport } from "next/types";
 import "./globals.css";
 
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 
 import LayoutWrapper from "@/components/layout/wrapper";
 import Toaster from "@/components/ui/sonner";
 
 import type React from "react";
-const sfpro = localFont({
-  src: [
-    {
-      path: "./fonts/sfpro/SF-Pro-Display-Light.otf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sfpro/SF-Pro-Display-Regular.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sfpro/SF-Pro-Display-Semibold.otf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sfpro/SF-Pro-Display-Bold.otf",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-});
+
+const cont = Inter({ subsets: ["latin"], variable: "--font-cont" });
 
 export const metadata: Metadata = {
   title: "Liga de Tenis GT",
@@ -58,7 +36,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <link rel="preconnect" href="https://apis.google.com" />
       </head>
 
-      <body className={sfpro.className}>
+      <body className={cont.className}>
         <Toaster mobileOffset={{ bottom: "var(--sonner-bt)" }} />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>

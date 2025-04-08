@@ -62,7 +62,7 @@ const QuestionsStep: React.FC = () => {
                     key={`radio-label-${question.name}-${index}`}
                     className={clsx("animate-fade-left", animationDelay[index])}
                   >
-                    <Card>
+                    <Card className="hover:bg-gray-100 shadow-xs text-gray-600 rounded-lg border-2 border-input hover:border-gray-400 transition-colors duration-150 gap-0 py-2 px-4 flex flex-row items-center space-x-4">
                       <RadioGroupItem
                         value={option.value.toString()}
                         id={`${question.name}-${index}`}

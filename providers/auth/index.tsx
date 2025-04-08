@@ -9,6 +9,8 @@ export interface AuthContextType {
   step: LOGIN_STEP;
   utr: number;
   category: string;
+  uid: string;
+  setUid: React.Dispatch<React.SetStateAction<string>>;
   personalInfo: Partial<User>;
   setStep: React.Dispatch<React.SetStateAction<LOGIN_STEP>>;
   setUtr: React.Dispatch<React.SetStateAction<number>>;
@@ -21,6 +23,8 @@ export const AuthContext = createContext<AuthContextType>({
   utr: 0,
   category: "",
   personalInfo: {},
+  uid: "",
+  setUid: () => {},
   setStep: () => {},
   setUtr: () => {},
   setPersonalInfo: () => {},
@@ -30,12 +34,13 @@ export const AuthContext = createContext<AuthContextType>({
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [uid, setUid] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [utr, setUtr] = useState<number>(0);
   const [step, setStep] = useState<LOGIN_STEP>(LOGIN_STEP.START);
   const [personalInfo, setPersonalInfo] = useState<Partial<User>>({});
 
-  useAuthChange({ setStep });
+  useAuthChange({ setStep, setUid });
 
   return (
     <AuthContext.Provider
@@ -44,6 +49,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         utr: utr,
         personalInfo,
         category,
+        setUid,
+        uid,
         setStep,
         setUtr,
         setPersonalInfo,

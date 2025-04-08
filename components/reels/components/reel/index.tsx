@@ -64,7 +64,7 @@ const Reel: React.FC<ReelProps> = ({ reel, index, scrollToReel }) => {
               <h2 className="text-3xl font-bold text-white">{reel.title}</h2>
 
               {reel.description && (
-                <p className="text-white/90 text-base leading-relaxed max-w-75">
+                <p className="text-white/90 text-base leading-relaxed max-w-90">
                   {reel.description}
                 </p>
               )}

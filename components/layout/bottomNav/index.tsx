@@ -15,7 +15,8 @@ const BottomNav: React.FC = () => {
   return (
     <nav
       data-id="nav"
-      className="bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 nav"
+      style={{ boxShadow: "0px -2px 5px -1px rgba(0,0,0,0.05)" }}
+      className="bg-white fixed bottom-0 left-0 right-0 z-10 nav"
     >
       <div data-id="nav-container" className="px-5 bg-white h-14">
         <div
@@ -25,7 +26,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/"
             label="Inicio"
-            className="animate-jump-in"
+            className="animate-jump-in animate-ease-[linear]"
             isActive={isActive("/")}
             icon={
               <Home
@@ -35,7 +36,7 @@ const BottomNav: React.FC = () => {
           />
 
           <NavItem
-            className="animate-jump-in animate-delay-200"
+            className="animate-jump-in animate-delay-200 animate-ease-[linear]"
             href="/torneos"
             label="Torneos"
             isActive={isActive("/torneos")}
@@ -51,7 +52,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/ranking"
             label="Ranking"
-            className="animate-jump-in animate-delay-300"
+            className="animate-jump-in animate-delay-300 animate-ease-[linear]"
             isActive={isActive("/ranking")}
             icon={
               <Calendar
@@ -65,7 +66,7 @@ const BottomNav: React.FC = () => {
           <NavItem
             href="/perfil"
             label="Perfil"
-            className="animate-jump-in animate-delay-400"
+            className="animate-jump-in animate-delay-400 animate-ease-[linear]"
             isActive={isActive("/perfil")}
             icon={
               <User
