@@ -23,7 +23,7 @@ interface AuthState {
   getCurrentUser: () => UserFirebase | null;
   getPersonalInfo: (id: string) => Promise<User | null>;
   fetchCurrentUserData: (
-    credential: Partial<User> | Partial<UserFirebase>
+    credential?: Partial<User> | Partial<UserFirebase>
   ) => Promise<User | null>;
   setPhoneNumber: (phone: string) => void;
   logout: (callback?: () => void) => Promise<boolean>;
@@ -51,7 +51,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       fetchCurrentUserData: async (
-        credential: Partial<User> | Partial<UserFirebase> | null = null
+        credential: Partial<User> | Partial<UserFirebase> | null | undefined = null
       ) => {
         const firebaseUser = credential ?? getCurrentUserFirebase();
 

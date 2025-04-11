@@ -11,27 +11,28 @@ const useUserDefaultData = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      gender: "hombre",
+      gender: "",
       firstName: "",
+      picture: "",
+      phone: "",
       lastName: "",
       email: "",
     },
   });
 
-  const { getCurrentUser } = useAuthStore();
+  const { currentUser } = useAuthStore();
 
   useEffect(() => {
-    const user = getCurrentUser();
-
-    if (user) {
-      const nameParts = user.displayName?.split(" ");
-      form.setValue("firstName", nameParts?.[0] || "");
-      form.setValue("lastName", nameParts?.[1] || "");
-      form.setValue("email", user.email || "");
+    if (currentUser) {
+      form.setValue("picture", currentUser.picture || "");
+      form.setValue("firstName", currentUser.firstName || "");
+      form.setValue("lastName",currentUser.lastName || "");
+      form.setValue("email", currentUser.email || "");
+      form.setValue("phone", currentUser.phone || "");
     }
-  }, [getCurrentUser, form]);
+  }, [currentUser, form]);
 
-  return { form };
+  return { form } as const;
 };
 
 export default useUserDefaultData;

@@ -8,6 +8,9 @@ const formSchema = z.object({
     .min(2, "El nombre debe tener al menos 2 letras")
     .max(50, "El nombre no puede tener más de 50 letras"),
 
+  phone: z.optional(z.string()).or(z.literal("")),
+  picture: z.optional(z.string()).or(z.literal("")),
+
   lastName: z
     .string({ required_error: "El apellido es obligatorio" })
     .min(2, "El apellido debe tener al menos 2 letras")

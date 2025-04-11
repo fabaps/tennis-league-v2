@@ -4,6 +4,10 @@ const ROUTES = {
     pathRgx: "^/auth",
     public: true,
   },
+  EDITAR_PERFIL: {
+    path: "/perfil/editar",
+    pathRgx: "^/perfil/editar",
+  },
   HOME: {
     path: "/",
     pathRgx: "^/$",

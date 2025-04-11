@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       allowedOrigins: [
-        "localhost:3000", 
+        "localhost:3000",
         "trj65tjl-3000.use.devtunnels.ms",
         "dev.ligatenisgt.com",
         "ligatenisgt.com",
@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         hostname: "www.gstatic.com",
         port: "",
         pathname: "/firebasejs/ui/2.0.0/images/auth/google.svg",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
       },
     ],
   },

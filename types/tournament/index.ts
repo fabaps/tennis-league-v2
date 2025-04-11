@@ -1,11 +1,9 @@
 import { Timestamp } from "firebase/firestore";
 
-import { User } from "@/types/user";
-
 export interface BasicTournament {
   id: string;
   name: string;
-  startDate: Timestamp;
+  startDate: Timestamp | string;
   image: string;
   openRegistration: boolean;
   price: number;
@@ -19,17 +17,18 @@ export interface BasicTournament {
 }
 
 export interface Tournament extends Omit<BasicTournament, "registeredPlayers"> {
-  registeredPlayers: User[];
+  registeredPlayers: string[];
 }
 
 interface Etapa {
   name: string;
-  date: Timestamp;
+  date: Timestamp | string;
   note: string;
 }
 
 interface Promocion {
   active: boolean;
-  discount: string;
-  limitDate: Timestamp;
+  discount: string | number;
+  limitDate: Timestamp | string;
+  promotionPrice?: number;
 }

@@ -1,10 +1,12 @@
 "use client";
 
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Edit } from "lucide-react";
+import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import ROUTES from "@/routes";
 import { useAuthStore } from "@/store/auth";
 
 const ProfileHeader: React.FC = () => {
@@ -26,8 +28,9 @@ const ProfileHeader: React.FC = () => {
           <div className="p-1 bg-input rounded-full">
             <Avatar className="size-25 animate-fade-down">
               <AvatarImage
-                src="/images/avatars/avatar_2.webp"
+                src={currentUser?.picture ?? "/images/avatars/avatar_2.webp"}
                 alt={`picture_${currentUser?.name}`}
+                className="object-cover"
               />
               <AvatarFallback>
                 <p className="text-primary text-3xl font-bold">
@@ -72,7 +75,12 @@ const ProfileHeader: React.FC = () => {
             )}
           </div>
 
-          <Button variant="green">Editar perfil</Button>
+          <Link href={ROUTES["EDITAR_PERFIL"].path} className="w-full">
+            <Button variant="green" className="w-full">
+              <Edit />
+              Editar perfil
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
