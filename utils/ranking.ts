@@ -7,4 +7,4 @@ export const calculateRankingByUTR = (loguedUserUtr: string, users: { utr: strin
      console.log("rankingPs:",rankingPosition)
      
      return String(rankingPosition);
- } 
+ }

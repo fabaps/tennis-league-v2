@@ -2,7 +2,7 @@
 export interface RankingData {
     id: string;
     name: string;
-    photo?: string;
+    picture?: string;
     category: string;
     utr: number;
     firstName: string;

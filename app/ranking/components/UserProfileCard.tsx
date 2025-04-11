@@ -16,6 +16,7 @@ export function UserProfileCard({
   user,
   userCategoryRank = "0",
 }: UserProfileCardProps) {
+  
   const { users } = useUsersStore((state) => state);
   return (
     <Card className="mb-6 bg-white shadow-md rounded-xl overflow-hidden">
@@ -23,14 +24,8 @@ export function UserProfileCard({
         <div className="flex items-center space-x-4">
           <RebelAvatar
             user={user}
+            size="md"
           />
-          {/* <Image
-            src={user.photo || "/placeholder.svg"}
-            alt={user.name}
-            width={70}
-            height={70}
-            className="rounded-full"
-          /> */}
           <div className="flex flex-row">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
@@ -39,7 +34,7 @@ export function UserProfileCard({
             <div className="self-end flex justify-end items-center">
               <div className="flex flex-row items-center gap-4">
                 <p className="text-lg text-gray-600">GTR</p>
-                <p className="text-2xl font-bold text-green-600 text-medium ">{user.utr}</p>
+                <p className="text-2xl font-bold text-green-600 text-medium ">{user.utr.toFixed(2)}</p>
               </div>
             </div>
           </div>

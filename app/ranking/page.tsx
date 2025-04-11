@@ -62,7 +62,7 @@ export default function RankingPage() {
   const rankingUsers: RankingUser[] = users.map((user) => ({
     id: user.id,
     name: user.name,
-    picture: typeof user.photo === 'string' ? user.photo : undefined,
+    picture: typeof user.picture === 'string' ? user.picture : undefined,
     category: getCategory(user),
     utr: user.utr,
     firstName: user.firstName,
@@ -87,7 +87,7 @@ export default function RankingPage() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
-      <main className="container mx-auto px-4 pt-[20px]">
+      <main className="container mx-auto px-4 pt-[20px] min-h-[calc(100vh-4rem)]">
         <div>
           {isSearching ? (
             <div
@@ -128,7 +128,7 @@ export default function RankingPage() {
                 onCategoryChange={setActiveCategory}
               />
               <Card>
-                <CardContent className="p-2">
+                <CardContent className="p-2 w-full">
                   {loadingUsers ? (
                     <div className="py-1">
                       <p className="text-center">Cargando jugadores...</p>
@@ -140,11 +140,15 @@ export default function RankingPage() {
                       </p>
                     </div>
                   ) : (
-                    <RankingTable
-                      users={filteredUsers}
-                      currentUser={currentUser || undefined}
-                      onPlayerClick={handlePlayerClick}
+                    <div className="w-full">
+                         <RankingTable
+                            users={filteredUsers}
+                            currentUser={currentUser || undefined}
+                            onPlayerClick={handlePlayerClick}
                     />
+                    </div>
+
+                   
                   )}
                 </CardContent>
               </Card>

@@ -13,7 +13,7 @@ import { RebelAvatar } from "@/components/rebelUI/RebelAvatar";
   
   export interface RankingTableProps {
     users: RankingUser[];
-    currentUser: RankingUser;
+    currentUser: RankingUser | undefined;
     onPlayerClick: (id: string) => void;
   }
   
@@ -38,7 +38,7 @@ import { RebelAvatar } from "@/components/rebelUI/RebelAvatar";
     }
   
     return (
-      <Table>
+      <Table >
         <TableHeader>
           <TableRow>
             <TableCell className="font-semibold w-12">#</TableCell>

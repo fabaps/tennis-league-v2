@@ -19,7 +19,7 @@ export enum USER_ROLE {
 export interface RankingUser {
   [index: string]: string | number | undefined | null | boolean;
   isCurrentUser?: boolean;
-  utr: string | number;
+  utr: number;
   picture?: string;
   category: string;
   name: string;

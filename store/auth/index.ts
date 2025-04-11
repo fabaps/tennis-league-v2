@@ -8,18 +8,15 @@ import {
 } from "@/firebase/auth";
 import { getUserById } from "@/firebase/users";
 import { getCategory } from "@/lib/category";
-import { RankingData } from "@/types/ranking";
-import { User } from "@/types/user";
+// import { RankingData } from "@/types/ranking";
+import { RankingUser, User } from "@/types/user";
 
 interface AuthState {
   loading: boolean;
   error: string | null;
   phoneNumber: string | null;
   currentUser:
-    | (RankingData & {
-        firstName?: string;
-        lastName?: string;
-      })
+    | RankingUser
     | null;
   firebaseUserData: User | null;
   isAuthenticated: boolean;

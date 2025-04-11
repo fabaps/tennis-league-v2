@@ -4,7 +4,7 @@ export interface RankingData {
   name: string;
   picture?: string;
   category: string;
-  utr: string | number;
+  utr: number;
   firstName?: string;
   lastName?: string;
   email?: string;
