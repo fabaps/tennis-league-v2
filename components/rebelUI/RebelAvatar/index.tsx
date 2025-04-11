@@ -15,6 +15,7 @@ export const RebelAvatar = ({user, size = "sm"}: {user: RankingUser | null, size
             <AvatarImage
                 src={user?.picture}
                 alt={`picture_${user?.name}`}
+                 className="object-cover"
             />
             <AvatarFallback>
                 <p className={`${size === "sm" ? "text-xl" : size === "md" ? "text-2xl" : "text-3xl"} font-bold`}>

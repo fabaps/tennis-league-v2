@@ -2,21 +2,14 @@
 
 import { BadgeCheck, Edit } from "lucide-react";
 import Link from "next/link";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import ROUTES from "@/routes";
 import { useAuthStore } from "@/store/auth";
+import { RebelAvatar } from "@/components/rebelUI/RebelAvatar";
 
 const ProfileHeader: React.FC = () => {
   const { currentUser } = useAuthStore();
-
-  const firstNameLetter = currentUser?.firstName?.substring(0, 1);
-  const lastNameLetter = currentUser?.lastName?.substring(0, 1);
-  const avatarFallback = `${firstNameLetter ?? ""}${
-    lastNameLetter ?? ""
-  }`.toUpperCase();
 
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
@@ -26,18 +19,10 @@ const ProfileHeader: React.FC = () => {
       >
         <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-1/2 bottom-0">
           <div className="p-1 bg-input rounded-full">
-            <Avatar className="size-25 animate-fade-down">
-              <AvatarImage
-                src={currentUser?.picture ?? "/images/avatars/avatar_2.webp"}
-                alt={`picture_${currentUser?.name}`}
-                className="object-cover"
-              />
-              <AvatarFallback>
-                <p className="text-primary text-3xl font-bold">
-                  {avatarFallback ?? ""}
-                </p>
-              </AvatarFallback>
-            </Avatar>
+          <RebelAvatar
+            user={currentUser}
+            size="xl"
+          />
           </div>
         </div>
       </div>
