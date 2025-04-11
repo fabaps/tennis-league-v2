@@ -10,7 +10,8 @@ const BottomNav: React.FC = () => {
   const pathname = usePathname();
   useShowWelcomeToast();
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string | string[]) =>
+    Array.isArray(path) ? path.some((p) => pathname === p) : pathname === path;
 
   return (
     <nav
@@ -67,11 +68,11 @@ const BottomNav: React.FC = () => {
             href="/perfil"
             label="Perfil"
             className="animate-jump-in animate-delay-400 animate-ease-[linear]"
-            isActive={isActive("/perfil")}
+            isActive={isActive(["/perfil", "/perfil/editar"])}
             icon={
               <User
                 className={`h-6 w-6 ${
-                  isActive("/perfil") ? "fill-current" : ""
+                  isActive(["/perfil", "/perfil/editar"]) ? "fill-current" : ""
                 }`}
               />
             }

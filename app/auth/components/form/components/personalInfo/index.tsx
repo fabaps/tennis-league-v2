@@ -9,6 +9,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { InputWithIcon } from "@/components/ui/input";
@@ -42,7 +43,9 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
             <h1 className="text-primary text-2xl font-bold text-center">
               Bienvenido a la GTL
             </h1>
-            <p className="text-md text-gray-500">Completa tus datos personales</p>
+            <p className="text-md text-gray-500">
+              Completa tus datos personales
+            </p>
           </div>
 
           <Form {...form}>
@@ -55,10 +58,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel className="text-gray-500">Primer nombre</FormLabel>
                     <FormControl>
                       <InputWithIcon
                         icon={<UserIcon className="text-gray-400" />}
-                        placeholder="Primer nombre"
+                        placeholder="Nombre"
                         {...field}
                       />
                     </FormControl>
@@ -73,10 +77,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem className="w-full">
+                    <FormLabel className="text-gray-500">Primer apellido</FormLabel>
                     <FormControl>
                       <InputWithIcon
                         icon={<UserPlus className="text-gray-400" />}
-                        placeholder="Primer apellido"
+                        placeholder="Apellido"
                         {...field}
                       />
                     </FormControl>
@@ -91,10 +96,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="w-full">
+                    <FormLabel className="text-gray-500">Correo electrónico</FormLabel>
                     <FormControl>
                       <InputWithIcon
                         icon={<Mail className="text-gray-400" />}
-                        placeholder="Correo electrónico"
+                        placeholder="usuario@gmail.com"
                         {...field}
                       />
                     </FormControl>
@@ -135,7 +141,7 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({}) => {
                 }}
               />
 
-              <Button type="submit" className="w-full" variant='green'>
+              <Button type="submit" className="w-full" variant="green">
                 Continuar
               </Button>
             </form>

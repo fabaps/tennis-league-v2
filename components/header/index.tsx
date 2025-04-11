@@ -14,7 +14,7 @@ interface HeaderProps {
 const Header = ({ title, isSearching, className }: HeaderProps) => {
   return (
     <header
-      style={{ boxShadow: "0px 5px 8px -1px rgba(0,0,0,0.3)" }}
+      style={{ boxShadow: "0px 5px 5px -1px rgba(0,0,0,0.1)" }}
       className={`fixed top-0 left-0 right-0 z-10 bg-background ${className}`}
     >
       <div

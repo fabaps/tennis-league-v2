@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -13,13 +13,13 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
+const DEV_MODE = Number(process.env.NEXT_PUBLIC_DEV_MODE);
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
-if (process.env.NODE_ENV === "development") {
-
+if (DEV_MODE) {
   console.log("🔥 Conectando Firestore al emulador...");
   connectFirestoreEmulator(db, "localhost", 8080);
 
