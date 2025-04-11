@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "emulators": "ts-node --project tsconfig.scripts.json scripts/run-emulators.ts",
+    "save": "firebase emulators:export ./export-firebase",
+    "production": "npx next build && npx next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -41,6 +44,7 @@
     "eslint": "9",
     "eslint-config-next": "15.2.3",
     "tailwindcss": "^4.1.3",
-    "typescript": "5"
+    "typescript": "5",
+    "ts-node": "^10.9.2"
   }
 }
